@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.com/agent-onboard/review.schema.json",
-  "title": "Agent Harness Review Finding",
+  "title": "Agent Onboard Review Finding",
   "type": "object",
   "required": [
     "severity",

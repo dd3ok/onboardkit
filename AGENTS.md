@@ -8,7 +8,7 @@ This repository contains Agent Onboard, a compact evidence-backed toolkit for pr
 2. Prefer local source, templates, schemas, and official docs over model memory for version-sensitive behavior.
 3. Keep changes surgical and traceable to the user request, a failing test, or an explicit verification gap.
 4. Do not perform unrelated refactors.
-5. Done requires fresh evidence from tests, syntax checks, command criteria, or review.
+5. Done requires fresh verification evidence from tests, syntax checks, command criteria, or recorded artifacts. Review is a separate scope check.
 
 ## Workflow Depth
 
@@ -24,6 +24,8 @@ Small feature:
 Large feature or migration:
   clarify -> specify -> design -> tasks -> implement slices -> evidence -> review
 ```
+
+Run `retro` only when repeated failures or process gaps need to become durable harness updates.
 
 ## Commands
 
@@ -70,13 +72,35 @@ Each skill must:
 - prefer instructions over scripts unless deterministic behavior or tooling is required
 - keep the description concise and trigger-focused
 
+## Routing Policy
+
+Keep always-needed rules in AGENTS.md. Keep long procedures, interviews, and specialized checks in skills or docs.
+
+When a task matches a skill trigger, invoke the skill explicitly instead of relying on implicit discovery:
+
+- Ambiguous, risky, multi-file, or user-visible requirements: `clarify`
+- Product behavior or acceptance criteria: `specify`
+- Architecture, interfaces, data models, or security boundaries: `design`
+- Multi-file or long-running implementation: `plan`
+- Behavior changes with feasible tests: `tdd`
+- Planned implementation slice: `implement`
+- Before claiming completion: `verify`
+- After implementation and verification: `review`
+- Auth, secrets, network, dependencies, deletion, or sandbox changes: `security-review`
+- Repeated mistakes or process failures: `retro`
+- Adding or updating local docs corpus: `docs-index`
+- Workflow or harness behavior changes: `eval`
+
+For version-sensitive APIs, prefer the docs index in AGENTS.md and read the referenced local docs before using model memory.
+
 ## Docs Index Policy
 
 Use `agent-onboard index-docs` to inject a compressed docs index into the managed section below when this repository gains local docs.
 
 <!-- agent-onboard:docs-index:start -->
 [Project Docs Index]|root: docs
-|IMPORTANT: Prefer retrieval-led reasoning over pretraining-led reasoning. Read relevant local docs when a docs folder exists.
+|IMPORTANT: Prefer retrieval-led reasoning over pretraining-led reasoning. Read relevant local docs before coding against version-sensitive APIs.
+|.:{ANALYSIS.md,ARCHITECTURE.md,BEST_PRACTICES_AUDIT.md,BUILD_VERIFICATION.md,CODEX_VENDOR_COMPLIANCE.md,DECISIONS.md,EVAL_METHODOLOGY.md,IMPROVEMENT_ROADMAP_DESIGN.md,REFERENCE_REPOSITORY_MATRIX.md,SECURITY_MODEL.md,SOT.md,STATUS.md,TODO_FEATURE_DESIGNS.md}
 <!-- agent-onboard:docs-index:end -->
 
 ## Security Rules

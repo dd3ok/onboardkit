@@ -7,6 +7,37 @@ import { buildDocsIndex, formatCompressedIndex } from '../src/lib/docs-indexer.m
 import { runDoctor } from '../src/lib/doctor.mjs';
 import { runCriteriaFile } from '../src/lib/evidence.mjs';
 
+function listTextFiles(root) {
+  const out = [];
+  const skipDirs = new Set([
+    '.git',
+    '.harness',
+    'node_modules',
+    'dist',
+    'build',
+    'coverage',
+    '.next',
+    '.vercel',
+    '.nyc_output'
+  ]);
+  const skipFiles = new Set(['package-lock.json', 'pnpm-lock.yaml', 'yarn.lock']);
+  const textExts = new Set(['.json', '.md', '.mjs', '.toml', '.txt', '.yaml', '.yml']);
+
+  for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+    if (skipDirs.has(entry.name)) continue;
+    const p = path.join(root, entry.name);
+    if (entry.isDirectory()) {
+      out.push(...listTextFiles(p));
+    } else if (entry.isFile()) {
+      if (skipFiles.has(entry.name)) continue;
+      if (textExts.has(path.extname(entry.name)) || entry.name === 'LICENSE') {
+        out.push(p);
+      }
+    }
+  }
+  return out;
+}
+
 test('docs indexer creates compact index', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ahk-docs-'));
   fs.mkdirSync(path.join(dir, 'guide'), { recursive: true });
@@ -90,4 +121,53 @@ test('sample criteria runs the standard syntax lint command', () => {
 
   assert.equal(syntaxCriterion.description, 'Run syntax lint');
   assert.equal(syntaxCriterion.command, 'npm run lint:syntax');
+});
+
+test('project naming is consistently Agent Onboard', () => {
+  const staleTerms = [
+    ['Agent', 'Harness'].join(' '),
+    ['agent', 'harness', 'kit'].join('-'),
+    `${['agent', 'harness'].join('-')}.mjs`,
+    ['agent', 'harness'].join('-')
+  ];
+  const offenders = [];
+
+  for (const file of listTextFiles(process.cwd())) {
+    const text = fs.readFileSync(file, 'utf8');
+    for (const term of staleTerms) {
+      if (text.includes(term)) {
+        offenders.push(`${path.relative(process.cwd(), file)} contains ${term}`);
+      }
+    }
+  }
+
+  assert.deepEqual(offenders, []);
+});
+
+test('AGENTS guidance routes common work to explicit skills', () => {
+  const requiredSkills = [
+    'clarify',
+    'specify',
+    'design',
+    'plan',
+    'tdd',
+    'implement',
+    'verify',
+    'review',
+    'security-review',
+    'retro',
+    'docs-index',
+    'eval'
+  ];
+
+  for (const rel of ['AGENTS.md', path.join('templates', 'AGENTS.template.md')]) {
+    const text = fs.readFileSync(path.join(process.cwd(), rel), 'utf8');
+
+    assert.match(text, /## Routing Policy/);
+    assert.match(text, /When a task matches a skill trigger, invoke the skill explicitly/);
+    assert.match(text, /For version-sensitive APIs, prefer the docs index in AGENTS\.md/);
+    for (const skill of requiredSkills) {
+      assert.match(text, new RegExp(`\`${skill}\``));
+    }
+  }
 });
