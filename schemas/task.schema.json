@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.com/agent-onboard/task.schema.json",
-  "title": "Agent Harness Task",
+  "title": "Agent Onboard Task",
   "type": "object",
   "required": [
     "id",
