@@ -9,7 +9,18 @@ import { runCriteriaFile } from '../src/lib/evidence.mjs';
 
 function listTextFiles(root) {
   const out = [];
-  const skipDirs = new Set(['.git', '.harness', 'node_modules']);
+  const skipDirs = new Set([
+    '.git',
+    '.harness',
+    'node_modules',
+    'dist',
+    'build',
+    'coverage',
+    '.next',
+    '.vercel',
+    '.nyc_output'
+  ]);
+  const skipFiles = new Set(['package-lock.json', 'pnpm-lock.yaml', 'yarn.lock']);
   const textExts = new Set(['.json', '.md', '.mjs', '.toml', '.txt', '.yaml', '.yml']);
 
   for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
@@ -17,8 +28,11 @@ function listTextFiles(root) {
     const p = path.join(root, entry.name);
     if (entry.isDirectory()) {
       out.push(...listTextFiles(p));
-    } else if (textExts.has(path.extname(entry.name)) || entry.name === 'LICENSE') {
-      out.push(p);
+    } else if (entry.isFile()) {
+      if (skipFiles.has(entry.name)) continue;
+      if (textExts.has(path.extname(entry.name)) || entry.name === 'LICENSE') {
+        out.push(p);
+      }
     }
   }
   return out;
