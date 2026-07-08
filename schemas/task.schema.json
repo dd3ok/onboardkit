@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/prooflane/task.schema.json",
+  "title": "Agent Harness Task",
+  "type": "object",
+  "required": [
+    "id",
+    "description",
+    "verification"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "parallelizable": {
+      "type": "boolean"
+    },
+    "verification": {
+      "type": "string"
+    },
+    "evidence_path": {
+      "type": "string"
+    }
+  }
+}

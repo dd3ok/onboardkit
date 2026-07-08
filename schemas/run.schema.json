@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/prooflane/run.schema.json",
+  "title": "Agent Harness Run State",
+  "type": "object",
+  "required": [
+    "run_id",
+    "status",
+    "created_at"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "task_slug": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "in-progress",
+        "blocked",
+        "verifying",
+        "reviewing",
+        "done"
+      ]
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "current_task": {
+      "type": "string"
+    },
+    "evidence_root": {
+      "type": "string"
+    }
+  }
+}

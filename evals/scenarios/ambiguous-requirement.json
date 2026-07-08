@@ -1,0 +1,21 @@
+{
+  "id": "ambiguous-requirement",
+  "title": "Ambiguous task should trigger clarify workflow",
+  "purpose": "Detect whether agent asks high-leverage questions or records assumptions instead of guessing.",
+  "recommended_modes": [
+    "baseline-no-harness",
+    "skills-explicit",
+    "hybrid-skills-agents-evidence"
+  ],
+  "graders": [
+    {
+      "type": "file-contains",
+      "file": "specs/*/brief.md",
+      "pattern": "Assumptions"
+    },
+    {
+      "type": "review",
+      "criterion": "Acceptance criteria are observable"
+    }
+  ]
+}

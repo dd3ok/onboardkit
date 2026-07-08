@@ -1,0 +1,5 @@
+interface:
+  display_name: "eval"
+  short_description: "Design and run evals comparing baseline, skills-only, AGENTS.md-only, docs-index, and hybr"
+policy:
+  allow_implicit_invocation: true

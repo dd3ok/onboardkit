@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/prooflane/review.schema.json",
+  "title": "Agent Harness Review Finding",
+  "type": "object",
+  "required": [
+    "severity",
+    "area",
+    "finding"
+  ],
+  "properties": {
+    "severity": {
+      "enum": [
+        "blocker",
+        "major",
+        "minor",
+        "note"
+      ]
+    },
+    "area": {
+      "type": "string"
+    },
+    "finding": {
+      "type": "string"
+    },
+    "recommendation": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+interface:
+  display_name: "plan"
+  short_description: "Break approved spec/design into small executable tasks with dependencies, file targets, an"
+policy:
+  allow_implicit_invocation: true

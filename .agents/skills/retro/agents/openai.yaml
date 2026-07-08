@@ -1,0 +1,5 @@
+interface:
+  display_name: "retro"
+  short_description: "Turn repeated mistakes or verification failures into durable harness updates: AGENTS.md, s"
+policy:
+  allow_implicit_invocation: true

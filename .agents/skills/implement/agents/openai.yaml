@@ -1,0 +1,5 @@
+interface:
+  display_name: "implement"
+  short_description: "Implement one planned task slice at a time with surgical diffs and immediate verification."
+policy:
+  allow_implicit_invocation: true

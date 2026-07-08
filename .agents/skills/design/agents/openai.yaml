@@ -1,0 +1,5 @@
+interface:
+  display_name: "design"
+  short_description: "Design architecture, interfaces, risks, alternatives, and rollback before code for non-tri"
+policy:
+  allow_implicit_invocation: true

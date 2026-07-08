@@ -1,0 +1,28 @@
+{
+  "name": "prooflane",
+  "version": "0.1.0",
+  "description": "AGENTS.md-first, skills-on-demand, evidence-backed workflow harness for AI coding agents.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "prooflane": "./bin/prooflane.mjs"
+  },
+  "scripts": {
+    "test": "node --test",
+    "doctor": "node ./bin/prooflane.mjs doctor",
+    "lint:syntax": "node --check ./bin/prooflane.mjs && node --check ./src/lib/docs-indexer.mjs && node --check ./src/lib/evidence.mjs && node --check ./src/lib/doctor.mjs && node --check ./src/lib/specs.mjs && node --check ./src/lib/eval-runner.mjs && node --check ./src/lib/fs.mjs && node --check ./src/lib/hash.mjs",
+    "verify:sample": "node ./bin/prooflane.mjs verify --criteria examples/criteria.sample.json"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "codex",
+    "agents-md",
+    "agent-skills",
+    "ai-coding",
+    "evidence",
+    "workflow",
+    "harness"
+  ]
+}

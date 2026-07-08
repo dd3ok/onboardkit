@@ -1,0 +1,5 @@
+interface:
+  display_name: "specify"
+  short_description: "Write a what-and-why feature specification before design or implementation; produce spec.m"
+policy:
+  allow_implicit_invocation: true
