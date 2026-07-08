@@ -33,9 +33,9 @@ test('doctor does not require internal planning or SOT documents', () => {
     '',
     '- Run checks.',
     '',
-    '<!-- prooflane:docs-index:start -->',
+    '<!-- agent-onboard:docs-index:start -->',
     '[Project Docs Index]|root: ./docs',
-    '<!-- prooflane:docs-index:end -->',
+    '<!-- agent-onboard:docs-index:end -->',
     ''
   ].join('\n'));
   fs.writeFileSync(path.join(dir, '.agents', 'skills', 'sample', 'SKILL.md'), [

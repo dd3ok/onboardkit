@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/prooflane/criteria.schema.json",
+  "$id": "https://example.com/agent-onboard/criteria.schema.json",
   "title": "Agent Harness Criteria",
   "type": "object",
   "required": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/prooflane/run.schema.json",
+  "$id": "https://example.com/agent-onboard/run.schema.json",
   "title": "Agent Harness Run State",
   "type": "object",
   "required": [

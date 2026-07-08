@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This repository contains Prooflane, a compact evidence-backed workflow toolkit for AI coding agents.
+This repository contains Agent Onboard, a compact evidence-backed toolkit for preparing repositories before AI coding agents start work.
 
 ## Operating Principles
 
@@ -30,9 +30,9 @@ Large feature or migration:
 ```bash
 npm test
 npm run lint:syntax
-node ./bin/prooflane.mjs doctor
-node ./bin/prooflane.mjs eval
-node ./bin/prooflane.mjs verify --criteria examples/criteria.sample.json
+node ./bin/agent-onboard.mjs doctor
+node ./bin/agent-onboard.mjs eval
+node ./bin/agent-onboard.mjs verify --criteria examples/criteria.sample.json
 ```
 
 ## Definition of Done
@@ -72,12 +72,12 @@ Each skill must:
 
 ## Docs Index Policy
 
-Use `prooflane index-docs` to inject a compressed docs index into the managed section below when this repository gains local docs.
+Use `agent-onboard index-docs` to inject a compressed docs index into the managed section below when this repository gains local docs.
 
-<!-- prooflane:docs-index:start -->
+<!-- agent-onboard:docs-index:start -->
 [Project Docs Index]|root: docs
 |IMPORTANT: Prefer retrieval-led reasoning over pretraining-led reasoning. Read relevant local docs when a docs folder exists.
-<!-- prooflane:docs-index:end -->
+<!-- agent-onboard:docs-index:end -->
 
 ## Security Rules
 

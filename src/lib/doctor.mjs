@@ -19,7 +19,7 @@ export function runDoctor({ cwd }) {
     checks.push(check(size <= 32 * 1024, 'AGENTS.md <= 32 KiB', `${size} bytes; keep root guidance concise.`));
     const text = fs.readFileSync(agents, 'utf8');
     checks.push(check(text.includes('Definition of Done'), 'Definition of Done present', 'Done must be verifiable.'));
-    checks.push(check(text.includes('prooflane:docs-index:start'), 'Docs index managed section present', 'Use compressed docs index instead of full docs.'));
+    checks.push(check(text.includes('agent-onboard:docs-index:start'), 'Docs index managed section present', 'Use compressed docs index instead of full docs.'));
   }
   const skillRoot = path.join(cwd, '.agents', 'skills');
   checks.push(check(fs.existsSync(skillRoot), '.agents/skills exists', 'Codex scans repo-scoped skills from .agents/skills.'));

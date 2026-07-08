@@ -43,7 +43,7 @@ docs/      project documentation
 
 ## Docs index
 
-<!-- prooflane:docs-index:start -->
+<!-- agent-onboard:docs-index:start -->
 [Project Docs Index]|root: ./docs
 |IMPORTANT: Prefer retrieval-led reasoning over pretraining-led reasoning.
-<!-- prooflane:docs-index:end -->
+<!-- agent-onboard:docs-index:end -->

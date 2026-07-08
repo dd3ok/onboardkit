@@ -1,7 +1,7 @@
-# Prooflane
+# Agent Onboard
 
-Prooflane is a small, zero-dependency Node.js toolkit for AGENTS.md-first agent workflows.
-It helps coding agents work from durable repo guidance, focused skills, generated planning artifacts, and fresh command-backed evidence.
+Agent Onboard is a small, zero-dependency Node.js toolkit for preparing a repository before AI coding agents start work.
+It installs durable repo guidance, focused skills, generated planning artifacts, and fresh command-backed evidence workflows.
 
 ## What Is Implemented
 
@@ -19,24 +19,24 @@ It helps coding agents work from durable repo guidance, focused skills, generate
 npm test
 npm run lint:syntax
 
-node ./bin/prooflane.mjs help
-node ./bin/prooflane.mjs doctor
-node ./bin/prooflane.mjs new --slug demo-login --title "Demo login flow"
-node ./bin/prooflane.mjs verify --criteria examples/criteria.sample.json
+node ./bin/agent-onboard.mjs help
+node ./bin/agent-onboard.mjs doctor
+node ./bin/agent-onboard.mjs new --slug demo-login --title "Demo login flow"
+node ./bin/agent-onboard.mjs verify --criteria examples/criteria.sample.json
 ```
 
 After linking the package locally:
 
 ```bash
 npm link
-prooflane doctor
+agent-onboard doctor
 ```
 
 ## Repository Layout
 
 ```text
 AGENTS.md                 repo guidance for agents
-bin/prooflane.mjs         CLI entrypoint
+bin/agent-onboard.mjs     CLI entrypoint
 src/lib/                  CLI implementation modules
 .agents/skills/           Codex-compatible workflow skills
 .codex/config.example.toml safe Codex configuration example
@@ -49,7 +49,7 @@ test/                     smoke tests
 
 ## Evidence
 
-`prooflane verify` reads a criteria JSON file and writes:
+`agent-onboard verify` reads a criteria JSON file and writes:
 
 ```text
 .harness/evidence/<run-id>/<criterion-id>/commands.log

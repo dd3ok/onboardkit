@@ -25,23 +25,23 @@ function has(flag) {
 }
 
 function help() {
-  console.log(`prooflane
+  console.log(`agent-onboard
 
 Usage:
-  prooflane help
-  prooflane init [--target <dir>] [--force]
-  prooflane doctor [--cwd <dir>]
-  prooflane index-docs --source <dir> --name <name> [--inject] [--root-alias <path>]
-  prooflane new --slug <slug> --title <title>
-  prooflane verify --criteria <criteria.json> [--run-id <id>]
-  prooflane eval
-  prooflane status
+  agent-onboard help
+  agent-onboard init [--target <dir>] [--force]
+  agent-onboard doctor [--cwd <dir>]
+  agent-onboard index-docs --source <dir> --name <name> [--inject] [--root-alias <path>]
+  agent-onboard new --slug <slug> --title <title>
+  agent-onboard verify --criteria <criteria.json> [--run-id <id>]
+  agent-onboard eval
+  agent-onboard status
 
 Examples:
-  prooflane init --target .
-  prooflane index-docs --source docs --name local-docs --inject
-  prooflane new --slug login-flow --title "Login flow"
-  prooflane verify --criteria examples/criteria.sample.json
+  agent-onboard init --target .
+  agent-onboard index-docs --source docs --name local-docs --inject
+  agent-onboard new --slug login-flow --title "Login flow"
+  agent-onboard verify --criteria examples/criteria.sample.json
 `);
 }
 
@@ -97,7 +97,7 @@ try {
       console.log(`- ${scenario.id}: ${scenario.title}`);
     }
   } else if (command === 'status') {
-    console.log('CLI entrypoint: bin/prooflane.mjs');
+    console.log('CLI entrypoint: bin/agent-onboard.mjs');
     console.log('Library modules: src/lib/');
     console.log('Repo skills: .agents/skills/');
     console.log('Runtime evidence: .harness/evidence/<run-id>/');
@@ -105,6 +105,6 @@ try {
     throw new Error(`Unknown command: ${command}`);
   }
 } catch (err) {
-  console.error(`prooflane error: ${err.message}`);
+  console.error(`agent-onboard error: ${err.message}`);
   process.exitCode = 1;
 }
