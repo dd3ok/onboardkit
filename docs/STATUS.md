@@ -66,6 +66,7 @@ Each skill has:
 - Decision log.
 - Detailed TODO feature designs.
 - Improvement roadmap design.
+- Basic harness kit research addendum.
 
 ### Schemas
 
@@ -101,6 +102,8 @@ These are intentionally not implemented in the MVP and are specified in `docs/TO
 14. Monorepo nested AGENTS.md generator.
 15. GitHub Actions integration.
 16. Automated SOT synchronization.
+17. Skill trigger and contract checks.
+18. Static security audit findings with stable IDs.
 
 ## Recommended next implementation order
 

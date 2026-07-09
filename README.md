@@ -59,6 +59,16 @@ test/                     smoke tests
 
 Command criteria run locally, redact common secret environment variable patterns, and record timestamps, exit status, output hashes, and freshness.
 
+## Generated Files And Commit Policy
+
+Commit source-of-truth files such as `AGENTS.md`, `docs/`, `.agents/skills/`, `templates/`, `schemas/`, `examples/`, and `evals/`.
+
+Do not commit runtime outputs under `.harness/evidence/`, `.harness/runs/`, `.harness/reports/`, `.harness/tmp/`, generated docs indexes under `.harness/docs-index/`, local scratch `specs/`, or `*.log` files.
+
+When `agent-onboard index-docs --inject` updates `AGENTS.md`, commit the `AGENTS.md` change, not the generated `.harness/docs-index/*` file.
+
+If a generated planning artifact or scratch spec should become durable project documentation, move or copy it into `docs/`, `examples/`, or `templates/` first, then commit it there.
+
 ## Current Limits
 
 - Criteria input is JSON only.
