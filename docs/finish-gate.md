@@ -49,7 +49,7 @@ Warnings: optional evidence that is missing, stale, pending, unsupported, tool-u
 - Required policy-denied or prompt-required proof returns `FAIL`.
 - Optional non-pass proof becomes a warning.
 - Empty run reports are `INCOMPLETE`.
-- Write `finish-report.json` next to the run report for auditability.
+- Write `finish-report.json` under the selected run root for every verdict when the run root can be created safely.
 
 ## Done Contract
 

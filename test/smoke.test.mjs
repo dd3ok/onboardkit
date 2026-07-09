@@ -765,6 +765,22 @@ test('finish gate marks missing referenced command logs incomplete', async () =>
   assert.equal(verdict.required[0].reason, 'missing-log');
 });
 
+test('finish gate writes report when run report is missing', async () => {
+  const { finishRun } = await import('../src/lib/finish-gate.mjs');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ahk-finish-missing-report-'));
+  const runId = 'missing-run-report-run';
+  const finishPath = path.join(dir, '.harness', 'evidence', runId, 'finish-report.json');
+
+  const verdict = finishRun({ cwd: dir, runId });
+
+  assert.equal(verdict.verdict, 'INCOMPLETE');
+  assert.equal(verdict.required[0].reason, 'missing-run-report');
+  assert.equal(fs.existsSync(finishPath), true);
+  const report = JSON.parse(fs.readFileSync(finishPath, 'utf8'));
+  assert.equal(report.verdict, 'INCOMPLETE');
+  assert.equal(report.required[0].reason, 'missing-run-report');
+});
+
 test('finish gate marks empty run reports incomplete', async () => {
   const { finishRun } = await import('../src/lib/finish-gate.mjs');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ahk-finish-empty-'));

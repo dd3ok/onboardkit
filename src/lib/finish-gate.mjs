@@ -248,7 +248,7 @@ export function finishRun({ cwd, runId }) {
   const createdAt = new Date().toISOString();
 
   if (!fs.existsSync(reportPath)) {
-    return {
+    const result = {
       runId: safeId,
       verdict: 'INCOMPLETE',
       ok: false,
@@ -267,6 +267,8 @@ export function finishRun({ cwd, runId }) {
       ],
       warnings: []
     };
+    writeJson(path.join(runRoot, 'finish-report.json'), result);
+    return result;
   }
 
   const report = readJson(reportPath);

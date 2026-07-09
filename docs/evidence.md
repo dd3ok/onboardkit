@@ -68,6 +68,8 @@ For every proof, the finish gate checks that the current criteria file still mat
 - optional warnings
 - evidence paths used for the verdict
 
+When `run-report.json` is missing, `finish` still writes an `INCOMPLETE` finish report if the selected run root can be created safely. It does not synthesize a run report or proof.
+
 ## Evidence States
 
 `pass`: required proof exists, is fresh, and reports success.
