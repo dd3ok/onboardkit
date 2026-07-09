@@ -4,9 +4,9 @@ description: Build or update compressed local documentation indexes in AGENTS.md
 ---
 
 
-# Docs Index Skill
+# Docs Index Guide
 
-Use this skill when adding framework docs, versioned docs, internal architecture docs, or any local reference corpus for agents.
+Use this guide when adding framework docs, versioned docs, internal architecture docs, or any local reference corpus for agents.
 
 ## Inputs
 
@@ -31,4 +31,3 @@ Use this skill when adding framework docs, versioned docs, internal architecture
 
 - AGENTS.md remains concise.
 - The docs index names the local root and entry files.
-

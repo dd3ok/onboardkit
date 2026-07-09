@@ -12,7 +12,7 @@ Slug: `{{slug}}`
 ## Harness update required
 
 - [ ] AGENTS.md
-- [ ] Skill
+- [ ] Workflow guide
 - [ ] Template
 - [ ] Verifier
 - [ ] Eval case

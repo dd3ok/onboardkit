@@ -8,12 +8,12 @@ Measure whether workflow changes improve agent outcomes instead of merely soundi
 
 | Mode | Description |
 |---|---|
-| baseline-no-harness | No AGENTS.md, no skills, no docs index. |
-| skills-default | Skills installed, no explicit instruction. |
-| skills-explicit | Skills installed and prompt explicitly invokes relevant skill. |
+| baseline-no-harness | No AGENTS.md, no workflow guides, no docs index. |
+| guides-default | Workflow guides installed, no explicit instruction. |
+| guides-explicit | Workflow guides installed and prompt explicitly invokes the relevant guide. |
 | agents-md-only | AGENTS.md rules only, no docs index. |
 | agents-md-docs-index | AGENTS.md includes compressed docs index. |
-| hybrid-skills-agents-evidence | AGENTS.md docs index + explicit workflow skills + evidence gate. |
+| hybrid-guides-agents-evidence | AGENTS.md docs index + explicit workflow guides + evidence gate. |
 
 ## Scenario design rules
 
@@ -29,7 +29,7 @@ Measure whether workflow changes improve agent outcomes instead of merely soundi
 - pass rate
 - build/lint/typecheck/test pass rate
 - docs read rate
-- skill trigger rate
+- guide trigger rate
 - context size
 - cost
 - wall-clock time
@@ -39,4 +39,4 @@ Measure whether workflow changes improve agent outcomes instead of merely soundi
 
 ## Current MVP
 
-The current `agent-onboard eval` command produces a static scenario inventory. Dynamic execution is TODO T01.
+The current `after-init eval` command produces a static scenario inventory. Dynamic execution is TODO T01.

@@ -4,10 +4,10 @@
   "purpose": "Detect whether agent uses retrieved local docs instead of pretraining memory.",
   "recommended_modes": [
     "baseline-no-harness",
-    "skills-default",
-    "skills-explicit",
+    "guides-default",
+    "guides-explicit",
     "agents-md-docs-index",
-    "hybrid-skills-agents-evidence"
+    "hybrid-guides-agents-evidence"
   ],
   "graders": [
     {

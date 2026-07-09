@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/agent-onboard/criteria.schema.json",
-  "title": "Agent Onboard Criteria",
+  "$id": "https://example.com/after-init/criteria.schema.json",
+  "title": "after-init Criteria",
   "type": "object",
   "required": [
     "criteria"

@@ -16,9 +16,9 @@ const DEFAULT_POLICY = {
     'npm run lint:syntax',
     'node --test',
     'node --version',
-    'node ./bin/agent-onboard.mjs doctor',
-    'node ./bin/agent-onboard.mjs eval',
-    'node ./bin/agent-onboard.mjs verify --criteria examples/criteria.sample.json'
+    'node ./bin/after-init.mjs doctor',
+    'node ./bin/after-init.mjs eval',
+    'node ./bin/after-init.mjs verify --criteria examples/criteria.sample.json'
   ],
   deny: [
     { id: 'shell-metacharacter', regex: '(?:&&|\\|\\||[;&|<>`]|\\$\\()', reason: 'Shell metacharacters, command chaining, pipes, and redirects are not allowed in v0 command criteria.' },

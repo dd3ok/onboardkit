@@ -20,7 +20,7 @@ Add a runner that takes a scenario, creates an isolated temp repo, applies the s
 src/lib/eval-dynamic.mjs
 src/lib/eval-graders.mjs
 src/lib/eval-modes.mjs
-bin/agent-onboard.mjs
+bin/after-init.mjs
 evals/scenarios/*.json
 schemas/eval.schema.json
 ```
@@ -28,8 +28,8 @@ schemas/eval.schema.json
 ### CLI API
 
 ```bash
-agent-onboard eval run --scenario evals/scenarios/version-sensitive-api.json --mode hybrid --runs 5
-agent-onboard eval compare --scenario evals/scenarios/version-sensitive-api.json --modes baseline,skills-default,agents-md-docs-index,hybrid
+after-init eval run --scenario evals/scenarios/version-sensitive-api.json --mode hybrid --runs 5
+after-init eval compare --scenario evals/scenarios/version-sensitive-api.json --modes baseline,guides-default,agents-md-docs-index,hybrid
 ```
 
 ### Scenario schema
@@ -40,7 +40,7 @@ agent-onboard eval compare --scenario evals/scenarios/version-sensitive-api.json
   "title": "Version-sensitive API usage",
   "fixture": "fixtures/nextjs-app",
   "prompt": "Implement ...",
-  "modes": ["baseline", "skills-default", "agents-md-docs-index", "hybrid"],
+  "modes": ["baseline", "guides-default", "agents-md-docs-index", "hybrid"],
   "graders": [
     {"type": "command", "command": "npm test"},
     {"type": "file-contains", "file": "app/page.tsx", "pattern": "connection()"}
@@ -52,11 +52,11 @@ agent-onboard eval compare --scenario evals/scenarios/version-sensitive-api.json
 
 1. Implement fixture copy to `.harness/tmp/evals/<run-id>/`.
 2. Implement mode applier:
-   - baseline: remove AGENTS.md and skills.
-   - skills-default: install skills only.
-   - skills-explicit: install skills and add explicit prompt prefix.
+   - baseline: remove AGENTS.md and workflow guides.
+   - guides-default: install workflow guides only.
+   - guides-explicit: install workflow guides and add explicit prompt prefix.
    - agents-md-docs-index: install AGENTS.md docs index only.
-   - hybrid: install AGENTS.md, skills, criteria, evidence policy.
+   - hybrid: install AGENTS.md, workflow guides, criteria, evidence policy.
 3. Implement command graders.
 4. Implement file-contains and file-not-contains graders.
 5. Implement JSON report writer.
@@ -171,7 +171,7 @@ templates/criteria.template.yaml
 
 ### Acceptance criteria
 
-- `agent-onboard verify --criteria specs/foo/criteria.yaml` works.
+- `after-init verify --criteria specs/foo/criteria.yaml` works.
 - JSON criteria remain supported.
 
 ## T04 — Host adapter installer
@@ -194,16 +194,16 @@ src/lib/adapters/claude-code.mjs
 src/lib/adapters/cursor.mjs
 src/lib/adapters/copilot.mjs
 templates/adapters/*
-bin/agent-onboard.mjs
+bin/after-init.mjs
 ```
 
 ### CLI API
 
 ```bash
-agent-onboard adapter install codex
-agent-onboard adapter install claude-code
-agent-onboard adapter install cursor
-agent-onboard adapter install copilot
+after-init adapter install codex
+after-init adapter install claude-code
+after-init adapter install cursor
+after-init adapter install copilot
 ```
 
 ### Implementation steps
@@ -211,7 +211,7 @@ agent-onboard adapter install copilot
 1. Define adapter interface: `detect`, `install`, `doctor`.
 2. Codex adapter installs `AGENTS.md`, `.agents/skills`, `.codex/config.example.toml`.
 3. Claude adapter installs `CLAUDE.md` shim and slash-command docs.
-4. Cursor adapter maps AGENTS guidance to `.cursor/rules/agent-onboard.mdc`.
+4. Cursor adapter maps AGENTS guidance to `.cursor/rules/after-init.mdc`.
 5. Copilot adapter maps guidance to `.github/copilot-instructions.md`.
 6. Add adapter-specific doctor checks.
 
@@ -367,15 +367,15 @@ Generate static HTML from evidence and eval JSON.
 
 ```text
 src/lib/report-html.mjs
-bin/agent-onboard.mjs
+bin/after-init.mjs
 templates/report.html
 ```
 
 ### CLI API
 
 ```bash
-agent-onboard report evidence --run-id <id>
-agent-onboard report eval --report .harness/reports/eval.json
+after-init report evidence --run-id <id>
+after-init report eval --report .harness/reports/eval.json
 ```
 
 ### Acceptance criteria
@@ -405,8 +405,8 @@ src/lib/docs-indexer.mjs
 ### CLI API
 
 ```bash
-agent-onboard docs add next --version installed
-agent-onboard docs add react --version 19
+after-init docs add next --version installed
+after-init docs add react --version 19
 ```
 
 ### Acceptance criteria
@@ -452,13 +452,13 @@ Add workflow template and installer.
 ### Files to add/change
 
 ```text
-templates/github/workflows/agent-onboard.yml
+templates/github/workflows/after-init.yml
 src/lib/adapters/github-actions.mjs
 ```
 
 ### Acceptance criteria
 
-- CI runs `npm test`, `agent-onboard doctor`, and selected eval commands.
+- CI runs `npm test`, `after-init doctor`, and selected eval commands.
 - Uploads `.harness/reports` as artifacts.
 
 ## T12 — Automated SOT synchronization
@@ -475,7 +475,7 @@ Add a consistency checker that reads SOT references and verifies file existence,
 
 ```text
 src/lib/sot-check.mjs
-bin/agent-onboard.mjs
+bin/after-init.mjs
 docs/SOT.md
 docs/STATUS.md
 docs/TODO_FEATURE_DESIGNS.md
@@ -484,8 +484,8 @@ docs/TODO_FEATURE_DESIGNS.md
 ### CLI API
 
 ```bash
-agent-onboard sot check
-agent-onboard sot update-status --todo T01 --status done
+after-init sot check
+after-init sot update-status --todo T01 --status done
 ```
 
 ### Acceptance criteria

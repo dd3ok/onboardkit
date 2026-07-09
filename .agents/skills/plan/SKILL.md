@@ -4,9 +4,9 @@ description: Break approved spec/design into small executable tasks with depende
 ---
 
 
-# Plan Skill
+# Plan Guide
 
-Use this skill before multi-file implementation or long-running work.
+Use this guide before multi-file implementation or long-running work.
 
 ## Inputs
 
@@ -32,4 +32,3 @@ Use this skill before multi-file implementation or long-running work.
 
 - Each task is independently understandable.
 - Each required task has a verification path.
-

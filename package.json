@@ -1,28 +1,43 @@
 {
-  "name": "agent-onboard",
+  "name": "after-init",
   "version": "0.1.0",
-  "description": "AGENTS.md-first, skills-on-demand, evidence-backed workflow harness for AI coding agents.",
+  "description": "Keep AGENTS.md, agent-facing docs, and repo-local workflow guides lightweight after project setup.",
   "type": "module",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
-    "agent-onboard": "./bin/agent-onboard.mjs"
+    "after-init": "bin/after-init.mjs"
   },
   "scripts": {
     "test": "node --test",
-    "doctor": "node ./bin/agent-onboard.mjs doctor",
-    "lint:syntax": "node --check ./bin/agent-onboard.mjs && node --check ./src/lib/docs-indexer.mjs && node --check ./src/lib/evidence.mjs && node --check ./src/lib/doctor.mjs && node --check ./src/lib/specs.mjs && node --check ./src/lib/eval-runner.mjs && node --check ./src/lib/fs.mjs && node --check ./src/lib/hash.mjs && node --check ./src/lib/security-policy.mjs && node --check ./src/lib/security-audit.mjs && node --check ./src/lib/skill-audit.mjs && node --check ./src/lib/finish-gate.mjs",
-    "verify:sample": "node ./bin/agent-onboard.mjs verify --criteria examples/criteria.sample.json"
+    "doctor": "node ./bin/after-init.mjs doctor",
+    "lint:syntax": "node --check ./bin/after-init.mjs && node --check ./src/lib/docs-indexer.mjs && node --check ./src/lib/evidence.mjs && node --check ./src/lib/doctor.mjs && node --check ./src/lib/specs.mjs && node --check ./src/lib/eval-runner.mjs && node --check ./src/lib/fs.mjs && node --check ./src/lib/hash.mjs && node --check ./src/lib/security-policy.mjs && node --check ./src/lib/security-audit.mjs && node --check ./src/lib/guide-audit.mjs && node --check ./src/lib/finish-gate.mjs",
+    "verify:sample": "node ./bin/after-init.mjs verify --criteria examples/criteria.sample.json",
+    "pack:dry-run": "npm pack --dry-run",
+    "prepublishOnly": "npm test && npm run lint:syntax"
   },
+  "files": [
+    ".agents/skills/",
+    ".codex/config.example.toml",
+    "bin/",
+    "evals/",
+    "examples/",
+    "schemas/",
+    "src/",
+    "templates/"
+  ],
   "engines": {
     "node": ">=20"
   },
   "keywords": [
+    "after-init",
     "codex",
     "agents-md",
-    "agent-skills",
+    "agent-context",
+    "agent-docs",
     "ai-coding",
-    "evidence",
-    "workflow",
-    "harness"
+    "workflow-guides"
   ]
 }

@@ -4,9 +4,9 @@ description: Implement one planned task slice at a time with surgical diffs and 
 ---
 
 
-# Implement Skill
+# Implement Guide
 
-Use this skill only after scope is clear. For large tasks, require `tasks.md` first.
+Use this guide only after scope is clear. For large tasks, require `tasks.md` first.
 
 ## Inputs
 
@@ -35,4 +35,3 @@ Use this skill only after scope is clear. For large tasks, require `tasks.md` fi
 - Diff is scoped to the task.
 - No drive-by refactors.
 - Verification has fresh evidence.
-

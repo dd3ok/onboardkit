@@ -4,9 +4,9 @@ description: Review implemented diffs for spec compliance, correctness, simplici
 ---
 
 
-# Review Skill
+# Review Guide
 
-Use this skill after implementation and verification, before final completion.
+Use this guide after implementation and verification, before final completion.
 
 ## Inputs
 
@@ -34,4 +34,3 @@ Use this skill after implementation and verification, before final completion.
 
 - Blocking findings are fixed or explicitly accepted.
 - Review references evidence paths.
-

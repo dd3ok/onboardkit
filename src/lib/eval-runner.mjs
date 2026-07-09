@@ -13,11 +13,11 @@ export function runStaticEvalReport({ cwd }) {
   }
   const modes = [
     'baseline-no-harness',
-    'skills-default',
-    'skills-explicit',
+    'guides-default',
+    'guides-explicit',
     'agents-md-only',
     'agents-md-docs-index',
-    'hybrid-skills-agents-evidence'
+    'hybrid-guides-agents-evidence'
   ];
   const report = {
     created_at: new Date().toISOString(),

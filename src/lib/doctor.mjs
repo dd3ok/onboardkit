@@ -18,18 +18,18 @@ function hasFrontmatterNameAndDescription(file) {
   return /^---\n[\s\S]*?name:\s*.+\n[\s\S]*?description:\s*.+\n[\s\S]*?---/m.test(text);
 }
 
-function isAgentOnboardRepository(cwd) {
+function isAfterInitRepository(cwd) {
   const pkg = path.join(cwd, 'package.json');
   if (!fs.existsSync(pkg)) return false;
   try {
     const parsed = JSON.parse(fs.readFileSync(pkg, 'utf8'));
-    return parsed.name === 'agent-onboard';
+    return parsed.name === 'after-init';
   } catch {
     return false;
   }
 }
 
-function addAgentOnboardGovernanceChecks({ cwd, checks, agentsText }) {
+function addAfterInitGovernanceChecks({ cwd, checks, agentsText }) {
   const docsDir = path.join(cwd, 'docs');
   const sotText = readTextIfExists(path.join(docsDir, 'SOT.md'));
   const roadmapText = readTextIfExists(path.join(docsDir, 'IMPROVEMENT_ROADMAP_DESIGN.md'));
@@ -37,13 +37,13 @@ function addAgentOnboardGovernanceChecks({ cwd, checks, agentsText }) {
 
   checks.push(check(
     includesAll(sotText, [
-      'host-agnostic agent workflow harness',
+      'lightweight repo preparation toolkit for AI coding agents',
       'It is not a full autonomous agent runtime',
       'It does not replace Codex, Claude Code, Cursor, Copilot, or other hosts',
       'It does not yet provide a full dynamic eval runner',
       'It does not yet provide browser automation evidence'
     ]),
-    'Agent Onboard SOT boundary present',
+    'after-init SOT boundary present',
     'SOT must keep the MVP product boundary and non-goals explicit.'
   ));
 
@@ -55,7 +55,7 @@ function addAgentOnboardGovernanceChecks({ cwd, checks, agentsText }) {
       'Artifact/manual evidence v0',
       'Optional run summary'
     ]),
-    'Agent Onboard roadmap priority present',
+    'after-init roadmap priority present',
     'Governance docs must preserve the command-policy-first roadmap and current core priorities.'
   ));
 
@@ -68,7 +68,7 @@ function addAgentOnboardGovernanceChecks({ cwd, checks, agentsText }) {
       'Do not require subagents',
       'Do not require browser automation'
     ]),
-    'Agent Onboard heavyweight work stays non-core',
+    'after-init heavyweight work stays non-core',
     'Roadmap must keep eval, browser automation, and subagent orchestration outside the core pass.'
   ));
 
@@ -77,9 +77,10 @@ function addAgentOnboardGovernanceChecks({ cwd, checks, agentsText }) {
       'does not bloat AGENTS.md with full documents',
       'does not trust agent completion claims without evidence',
       'does not make every task follow a heavy ceremony',
+      'durable after-init changes',
       'does not place host-specific logic in the conceptual core'
     ]),
-    'Agent Onboard best-practice audit guards lightweight workflow',
+    'after-init best-practice audit guards lightweight workflow',
     'Best-practice audit must preserve the lightweight AGENTS-first, evidence-backed structure.'
   ));
 
@@ -91,7 +92,7 @@ function addAgentOnboardGovernanceChecks({ cwd, checks, agentsText }) {
       'STATUS.md',
       'TODO_FEATURE_DESIGNS.md'
     ]),
-    'Agent Onboard docs index references governance docs',
+    'after-init docs index references governance docs',
     'AGENTS.md docs index must route agents to governance docs without inlining them.'
   ));
 }
@@ -106,19 +107,23 @@ export function runDoctor({ cwd, governance = false }) {
     checks.push(check(size <= 32 * 1024, 'AGENTS.md <= 32 KiB', `${size} bytes; keep root guidance concise.`));
     agentsText = fs.readFileSync(agents, 'utf8');
     checks.push(check(agentsText.includes('Definition of Done'), 'Definition of Done present', 'Done must be verifiable.'));
-    checks.push(check(agentsText.includes('agent-onboard:docs-index:start'), 'Docs index managed section present', 'Use compressed docs index instead of full docs.'));
+    checks.push(check(
+      agentsText.includes('after-init:docs-index:start'),
+      'Docs index managed section present',
+      'Use compressed docs index instead of full docs.'
+    ));
   }
-  const skillRoot = path.join(cwd, '.agents', 'skills');
-  checks.push(check(fs.existsSync(skillRoot), '.agents/skills exists', 'Codex scans repo-scoped skills from .agents/skills.'));
-  if (fs.existsSync(skillRoot)) {
-    const skillFiles = [];
-    for (const skillName of fs.readdirSync(skillRoot)) {
-      const p = path.join(skillRoot, skillName, 'SKILL.md');
-      if (fs.existsSync(p)) skillFiles.push(p);
+  const guideRoot = path.join(cwd, '.agents', 'skills');
+  checks.push(check(fs.existsSync(guideRoot), 'Repo-local workflow guides exist', 'Stored under .agents/skills for Codex compatibility.'));
+  if (fs.existsSync(guideRoot)) {
+    const guideFiles = [];
+    for (const guideName of fs.readdirSync(guideRoot)) {
+      const p = path.join(guideRoot, guideName, 'SKILL.md');
+      if (fs.existsSync(p)) guideFiles.push(p);
     }
-    checks.push(check(skillFiles.length > 0, 'At least one skill exists', `${skillFiles.length} skills found.`));
-    for (const file of skillFiles) {
-      checks.push(check(hasFrontmatterNameAndDescription(file), `Skill metadata: ${path.relative(cwd, file)}`, 'SKILL.md must include name and description.'));
+    checks.push(check(guideFiles.length > 0, 'At least one workflow guide exists', `${guideFiles.length} guides found.`));
+    for (const file of guideFiles) {
+      checks.push(check(hasFrontmatterNameAndDescription(file), `Guide metadata: ${path.relative(cwd, file)}`, 'SKILL.md must include name and description.'));
     }
   }
   const pkg = path.join(cwd, 'package.json');
@@ -128,8 +133,8 @@ export function runDoctor({ cwd, governance = false }) {
     checks.push(check(Boolean(parsed.scripts?.test), 'npm test script exists', 'Agents need a standard test command.', 'warning'));
     checks.push(check(Boolean(parsed.scripts?.['lint:syntax'] || parsed.scripts?.lint), 'lint/syntax script exists', 'Agents need a fast static check.', 'warning'));
   }
-  if (governance && isAgentOnboardRepository(cwd)) {
-    addAgentOnboardGovernanceChecks({ cwd, checks, agentsText });
+  if (governance && isAfterInitRepository(cwd)) {
+    addAfterInitGovernanceChecks({ cwd, checks, agentsText });
   }
   const ok = checks.every(c => c.ok || c.severity === 'warning');
   return { ok, checks };

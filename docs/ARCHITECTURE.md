@@ -2,14 +2,14 @@
 
 ## Layer model
 
-Agent Onboard uses a five-layer architecture.
+after-init uses a five-layer architecture.
 
 ```text
 Layer 1. Control Plane
   AGENTS.md, CLAUDE.md shim, docs index, shared language, Definition of Done, security policy
 
 Layer 2. Workflow Plane
-  clarify, specify, design, plan, implement, tdd, verify, review, retro skills
+  clarify, specify, design, plan, implement, tdd, verify, review, retro workflow guides
 
 Layer 3. Evidence Plane
   criteria.json, commands.log, proof.json, artifact metadata, run-report.json, finish-report.json
@@ -27,19 +27,19 @@ The control plane is intentionally text-first. `AGENTS.md` is short enough to be
 
 ### Managed docs index
 
-`agent-onboard index-docs` scans local docs and writes a compact index into:
+`after-init index-docs` scans local docs and writes a compact index into:
 
 ```text
-<!-- agent-onboard:docs-index:start -->
+<!-- after-init:docs-index:start -->
 ...
-<!-- agent-onboard:docs-index:end -->
+<!-- after-init:docs-index:end -->
 ```
 
-This mirrors the Vercel/Next.js finding that a compressed `AGENTS.md` docs index can outperform optional skill retrieval for broad framework knowledge.
+This mirrors the Vercel/Next.js finding that a compressed `AGENTS.md` docs index can outperform optional procedure retrieval for broad framework knowledge.
 
 ## Workflow plane
 
-Skills are on-demand vertical workflows. Each skill has:
+Workflow guides are on-demand vertical procedures. Each guide has:
 
 - a single job
 - frontmatter `name` and `description`
@@ -47,9 +47,9 @@ Skills are on-demand vertical workflows. Each skill has:
 - imperative steps
 - completion criteria
 
-Skills are stored in the Codex repo-scoped location `.agents/skills`.
+Workflow guides are stored in the Codex-compatible repo-scoped location `.agents/skills`.
 
-`doctor --skills` validates the static skill contract: inventory, frontmatter, unique folder-matching names, concise trigger descriptions, required sections, and lightweight file size.
+`doctor --guides` validates the static guide contract: inventory, frontmatter, unique folder-matching names, concise trigger descriptions, required sections, and lightweight file size.
 
 ## Evidence plane
 
@@ -63,7 +63,7 @@ The evidence plane separates agent claims from proof. A command criterion produc
 
 `proof.json` includes command, normalized command, policy decision, cwd, timestamps, exit code, output hashes, freshness, limits, and pass/fail status.
 
-For artifact-backed criteria, `proof.json` records the project-relative artifact path, absolute workspace path, file size, mtime, SHA-256 hash, and artifact kind. The artifact itself stays where the user or host tool produced it; Agent Onboard records and validates metadata.
+For artifact-backed criteria, `proof.json` records the project-relative artifact path, absolute workspace path, file size, mtime, SHA-256 hash, and artifact kind. The artifact itself stays where the user or host tool produced it; after-init records and validates metadata.
 
 `finish-report.json` includes the aggregate `PASS`, `FAIL`, or `INCOMPLETE` verdict for a run plus required evidence classifications and optional warnings.
 
@@ -80,11 +80,11 @@ The current MVP stores evidence and reports. Future runtime work should stay min
 The MVP includes scenario definitions and a static inventory report. Future dynamic evals will compare:
 
 1. baseline without harness
-2. default skills
-3. explicit skills
+2. default workflow guides
+3. explicit workflow guides
 4. AGENTS.md only
 5. AGENTS.md docs index
-6. hybrid AGENTS.md + skills + evidence gate
+6. hybrid AGENTS.md + workflow guides + evidence gate
 
 ## Host adapters
 

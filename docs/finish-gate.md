@@ -1,8 +1,8 @@
 # Finish Gate
 
-Authority: completion verdict behavior for Agent Onboard evidence runs.
+Authority: completion verdict behavior for after-init evidence runs.
 
-Synchronization: when this document changes, check `src/lib/finish-gate.mjs`, `bin/agent-onboard.mjs`, `docs/evidence.md`, `docs/shared-language.md`, `docs/STATUS.md`, and `AGENTS.md`.
+Synchronization: when this document changes, check `src/lib/finish-gate.mjs`, `bin/after-init.mjs`, `docs/evidence.md`, `docs/shared-language.md`, `docs/STATUS.md`, and `AGENTS.md`.
 
 ## Purpose
 
@@ -13,7 +13,7 @@ The finish gate is not evidence. It does not run tests, launch browsers, perform
 ## Command
 
 ```bash
-node ./bin/agent-onboard.mjs finish --run-id <id>
+node ./bin/after-init.mjs finish --run-id <id>
 ```
 
 Exit code:

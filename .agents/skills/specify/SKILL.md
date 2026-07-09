@@ -4,9 +4,9 @@ description: Write a what-and-why feature specification before design or impleme
 ---
 
 
-# Specify Skill
+# Specify Guide
 
-Use this skill for user-visible behavior, product changes, or tasks whose scope should be agreed before design.
+Use this guide for user-visible behavior, product changes, or tasks whose scope should be agreed before design.
 
 ## Inputs
 
@@ -31,4 +31,3 @@ Use this skill for user-visible behavior, product changes, or tasks whose scope 
 
 - The spec explains what and why, not implementation details.
 - Acceptance criteria can drive tasks and verification.
-

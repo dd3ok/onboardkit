@@ -3,8 +3,8 @@ import path from 'node:path';
 import { ensureDir, listFilesRecursive, relativePosix, writeText } from './fs.mjs';
 
 const DOC_EXTENSIONS = new Set(['.md', '.mdx', '.txt', '.rst', '.adoc']);
-const START = '<!-- agent-onboard:docs-index:start -->';
-const END = '<!-- agent-onboard:docs-index:end -->';
+const START = '<!-- after-init:docs-index:start -->';
+const END = '<!-- after-init:docs-index:end -->';
 
 export function buildDocsIndex({ source, name, rootAlias }) {
   if (!fs.existsSync(source)) throw new Error(`Docs source does not exist: ${source}`);

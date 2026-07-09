@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/agent-onboard/review.schema.json",
-  "title": "Agent Onboard Review Finding",
+  "$id": "https://example.com/after-init/review.schema.json",
+  "title": "after-init Review Finding",
   "type": "object",
   "required": [
     "severity",

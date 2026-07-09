@@ -43,9 +43,9 @@ docs/      project documentation
 
 ## Routing Policy
 
-Keep always-needed rules in AGENTS.md. Keep long procedures, interviews, and specialized checks in skills or docs.
+Keep always-needed rules in AGENTS.md. Keep long procedures, interviews, and specialized checks in workflow guides or docs.
 
-When a task matches a skill trigger, invoke the skill explicitly instead of relying on implicit discovery:
+When a task matches a workflow-guide trigger, invoke the corresponding guide explicitly instead of relying on implicit discovery:
 
 - Ambiguous, risky, multi-file, or user-visible requirements: `clarify`
 - Product behavior or acceptance criteria: `specify`
@@ -72,7 +72,7 @@ For version-sensitive APIs, prefer the docs index in AGENTS.md and read the refe
 
 ## Docs index
 
-<!-- agent-onboard:docs-index:start -->
+<!-- after-init:docs-index:start -->
 [Project Docs Index]|root: ./docs
 |IMPORTANT: Prefer retrieval-led reasoning over pretraining-led reasoning.
-<!-- agent-onboard:docs-index:end -->
+<!-- after-init:docs-index:end -->

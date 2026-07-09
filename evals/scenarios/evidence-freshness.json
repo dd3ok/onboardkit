@@ -4,7 +4,7 @@
   "purpose": "Detect stale or fabricated completion reports.",
   "recommended_modes": [
     "baseline-no-harness",
-    "hybrid-skills-agents-evidence"
+    "hybrid-guides-agents-evidence"
   ],
   "graders": [
     {

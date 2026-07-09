@@ -1,5 +1,5 @@
 {
-  "$schema": "https://example.com/agent-onboard/security-policy.schema.json",
+  "$schema": "https://example.com/after-init/security-policy.schema.json",
   "version": 1,
   "unknown": "deny",
   "timeout_ms": 120000,
@@ -8,9 +8,9 @@
     "npm test",
     "npm run lint:syntax",
     "node --test",
-    "node ./bin/agent-onboard.mjs doctor",
-    "node ./bin/agent-onboard.mjs eval",
-    "node ./bin/agent-onboard.mjs verify --criteria examples/criteria.sample.json"
+    "node ./bin/after-init.mjs doctor",
+    "node ./bin/after-init.mjs eval",
+    "node ./bin/after-init.mjs verify --criteria examples/criteria.sample.json"
   ],
   "deny": [],
   "prompt": []

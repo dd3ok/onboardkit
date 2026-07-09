@@ -1,12 +1,12 @@
 ---
 name: retro
-description: Turn repeated mistakes or verification failures into durable harness updates: AGENTS.md, skills, templates, verifier, or eval cases.
+description: Turn repeated mistakes or verification failures into durable after-init updates: AGENTS.md, workflow guides, templates, verifier, or eval cases.
 ---
 
 
-# Retro Skill
+# Retro Guide
 
-Use this skill when the same mistake appears twice, evidence fails for process reasons, or a workflow instruction caused bad behavior.
+Use this guide when the same mistake appears twice, evidence fails for process reasons, or a workflow instruction caused bad behavior.
 
 ## Inputs
 
@@ -17,7 +17,7 @@ Use this skill when the same mistake appears twice, evidence fails for process r
 ## Outputs
 
 - `specs/<slug>/retro.md`
-- Proposed patch to AGENTS.md, skill, template, verifier, or eval case
+- Proposed patch to AGENTS.md, workflow guide, template, verifier, or eval case
 
 ## Steps
 
@@ -30,4 +30,3 @@ Use this skill when the same mistake appears twice, evidence fails for process r
 ## Completion criteria
 
 - The next similar task has a stronger guide, sensor, or eval.
-

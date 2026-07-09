@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/agent-onboard/run.schema.json",
-  "title": "Agent Onboard Run State",
+  "$id": "https://example.com/after-init/run.schema.json",
+  "title": "after-init Run State",
   "type": "object",
   "required": [
     "run_id",

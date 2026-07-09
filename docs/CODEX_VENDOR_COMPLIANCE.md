@@ -1,6 +1,6 @@
 # OpenAI Codex Vendor Compliance Audit
 
-Verdict: **Compliant with core Codex guidance for AGENTS.md, skills, planning, verification, and safe configuration; production-grade adapter/plugin work remains TODO.**
+Verdict: **Compliant with core Codex guidance for AGENTS.md, repo-local workflow guides, planning, verification, and safe configuration; production-grade adapter/plugin work remains TODO.**
 
 This audit maps the repository to the current OpenAI Codex guidance.
 
@@ -62,35 +62,35 @@ Future improvement:
 
 - Add nested `AGENTS.md` generation for monorepos and package-specific rules.
 
-## 5. Skills format
+## 5. Repo-local workflow guide format
 
-OpenAI Codex skills require a skill directory with `SKILL.md`, and `SKILL.md` must include `name` and `description`. Codex scans `.agents/skills` in repo scopes.
+OpenAI Codex skills require a skill directory with `SKILL.md`, and `SKILL.md` must include `name` and `description`. after-init stores repo-local workflow guides in that Codex-compatible shape.
 
 Repository implementation:
 
-- Skills are stored under `.agents/skills/<skill>/SKILL.md`.
-- Every skill has YAML frontmatter with `name` and `description`.
+- Guides are stored under `.agents/skills/<guide>/SKILL.md`.
+- Every guide has YAML frontmatter with `name` and `description`.
 - Optional `agents/openai.yaml` files are included.
-- Each skill focuses on one workflow.
+- Each guide focuses on one workflow.
 - Descriptions are front-loaded with trigger words.
 
 Status: **Pass**
 
 Reference: https://developers.openai.com/codex/skills
 
-## 6. Skill best practices
+## 6. Workflow guide best practices
 
-OpenAI recommends keeping skills focused, preferring instructions over scripts unless deterministic behavior is needed, writing imperative steps with explicit inputs/outputs, and testing trigger behavior.
+OpenAI recommends keeping procedural files focused, preferring instructions over scripts unless deterministic behavior is needed, writing imperative steps with explicit inputs/outputs, and testing trigger behavior.
 
 Repository implementation:
 
-- Most skills are instruction-only.
+- Most guides are instruction-only.
 - `verify` includes a small deterministic helper script.
 - Inputs, outputs, steps, and completion criteria are included.
-- `doctor --skills` checks skill inventory, unique folder-matching names, concise trigger descriptions, contract sections, and file size.
+- `doctor --guides` checks guide inventory, unique folder-matching names, concise trigger descriptions, contract sections, and file size.
 - The roadmap keeps semantic trigger eval optional unless static checks prove insufficient.
 
-Status: **Pass for static skill contracts; semantic trigger eval automation remains optional TODO**
+Status: **Pass for static guide contracts; semantic trigger eval automation remains optional TODO**
 
 ## 7. Testing and review
 
@@ -143,7 +143,7 @@ Agent hosts use different repository instruction surfaces, but duplicating long 
 Repository implementation:
 
 - `CLAUDE.md` remains a thin pointer to `AGENTS.md`.
-- `init --host-shims` can optionally create `GEMINI.md`, `.github/copilot-instructions.md`, and `.cursor/rules/agent-onboard.mdc`.
+- `init --host-shims` can optionally create `GEMINI.md`, `.github/copilot-instructions.md`, and `.cursor/rules/after-init.mdc`.
 - These files point back to canonical `AGENTS.md` guidance and avoid duplicating long rules.
 
 Status: **Pass for pointer-only shims; full adapter installers remain TODO**
@@ -154,7 +154,7 @@ OpenAI recommends updating AGENTS.md after repeated mistakes and using evals/scr
 
 Repository implementation:
 
-- `retro` skill turns repeated mistakes into AGENTS.md, skill, template, verifier, or eval updates.
+- `retro` guide turns repeated mistakes into AGENTS.md, workflow guide, template, verifier, or eval updates.
 - `evals/scenarios` and `docs/EVAL_METHODOLOGY.md` define the comparison matrix.
 
 Status: **Partial pass** because dynamic eval execution remains TODO.
@@ -165,7 +165,7 @@ The repository follows Codex vendor guidance in the areas that can be encoded in
 
 - Browser and dynamic evidence adapters.
 - Evidence freshness hardening beyond current proof flags.
-- Semantic skill trigger eval automation.
+- Semantic workflow-guide trigger eval automation.
 - Dynamic eval runner.
 - Full host adapter installers.
 - Codex plugin packaging.

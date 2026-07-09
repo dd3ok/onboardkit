@@ -8,7 +8,7 @@ import { buildDocsIndex, formatCompressedIndex } from '../src/lib/docs-indexer.m
 import { runDoctor } from '../src/lib/doctor.mjs';
 import { runCriteriaFile } from '../src/lib/evidence.mjs';
 import { runSecurityAudit } from '../src/lib/security-audit.mjs';
-import { runSkillAudit } from '../src/lib/skill-audit.mjs';
+import { runGuideAudit } from '../src/lib/guide-audit.mjs';
 import { createProjectScaffold } from '../src/lib/specs.mjs';
 import { sha256Buffer, sha256Json } from '../src/lib/hash.mjs';
 
@@ -122,24 +122,24 @@ test('docs indexer creates compact index', () => {
 test('doctor validates current repository basics', () => {
   const report = runDoctor({ cwd: process.cwd() });
   assert.equal(report.checks.some(c => c.name === 'AGENTS.md exists' && c.ok), true);
-  assert.equal(report.checks.some(c => c.name.startsWith('Skill metadata') && c.ok), true);
+  assert.equal(report.checks.some(c => c.name.startsWith('Guide metadata') && c.ok), true);
 });
 
-test('doctor leaves Agent Onboard governance checks opt-in', () => {
+test('doctor leaves after-init governance checks opt-in', () => {
   const report = runDoctor({ cwd: process.cwd() });
 
   assert.equal(report.ok, true);
-  assert.equal(report.checks.some(c => c.name === 'Agent Onboard SOT boundary present'), false);
+  assert.equal(report.checks.some(c => c.name === 'after-init SOT boundary present'), false);
 });
 
-test('doctor validates Agent Onboard governance boundaries when requested', () => {
+test('doctor validates after-init governance boundaries when requested', () => {
   const report = runDoctor({ cwd: process.cwd(), governance: true });
   const requiredChecks = [
-    'Agent Onboard SOT boundary present',
-    'Agent Onboard roadmap priority present',
-    'Agent Onboard heavyweight work stays non-core',
-    'Agent Onboard best-practice audit guards lightweight workflow',
-    'Agent Onboard docs index references governance docs'
+    'after-init SOT boundary present',
+    'after-init roadmap priority present',
+    'after-init heavyweight work stays non-core',
+    'after-init best-practice audit guards lightweight workflow',
+    'after-init docs index references governance docs'
   ];
 
   for (const name of requiredChecks) {
@@ -152,12 +152,12 @@ test('security audit emits stable finding IDs for current repository', () => {
 
   assert.equal(report.ok, true);
   assert.deepEqual(report.findings.map(finding => finding.id), [
-    'AOS-SEC-001',
-    'AOS-SEC-002',
-    'AOS-SEC-003',
-    'AOS-SEC-004',
-    'AOS-SEC-005',
-    'AOS-SEC-006'
+    'AFTER-SEC-001',
+    'AFTER-SEC-002',
+    'AFTER-SEC-003',
+    'AFTER-SEC-004',
+    'AFTER-SEC-005',
+    'AFTER-SEC-006'
   ]);
   assert.equal(report.findings.every(finding => ['pass', 'warn', 'fail'].includes(finding.status)), true);
 });
@@ -175,7 +175,7 @@ test('security audit fails unsafe active Codex config', () => {
   ].join('\n'));
 
   const report = runSecurityAudit({ cwd: dir });
-  const finding = report.findings.find(item => item.id === 'AOS-SEC-003');
+  const finding = report.findings.find(item => item.id === 'AFTER-SEC-003');
 
   assert.equal(report.ok, false);
   assert.equal(finding.status, 'fail');
@@ -184,22 +184,22 @@ test('security audit fails unsafe active Codex config', () => {
   assert.match(finding.detail, /network_access = true/);
 });
 
-test('skill audit emits stable finding IDs for current repository', () => {
-  const report = runSkillAudit({ cwd: process.cwd() });
+test('guide audit emits stable finding IDs for current repository', () => {
+  const report = runGuideAudit({ cwd: process.cwd() });
 
   assert.equal(report.ok, true);
   assert.deepEqual(report.findings.map(finding => finding.id), [
-    'AOS-SKILL-001',
-    'AOS-SKILL-002',
-    'AOS-SKILL-003',
-    'AOS-SKILL-004',
-    'AOS-SKILL-005'
+    'AFTER-GUIDE-001',
+    'AFTER-GUIDE-002',
+    'AFTER-GUIDE-003',
+    'AFTER-GUIDE-004',
+    'AFTER-GUIDE-005'
   ]);
   assert.equal(report.findings.every(finding => ['pass', 'warn', 'fail'].includes(finding.status)), true);
 });
 
-test('skill audit fails duplicate names and missing contracts', () => {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ahk-skill-audit-'));
+test('guide audit fails duplicate names and missing contracts', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ahk-guide-audit-'));
   fs.mkdirSync(path.join(dir, '.agents', 'skills', 'bad-one'), { recursive: true });
   fs.mkdirSync(path.join(dir, '.agents', 'skills', 'bad-two'), { recursive: true });
   fs.writeFileSync(path.join(dir, '.agents', 'skills', 'bad-one', 'SKILL.md'), [
@@ -217,7 +217,7 @@ test('skill audit fails duplicate names and missing contracts', () => {
   fs.writeFileSync(path.join(dir, '.agents', 'skills', 'bad-two', 'SKILL.md'), [
     '---',
     'name: duplicate',
-    'description: Duplicate skill name.',
+    'description: Duplicate guide name.',
     '---',
     '',
     '# Bad Two',
@@ -230,15 +230,15 @@ test('skill audit fails duplicate names and missing contracts', () => {
     ''
   ].join('\n'));
 
-  const report = runSkillAudit({ cwd: dir });
+  const report = runGuideAudit({ cwd: dir });
   const byId = new Map(report.findings.map(finding => [finding.id, finding]));
 
   assert.equal(report.ok, false);
-  assert.equal(byId.get('AOS-SKILL-002').status, 'fail');
-  assert.match(byId.get('AOS-SKILL-002').detail, /duplicate/);
-  assert.equal(byId.get('AOS-SKILL-003').status, 'fail');
-  assert.equal(byId.get('AOS-SKILL-004').status, 'fail');
-  assert.equal(byId.get('AOS-SKILL-005').status, 'fail');
+  assert.equal(byId.get('AFTER-GUIDE-002').status, 'fail');
+  assert.match(byId.get('AFTER-GUIDE-002').detail, /duplicate/);
+  assert.equal(byId.get('AFTER-GUIDE-003').status, 'fail');
+  assert.equal(byId.get('AFTER-GUIDE-004').status, 'fail');
+  assert.equal(byId.get('AFTER-GUIDE-005').status, 'fail');
 });
 
 test('doctor does not require internal planning or SOT documents', () => {
@@ -251,15 +251,15 @@ test('doctor does not require internal planning or SOT documents', () => {
     '',
     '- Run checks.',
     '',
-    '<!-- agent-onboard:docs-index:start -->',
+    '<!-- after-init:docs-index:start -->',
     '[Project Docs Index]|root: ./docs',
-    '<!-- agent-onboard:docs-index:end -->',
+    '<!-- after-init:docs-index:end -->',
     ''
   ].join('\n'));
   fs.writeFileSync(path.join(dir, '.agents', 'skills', 'sample', 'SKILL.md'), [
     '---',
     'name: sample',
-    'description: Sample skill for doctor validation.',
+    'description: Sample guide for doctor validation.',
     '---',
     '',
     'Sample instructions.',
@@ -298,17 +298,17 @@ test('init scaffold installs optional host adapter shims only when requested', (
 
   const gemini = path.join(shimDir, 'GEMINI.md');
   const copilot = path.join(shimDir, '.github', 'copilot-instructions.md');
-  const cursor = path.join(shimDir, '.cursor', 'rules', 'agent-onboard.mdc');
+  const cursor = path.join(shimDir, '.cursor', 'rules', 'after-init.mdc');
 
   assert.equal(fs.existsSync(path.join(basicDir, 'GEMINI.md')), false);
   assert.equal(fs.existsSync(path.join(basicDir, '.github', 'copilot-instructions.md')), false);
-  assert.equal(fs.existsSync(path.join(basicDir, '.cursor', 'rules', 'agent-onboard.mdc')), false);
+  assert.equal(fs.existsSync(path.join(basicDir, '.cursor', 'rules', 'after-init.mdc')), false);
   assert.equal(fs.existsSync(gemini), true);
   assert.equal(fs.existsSync(copilot), true);
   assert.equal(fs.existsSync(cursor), true);
   assert.equal(result.created.includes('GEMINI.md'), true);
   assert.equal(result.created.includes('.github/copilot-instructions.md'), true);
-  assert.equal(result.created.includes('.cursor/rules/agent-onboard.mdc'), true);
+  assert.equal(result.created.includes('.cursor/rules/after-init.mdc'), true);
   for (const file of [gemini, copilot, cursor]) {
     const text = fs.readFileSync(file, 'utf8');
     assert.match(text, /AGENTS\.md/);
@@ -794,7 +794,7 @@ test('finish gate marks empty run reports incomplete', async () => {
 
 test('finish CLI exits zero only for PASS verdict', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ahk-finish-cli-'));
-  const bin = path.join(process.cwd(), 'bin', 'agent-onboard.mjs');
+  const bin = path.join(process.cwd(), 'bin', 'after-init.mjs');
   writeRunReport(dir, 'pass-run', [
     { id: 'C01', ok: true, required: true }
   ]);
@@ -817,16 +817,89 @@ test('finish CLI exits zero only for PASS verdict', () => {
   assert.match(fail.stdout, /Finish verdict: FAIL/);
 });
 
+test('help presents lightweight workflow groups', () => {
+  const bin = path.join(process.cwd(), 'bin', 'after-init.mjs');
+  const result = spawnSync(process.execPath, [bin, 'help'], {
+    cwd: process.cwd(),
+    encoding: 'utf8'
+  });
+
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /Core workflow/);
+  assert.match(result.stdout, /after-init init\n/);
+  assert.match(result.stdout, /Guardrails/);
+  assert.match(result.stdout, /after-init doctor --security/);
+  assert.match(result.stdout, /after-init doctor --guides/);
+  assert.match(result.stdout, /Optional proof workflow/);
+  assert.match(result.stdout, /after-init verify --criteria/);
+});
+
+test('removed doctor skills flag is rejected', () => {
+  const bin = path.join(process.cwd(), 'bin', 'after-init.mjs');
+  const result = spawnSync(process.execPath, [bin, 'doctor', '--skills'], {
+    cwd: process.cwd(),
+    encoding: 'utf8'
+  });
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /Unknown flag: --skills/);
+});
+
+test('README leads with lightweight agent context and workflow guides', () => {
+  const text = fs.readFileSync(path.join(process.cwd(), 'README.md'), 'utf8');
+
+  assert.match(text, /prepares a repo for AI coding agents/i);
+  assert.match(text, /AGENTS\.md[\s\S]*repo-local workflow guides/);
+  assert.match(text, /Optional Proof Workflow/);
+  assert.match(text, /Origin And References/);
+  assert.match(text, /SWE-bench/);
+  assert.match(text, /Vercel/);
+  assert.match(text, /OpenAI Codex/);
+});
+
 test('syntax lint script checks every source module directly', () => {
   const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
   const script = pkg.scripts['lint:syntax'];
 
+  assert.match(script, /node --check \.\/bin\/after-init\.mjs/);
   assert.match(script, /node --check \.\/src\/lib\/fs\.mjs/);
   assert.match(script, /node --check \.\/src\/lib\/hash\.mjs/);
   assert.match(script, /node --check \.\/src\/lib\/security-policy\.mjs/);
   assert.match(script, /node --check \.\/src\/lib\/security-audit\.mjs/);
-  assert.match(script, /node --check \.\/src\/lib\/skill-audit\.mjs/);
+  assert.match(script, /node --check \.\/src\/lib\/guide-audit\.mjs/);
   assert.match(script, /node --check \.\/src\/lib\/finish-gate\.mjs/);
+});
+
+test('package manifest is ready for npm distribution', () => {
+  const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
+
+  assert.equal(pkg.name, 'after-init');
+  assert.equal(pkg.bin['after-init'], 'bin/after-init.mjs');
+  assert.equal(pkg.publishConfig.access, 'public');
+  assert.match(pkg.scripts.prepublishOnly, /npm test/);
+  assert.match(pkg.scripts.prepublishOnly, /npm run lint:syntax/);
+  assert.equal(pkg.files.includes('bin/'), true);
+  assert.equal(pkg.files.includes('src/'), true);
+  assert.equal(pkg.files.includes('templates/'), true);
+  assert.equal(pkg.files.includes('.agents/skills/'), true);
+  assert.equal(pkg.files.some(item => item.startsWith('.harness')), false);
+});
+
+test('package-facing repository content uses after-init names', () => {
+  const license = fs.readFileSync(path.join(process.cwd(), 'LICENSE'), 'utf8');
+  const gemini = fs.readFileSync(path.join(process.cwd(), 'templates', 'GEMINI.template.md'), 'utf8');
+  const cursor = fs.readFileSync(path.join(process.cwd(), 'templates', 'cursor-rule.template.mdc'), 'utf8');
+  const evalScenarioFiles = fs.readdirSync(path.join(process.cwd(), 'evals', 'scenarios'))
+    .filter(file => file.endsWith('.json'));
+
+  assert.match(license, /after-init contributors/);
+  assert.doesNotMatch(gemini, /docs\/SOT\.md/);
+  assert.doesNotMatch(cursor, /docs\/SOT\.md/);
+
+  for (const file of evalScenarioFiles) {
+    const scenario = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'evals', 'scenarios', file), 'utf8'));
+    assert.equal(scenario.recommended_modes.some(mode => mode.includes('skills')), false, file);
+  }
 });
 
 test('sample criteria runs the standard syntax lint command', () => {
@@ -837,7 +910,7 @@ test('sample criteria runs the standard syntax lint command', () => {
   assert.equal(syntaxCriterion.command, 'npm run lint:syntax');
 });
 
-test('project naming is consistently Agent Onboard', () => {
+test('project naming avoids stale harness terms', () => {
   const staleTerms = [
     ['Agent', 'Harness'].join(' '),
     ['agent', 'harness', 'kit'].join('-'),
@@ -858,8 +931,8 @@ test('project naming is consistently Agent Onboard', () => {
   assert.deepEqual(offenders, []);
 });
 
-test('AGENTS guidance routes common work to explicit skills', () => {
-  const requiredSkills = [
+test('AGENTS guidance routes common work to explicit workflow guides', () => {
+  const requiredGuides = [
     'clarify',
     'specify',
     'design',
@@ -878,10 +951,10 @@ test('AGENTS guidance routes common work to explicit skills', () => {
     const text = fs.readFileSync(path.join(process.cwd(), rel), 'utf8');
 
     assert.match(text, /## Routing Policy/);
-    assert.match(text, /When a task matches a skill trigger, invoke the skill explicitly/);
+    assert.match(text, /When a task matches a workflow-guide trigger, invoke the corresponding guide explicitly/);
     assert.match(text, /For version-sensitive APIs, prefer the docs index in AGENTS\.md/);
-    for (const skill of requiredSkills) {
-      assert.match(text, new RegExp(`\`${skill}\``));
+    for (const guide of requiredGuides) {
+      assert.match(text, new RegExp(`\`${guide}\``));
     }
   }
 });

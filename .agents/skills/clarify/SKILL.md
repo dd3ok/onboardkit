@@ -4,9 +4,9 @@ description: Clarify ambiguous or high-risk coding work before implementation; p
 ---
 
 
-# Clarify Skill
+# Clarify Guide
 
-Use this skill before implementation when requirements are ambiguous, risky, multi-file, user-visible, or architecture-affecting.
+Use this guide before implementation when requirements are ambiguous, risky, multi-file, user-visible, or architecture-affecting.
 
 ## Inputs
 
@@ -34,4 +34,3 @@ Use this skill before implementation when requirements are ambiguous, risky, mul
 - Acceptance criteria are testable or reviewable.
 - Non-goals are explicit.
 - Remaining assumptions are visible.
-

@@ -4,9 +4,9 @@ description: Run a red-green-refactor loop for behavior changes where tests are 
 ---
 
 
-# TDD Skill
+# TDD Guide
 
-Use this skill when behavior can be specified with automated tests.
+Use this guide when behavior can be specified with automated tests.
 
 ## Inputs
 
@@ -34,4 +34,3 @@ Use this skill when behavior can be specified with automated tests.
 - Red failure was meaningful.
 - Green pass is recorded.
 - Refactor does not expand scope.
-

@@ -4,9 +4,9 @@ description: Design architecture, interfaces, risks, alternatives, and rollback 
 ---
 
 
-# Design Skill
+# Design Guide
 
-Use this skill before changing architecture, public interfaces, data models, security boundaries, or cross-module behavior.
+Use this guide before changing architecture, public interfaces, data models, security boundaries, or cross-module behavior.
 
 ## Inputs
 
@@ -33,4 +33,3 @@ Use this skill before changing architecture, public interfaces, data models, sec
 - No speculative abstraction.
 - Design is implementable in small slices.
 - Risks and rollback path are explicit.
-

@@ -60,7 +60,7 @@ export function createProjectScaffold({ target, toolRoot, force = false, hostShi
     const shimFiles = [
       ['GEMINI.md', 'GEMINI.template.md'],
       ['.github/copilot-instructions.md', 'copilot-instructions.template.md'],
-      ['.cursor/rules/agent-onboard.mdc', 'cursor-rule.template.mdc']
+      ['.cursor/rules/after-init.mdc', 'cursor-rule.template.mdc']
     ];
     for (const [destRel, template] of shimFiles) {
       const src = path.join(toolRoot, 'templates', template);
@@ -76,9 +76,9 @@ export function createProjectScaffold({ target, toolRoot, force = false, hostShi
     ensureDir(path.join(target, dir));
     created.push(dir);
   }
-  const skillsSrc = path.join(toolRoot, '.agents', 'skills');
-  if (fs.existsSync(skillsSrc)) {
-    const copied = copyDir(skillsSrc, path.join(target, '.agents', 'skills'), { force });
+  const guidesSrc = path.join(toolRoot, '.agents', 'skills');
+  if (fs.existsSync(guidesSrc)) {
+    const copied = copyDir(guidesSrc, path.join(target, '.agents', 'skills'), { force });
     created.push(...copied.created.map(p => path.relative(target, p)));
     skipped.push(...copied.skipped.map(p => path.relative(target, p)));
   }

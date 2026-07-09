@@ -2,8 +2,8 @@
 alwaysApply: true
 ---
 
-# Agent Onboard
+# after-init
 
 Use `AGENTS.md` as the canonical project guidance. This Cursor rule is a thin compatibility shim and should not duplicate long procedures.
 
-Read `docs/SOT.md` when project source-of-truth priority is unclear.
+Use the docs index in `AGENTS.md` when project source-of-truth priority is unclear.

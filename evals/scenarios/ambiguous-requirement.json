@@ -4,8 +4,8 @@
   "purpose": "Detect whether agent asks high-leverage questions or records assumptions instead of guessing.",
   "recommended_modes": [
     "baseline-no-harness",
-    "skills-explicit",
-    "hybrid-skills-agents-evidence"
+    "guides-explicit",
+    "hybrid-guides-agents-evidence"
   ],
   "graders": [
     {

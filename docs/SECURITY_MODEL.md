@@ -2,7 +2,7 @@
 
 ## Scope
 
-Agent Onboard is a workflow harness and evidence collector. It is not an OS sandbox. It must cooperate with the host agent's sandbox, approval policy, and network controls.
+after-init is a repo preparation toolkit and evidence collector. It is not an OS sandbox. It must cooperate with the host agent's sandbox, approval policy, and network controls.
 
 ## Safe defaults
 
@@ -24,7 +24,7 @@ Agent Onboard is a workflow harness and evidence collector. It is not an OS sand
 
 ## Command policy v0
 
-`agent-onboard verify` evaluates command criteria before execution.
+`after-init verify` evaluates command criteria before execution.
 
 - Deny rules win over allow and prompt rules.
 - Prompt-required rules fail closed unless a criterion carries explicit `policy_approval: true`; approved prompt-required commands are recorded as allowed.
@@ -37,14 +37,14 @@ Project policy can be committed at `.harness/security-policy.json`; `templates/s
 
 ## Static security audit v0
 
-`agent-onboard doctor --security` emits stable findings with IDs:
+`after-init doctor --security` emits stable findings with IDs:
 
-- `AOS-SEC-001`: AGENTS.md security guardrails.
-- `AOS-SEC-002`: safe `.codex/config.example.toml`.
-- `AOS-SEC-003`: no unsafe active `.codex/config.toml`.
-- `AOS-SEC-004`: runtime outputs ignored by git.
-- `AOS-SEC-005`: command policy fail-closed defaults.
-- `AOS-SEC-006`: evidence secret redaction patterns.
+- `AFTER-SEC-001`: AGENTS.md security guardrails.
+- `AFTER-SEC-002`: safe `.codex/config.example.toml`.
+- `AFTER-SEC-003`: no unsafe active `.codex/config.toml`.
+- `AFTER-SEC-004`: runtime outputs ignored by git.
+- `AFTER-SEC-005`: command policy fail-closed defaults.
+- `AFTER-SEC-006`: evidence secret redaction patterns.
 
 The audit is intentionally shallow. It checks local files and built-in policy posture; it does not replace host sandboxing, approvals, code review, or a runtime permission service.
 

@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This repository contains Agent Onboard, a compact evidence-backed toolkit for preparing repositories before AI coding agents start work.
+This repository contains after-init, a compact toolkit for keeping agent-facing repo context lightweight after project setup.
 
 ## Operating Principles
 
@@ -29,12 +29,12 @@ Run `retro` only when repeated failures or process gaps need to become durable h
 
 ## Current Improvement Priority
 
-When improving Agent Onboard itself, use this order:
+When improving after-init itself, use this order:
 
 1. YAML criteria parser, only if JSON criteria become a usability bottleneck.
 2. Optional run summary, only if `finish` or `status` needs a separate pointer file.
 3. Broader redaction and structured command descriptors.
-4. Semantic skill trigger eval, only if static `doctor --skills` checks are insufficient.
+4. Semantic workflow-guide trigger eval, only if static `doctor --guides` checks are insufficient.
 5. Host adapter installer, only if pointer-only shims are insufficient.
 
 Keep dynamic eval, browser automation, subagent orchestration, plugin packaging, and dashboards outside the core improvement pass unless a later design explicitly promotes them. Host adapter shims are optional pointer-only work; broader adapter installers stay outside core.
@@ -46,14 +46,14 @@ Read `docs/IMPROVEMENT_ROADMAP_DESIGN.md` before implementing these roadmap item
 ```bash
 npm test
 npm run lint:syntax
-node ./bin/agent-onboard.mjs init --target .
-node ./bin/agent-onboard.mjs doctor
-node ./bin/agent-onboard.mjs doctor --governance
-node ./bin/agent-onboard.mjs doctor --security
-node ./bin/agent-onboard.mjs doctor --skills
-node ./bin/agent-onboard.mjs eval
-node ./bin/agent-onboard.mjs verify --criteria examples/criteria.sample.json
-node ./bin/agent-onboard.mjs finish --run-id <id>
+node ./bin/after-init.mjs init
+node ./bin/after-init.mjs doctor
+node ./bin/after-init.mjs doctor --governance
+node ./bin/after-init.mjs doctor --security
+node ./bin/after-init.mjs doctor --guides
+node ./bin/after-init.mjs eval
+node ./bin/after-init.mjs verify --criteria examples/criteria.sample.json
+node ./bin/after-init.mjs finish --run-id <id>
 ```
 
 ## Definition of Done
@@ -71,18 +71,18 @@ node ./bin/agent-onboard.mjs finish --run-id <id>
 bin/              CLI entrypoint
 src/lib/          CLI library modules
 templates/        generated workflow artifacts
-.agents/skills/   Codex-compatible workflow skills
+.agents/skills/   Codex-compatible repo-local workflow guides
 schemas/          JSON schema contracts
 evals/scenarios/  static eval scenario definitions
 examples/         sample criteria and artifacts
 test/             smoke tests
 ```
 
-## Skill Policy
+## Workflow Guide Policy
 
-Skills are on-demand vertical workflows. Do not hide always-needed project rules inside skills.
+Workflow guides are on-demand vertical procedures stored under `.agents/skills` for Codex compatibility. Do not hide always-needed project rules inside guides.
 
-Each skill must:
+Each guide must:
 
 - live under `.agents/skills/<name>/SKILL.md`
 - include `name` and `description` frontmatter
@@ -93,9 +93,9 @@ Each skill must:
 
 ## Routing Policy
 
-Keep always-needed rules in AGENTS.md. Keep long procedures, interviews, and specialized checks in skills or docs.
+Keep always-needed rules in AGENTS.md. Keep long procedures, interviews, and specialized checks in workflow guides or docs.
 
-When a task matches a skill trigger, invoke the skill explicitly instead of relying on implicit discovery:
+When a task matches a workflow-guide trigger, invoke the corresponding guide explicitly instead of relying on implicit discovery:
 
 - Ambiguous, risky, multi-file, or user-visible requirements: `clarify`
 - Product behavior or acceptance criteria: `specify`
@@ -114,13 +114,13 @@ For version-sensitive APIs, prefer the docs index in AGENTS.md and read the refe
 
 ## Docs Index Policy
 
-Use `agent-onboard index-docs` to inject a compressed docs index into the managed section below when this repository gains local docs.
+Use `after-init index-docs` to inject a compressed docs index into the managed section below when this repository gains local docs.
 
-<!-- agent-onboard:docs-index:start -->
+<!-- after-init:docs-index:start -->
 [Project Docs Index]|root: docs
 |IMPORTANT: Prefer retrieval-led reasoning over pretraining-led reasoning. Read relevant local docs before coding against version-sensitive APIs.
-|.:{ANALYSIS.md,ARCHITECTURE.md,BASIC_HARNESS_KIT_RESEARCH_2026-07-09.md,BEST_PRACTICES_AUDIT.md,BUILD_VERIFICATION.md,CODEX_VENDOR_COMPLIANCE.md,DECISIONS.md,EVAL_METHODOLOGY.md,evidence.md,finish-gate.md,IMPROVEMENT_ROADMAP_DESIGN.md,REFERENCE_REPOSITORY_MATRIX.md,SECURITY_MODEL.md,shared-language.md,SOT.md,STATUS.md,TODO_FEATURE_DESIGNS.md}
-<!-- agent-onboard:docs-index:end -->
+|.:{ARCHITECTURE.md,BEST_PRACTICES_AUDIT.md,BUILD_VERIFICATION.md,CODEX_VENDOR_COMPLIANCE.md,DECISIONS.md,EVAL_METHODOLOGY.md,evidence.md,finish-gate.md,IMPROVEMENT_ROADMAP_DESIGN.md,SECURITY_MODEL.md,shared-language.md,SOT.md,STATUS.md,TODO_FEATURE_DESIGNS.md}
+<!-- after-init:docs-index:end -->
 
 ## Security Rules
 

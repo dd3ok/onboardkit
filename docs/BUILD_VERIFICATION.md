@@ -7,16 +7,16 @@ The ZIP was generated after running the following checks from the repository roo
 ```bash
 npm test
 npm run lint:syntax
-node ./bin/agent-onboard.mjs doctor
-node ./bin/agent-onboard.mjs eval
-node ./bin/agent-onboard.mjs verify --criteria examples/criteria.sample.json
+node ./bin/after-init.mjs doctor
+node ./bin/after-init.mjs eval
+node ./bin/after-init.mjs verify --criteria examples/criteria.sample.json
 ```
 
 Observed result before cleanup:
 
 - `npm test`: pass, 2 tests.
 - `npm run lint:syntax`: pass.
-- `doctor`: pass, including AGENTS.md size, skill metadata, SOT, STATUS, TODO docs.
+- `doctor`: pass, including AGENTS.md size and guide metadata.
 - `eval`: static eval inventory generated successfully.
 - `verify`: sample criteria generated command-backed evidence successfully.
 

@@ -2,7 +2,7 @@
 
 Updated: 2026-07-09
 
-This document is the canonical map for Agent Onboard. When documents disagree, resolve conflicts using this priority order.
+This document is the canonical map for after-init. When documents disagree, resolve conflicts using this priority order.
 
 ## Authority order
 
@@ -21,16 +21,16 @@ This SOT delegates future improvement priority and scope boundaries to `docs/IMP
 
 ## Product definition
 
-Agent Onboard is a host-agnostic agent workflow harness. It combines:
+after-init is a lightweight repo preparation toolkit for AI coding agents. It combines:
 
 - AGENTS.md-first durable guidance.
 - Compressed local docs indexes.
 - Shared vocabulary and role contracts.
-- Codex-compatible skills for vertical workflows.
+- Codex-compatible repo-local workflow guides for vertical workflows.
 - Spec/design/tasks artifacts.
 - Command policy before criteria execution.
 - Static security audit findings with stable IDs.
-- Static skill contract findings with stable IDs.
+- Static workflow-guide contract findings with stable IDs.
 - Optional pointer-only host shims.
 - Command-backed evidence.
 - File-backed artifact/manual evidence with hashes.
@@ -85,10 +85,8 @@ Each update must also check:
 
 ## Additional repository documents
 
-- Reference repository matrix: `docs/REFERENCE_REPOSITORY_MATRIX.md`
 - Build verification: `docs/BUILD_VERIFICATION.md`
 - Improvement roadmap design: `docs/IMPROVEMENT_ROADMAP_DESIGN.md`
-- Basic harness kit research addendum: `docs/BASIC_HARNESS_KIT_RESEARCH_2026-07-09.md`
 - Security model: `docs/SECURITY_MODEL.md`
 - Shared language and role contracts: `docs/shared-language.md`
 - Evidence contract: `docs/evidence.md`

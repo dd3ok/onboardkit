@@ -14,7 +14,7 @@
 
 ### CLI
 
-Implemented in `bin/agent-onboard.mjs` and `src/lib/`:
+Implemented in `bin/after-init.mjs` and `src/lib/`:
 
 - `help`
 - `init`
@@ -30,7 +30,7 @@ For this repository, `doctor --governance` also checks SOT boundaries, roadmap p
 
 `doctor --security` emits stable static security findings with IDs. The v0 audit checks AGENTS.md security guardrails, safe Codex config examples, unsafe active Codex config, runtime-output ignore rules, fail-closed command policy defaults, and evidence redaction patterns.
 
-`doctor --skills` emits stable static skill findings with IDs. The v0 audit checks repo skill inventory, frontmatter uniqueness, folder/name alignment, concise trigger descriptions, required contract sections, and lightweight file size.
+`doctor --guides` emits stable static guide findings with IDs. The v0 audit checks repo-local guide inventory, frontmatter uniqueness, folder/name alignment, concise trigger descriptions, required contract sections, and lightweight file size.
 
 `init --host-shims` optionally writes pointer-only host compatibility shims for Gemini, GitHub Copilot, and Cursor. These shims point back to canonical `AGENTS.md` guidance and do not install host runtimes or duplicate long rules.
 
@@ -42,9 +42,9 @@ Artifact, screenshot, browser-log, review, and manual criteria record file-backe
 
 `docs/shared-language.md` defines canonical terms and role contracts for implementer, verifier, reviewer, and security reviewer workflows.
 
-### Skills
+### Workflow guides
 
-Implemented Codex-compatible skills under `.agents/skills/`:
+Implemented Codex-compatible repo-local workflow guides under `.agents/skills/`:
 
 - clarify
 - specify
@@ -59,7 +59,7 @@ Implemented Codex-compatible skills under `.agents/skills/`:
 - docs-index
 - eval
 
-Each skill has:
+Each guide has:
 
 - `SKILL.md`
 - `name` and `description` frontmatter
@@ -77,7 +77,6 @@ Each skill has:
 
 ### Docs
 
-- Source analysis.
 - Architecture.
 - Best-practice audit.
 - Codex compliance audit.
@@ -86,7 +85,6 @@ Each skill has:
 - Decision log.
 - Detailed TODO feature designs.
 - Improvement roadmap design.
-- Basic harness kit research addendum.
 - Shared language and role contracts.
 - Finish gate.
 - Evidence contract.
@@ -122,12 +120,12 @@ These are intentionally not implemented in the MVP and are specified in `docs/TO
 10. Monorepo nested AGENTS.md generator.
 11. GitHub Actions integration.
 12. Automated SOT synchronization.
-13. Semantic skill trigger eval automation.
+13. Semantic workflow-guide trigger eval automation.
 
 ## Recommended next implementation order
 
 1. YAML criteria parser, only if JSON criteria become a usability bottleneck.
 2. Optional run summary, only if `finish` or `status` needs a separate pointer file.
 3. Broader redaction and structured command descriptors.
-4. Semantic skill trigger eval, only if static `doctor --skills` checks are insufficient.
+4. Semantic workflow-guide trigger eval, only if static `doctor --guides` checks are insufficient.
 5. Host adapter installer, only if pointer-only shims are insufficient.

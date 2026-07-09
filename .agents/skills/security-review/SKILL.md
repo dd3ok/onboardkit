@@ -4,9 +4,9 @@ description: Review agent-produced changes for security, secret handling, networ
 ---
 
 
-# Security Review Skill
+# Security Review Guide
 
-Use this skill for auth, permissions, secrets, network, dependency, data deletion, or sandbox changes.
+Use this guide for auth, permissions, secrets, network, dependency, data deletion, or sandbox changes.
 
 ## Inputs
 
@@ -31,4 +31,3 @@ Use this skill for auth, permissions, secrets, network, dependency, data deletio
 ## Completion criteria
 
 - No unreviewed credential, permission, or network-risk change remains.
-

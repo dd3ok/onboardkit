@@ -4,9 +4,9 @@ description: Create fresh command-backed evidence for done criteria; produce pro
 ---
 
 
-# Verify Skill
+# Verify Guide
 
-Use this skill before claiming completion.
+Use this guide before claiming completion.
 
 ## Inputs
 
@@ -32,4 +32,3 @@ Use this skill before claiming completion.
 
 - All required command criteria pass.
 - Evidence paths are included in the final report.
-

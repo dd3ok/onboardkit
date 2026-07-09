@@ -1,12 +1,12 @@
 # Shared Language And Role Contracts
 
-Authority: canonical vocabulary and role contracts for Agent Onboard core workflows.
+Authority: canonical vocabulary and role contracts for after-init core workflows.
 
 Synchronization: when this document changes, check `AGENTS.md`, `docs/SOT.md`, `docs/STATUS.md`, `docs/IMPROVEMENT_ROADMAP_DESIGN.md`, and schemas that use the changed terms.
 
 ## Purpose
 
-Agent Onboard uses these terms so agents do not confuse "a command ran" with "work is done". This document defines words only. It does not add orchestration, subagent routing, or a task ledger.
+after-init uses these terms so agents do not confuse "a command ran" with "work is done". This document defines words only. It does not add orchestration, subagent routing, or a task ledger.
 
 Subagents are optional execution helpers. Role contracts are valid whether one agent performs every role or separate agents perform them.
 
@@ -28,7 +28,7 @@ role contract: a documented responsibility boundary with inputs, outputs, and st
 
 run state: lightweight pointer metadata for a verification or workflow run. Run state may point to evidence but must not duplicate proofs, logs, or all actions.
 
-adapter: optional host-specific or tool-specific glue that maps Agent Onboard contracts to another environment without changing the core contract.
+adapter: optional host-specific or tool-specific glue that maps after-init contracts to another environment without changing the core contract.
 
 pass: required evidence exists, is fresh, and shows the criterion succeeded.
 
