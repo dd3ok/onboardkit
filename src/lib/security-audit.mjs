@@ -25,7 +25,7 @@ function agentsSecurityRules({ cwd }) {
   ];
   const ok = hasAll(text, required);
   return finding({
-    id: 'AFTER-SEC-001',
+    id: 'ONBOARDKIT-SEC-001',
     title: 'AGENTS.md security guardrails',
     status: ok ? 'pass' : 'fail',
     severity: 'high',
@@ -40,7 +40,7 @@ function codexExampleConfig({ cwd }) {
   const file = path.join(cwd, '.codex', 'config.example.toml');
   if (!fs.existsSync(file)) {
     return finding({
-      id: 'AFTER-SEC-002',
+      id: 'ONBOARDKIT-SEC-002',
       title: 'Safe Codex config example',
       status: 'warn',
       severity: 'low',
@@ -57,7 +57,7 @@ function codexExampleConfig({ cwd }) {
   ]);
   const unsafe = /danger-full-access|approval_policy\s*=\s*"never"|network_access\s*=\s*true/.test(text);
   return finding({
-    id: 'AFTER-SEC-002',
+    id: 'ONBOARDKIT-SEC-002',
     title: 'Safe Codex config example',
     status: safe && !unsafe ? 'pass' : 'fail',
     severity: 'medium',
@@ -72,7 +72,7 @@ function activeCodexConfig({ cwd }) {
   const file = path.join(cwd, '.codex', 'config.toml');
   if (!fs.existsSync(file)) {
     return finding({
-      id: 'AFTER-SEC-003',
+      id: 'ONBOARDKIT-SEC-003',
       title: 'No unsafe active Codex config',
       status: 'pass',
       severity: 'high',
@@ -87,7 +87,7 @@ function activeCodexConfig({ cwd }) {
   if (/approval_policy\s*=\s*"never"/.test(text)) unsafe.push('approval_policy = "never"');
   if (/network_access\s*=\s*true/.test(text)) unsafe.push('network_access = true');
   return finding({
-    id: 'AFTER-SEC-003',
+    id: 'ONBOARDKIT-SEC-003',
     title: 'No unsafe active Codex config',
     status: unsafe.length === 0 ? 'pass' : 'fail',
     severity: 'high',
@@ -110,7 +110,7 @@ function runtimeOutputIgnores({ cwd }) {
   ];
   const missing = required.filter(pattern => !text.includes(pattern));
   return finding({
-    id: 'AFTER-SEC-004',
+    id: 'ONBOARDKIT-SEC-004',
     title: 'Runtime outputs ignored by git',
     status: missing.length === 0 ? 'pass' : 'fail',
     severity: 'medium',
@@ -125,11 +125,11 @@ function commandPolicyDefaults({ cwd }) {
   try {
     const policy = loadSecurityPolicy({ cwd });
     const ok = policy.unknown === 'deny' &&
-      policy.allow.includes('npm test') &&
+      policy.allow.includes('node --test') &&
       policy.deny.length > 0 &&
       policy.prompt.length > 0;
     return finding({
-      id: 'AFTER-SEC-005',
+      id: 'ONBOARDKIT-SEC-005',
       title: 'Command policy fail-closed defaults',
       status: ok ? 'pass' : 'fail',
       severity: 'high',
@@ -140,7 +140,7 @@ function commandPolicyDefaults({ cwd }) {
     });
   } catch (err) {
     return finding({
-      id: 'AFTER-SEC-005',
+      id: 'ONBOARDKIT-SEC-005',
       title: 'Command policy fail-closed defaults',
       status: 'fail',
       severity: 'high',
@@ -161,7 +161,7 @@ function evidenceRedaction() {
   ];
   const ok = hasAll(text, required);
   return finding({
-    id: 'AFTER-SEC-006',
+    id: 'ONBOARDKIT-SEC-006',
     title: 'Evidence secret redaction patterns',
     status: ok ? 'pass' : 'fail',
     severity: 'high',

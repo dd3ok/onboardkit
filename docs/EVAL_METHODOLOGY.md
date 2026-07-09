@@ -39,4 +39,4 @@ Measure whether workflow changes improve agent outcomes instead of merely soundi
 
 ## Current MVP
 
-The current `after-init eval` command produces a static scenario inventory. Dynamic execution is TODO T01.
+The bundled helper's `eval` command produces a static scenario inventory. Dynamic execution is TODO T01.

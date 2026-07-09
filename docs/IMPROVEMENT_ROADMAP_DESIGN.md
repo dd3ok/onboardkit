@@ -1,4 +1,4 @@
-# after-init Improvement Roadmap Design
+# onboardkit Improvement Roadmap Design
 
 Date: 2026-07-09
 
@@ -8,11 +8,12 @@ Synchronization: when this roadmap changes phase order or promotes backlog work 
 
 ## Product Boundary
 
-after-init prepares repositories for AI coding agents after project setup.
+onboardkit prepares repositories for AI coding agents after project setup as a Codex skill.
 
 It should remain:
 
 - a lightweight repo preparation toolkit
+- a skill-first installation model
 - an AGENTS.md-first guidance maintainer
 - a repo-local workflow guide installer
 - a command-policy and evidence verifier
@@ -26,6 +27,7 @@ It should not become:
 - a subagent orchestration system
 - a background scheduler
 - a comprehensive task ledger
+- an npm package or global CLI distribution
 
 ## Core Spine
 
@@ -36,7 +38,6 @@ The current core is intentionally small:
 3. Finish gate v0
 4. Artifact/manual evidence v0
 5. Static security and workflow-guide audits
-6. Optional pointer-only host shims
 
 The finish gate consumes evidence and returns a verdict. It is not evidence by itself and does not manage tasks.
 
@@ -48,7 +49,6 @@ Use this order only when the need is demonstrated by real use:
 2. Optional run summary, only if `finish` or `status` needs a separate pointer file.
 3. Broader redaction and structured command descriptors.
 4. Semantic workflow-guide trigger eval, only if static `doctor --guides` checks are insufficient.
-5. Host adapter installer, only if pointer-only shims are insufficient.
 
 ## Non-Core Backlog
 
@@ -57,7 +57,7 @@ These ideas stay outside the core pass unless a later design explicitly promotes
 - dynamic eval
 - browser automation
 - subagent orchestration
-- plugin packaging
+- npm/package publishing or plugin packaging
 - dashboard/report UI
 - docs-pack registry
 - monorepo nested AGENTS.md generator

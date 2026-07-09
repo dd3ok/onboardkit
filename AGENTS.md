@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This repository contains after-init, a compact toolkit for keeping agent-facing repo context lightweight after project setup.
+This repository contains onboardkit, a Codex skill source for keeping agent-facing repo context lightweight after project setup.
 
 ## Operating Principles
 
@@ -29,31 +29,41 @@ Run `retro` only when repeated failures or process gaps need to become durable h
 
 ## Current Improvement Priority
 
-When improving after-init itself, use this order:
+When improving onboardkit itself, use this order:
 
 1. YAML criteria parser, only if JSON criteria become a usability bottleneck.
 2. Optional run summary, only if `finish` or `status` needs a separate pointer file.
 3. Broader redaction and structured command descriptors.
 4. Semantic workflow-guide trigger eval, only if static `doctor --guides` checks are insufficient.
-5. Host adapter installer, only if pointer-only shims are insufficient.
 
-Keep dynamic eval, browser automation, subagent orchestration, plugin packaging, and dashboards outside the core improvement pass unless a later design explicitly promotes them. Host adapter shims are optional pointer-only work; broader adapter installers stay outside core.
+Keep dynamic eval, browser automation, subagent orchestration, npm/package publishing, plugin packaging, and dashboards outside the core improvement pass unless a later design explicitly promotes them.
 
 Read `docs/IMPROVEMENT_ROADMAP_DESIGN.md` before implementing these roadmap items.
 
 ## Commands
 
 ```bash
-npm test
-npm run lint:syntax
-node ./bin/after-init.mjs init
-node ./bin/after-init.mjs doctor
-node ./bin/after-init.mjs doctor --governance
-node ./bin/after-init.mjs doctor --security
-node ./bin/after-init.mjs doctor --guides
-node ./bin/after-init.mjs eval
-node ./bin/after-init.mjs verify --criteria examples/criteria.sample.json
-node ./bin/after-init.mjs finish --run-id <id>
+node --test
+node --check ./bin/onboardkit.mjs
+node --check ./src/lib/docs-indexer.mjs
+node --check ./src/lib/evidence.mjs
+node --check ./src/lib/doctor.mjs
+node --check ./src/lib/specs.mjs
+node --check ./src/lib/eval-runner.mjs
+node --check ./src/lib/fs.mjs
+node --check ./src/lib/hash.mjs
+node --check ./src/lib/security-policy.mjs
+node --check ./src/lib/security-audit.mjs
+node --check ./src/lib/guide-audit.mjs
+node --check ./src/lib/finish-gate.mjs
+node ./bin/onboardkit.mjs init
+node ./bin/onboardkit.mjs doctor
+node ./bin/onboardkit.mjs doctor --governance
+node ./bin/onboardkit.mjs doctor --security
+node ./bin/onboardkit.mjs doctor --guides
+node ./bin/onboardkit.mjs eval
+node ./bin/onboardkit.mjs verify --criteria examples/criteria.sample.json
+node ./bin/onboardkit.mjs finish --run-id <id>
 ```
 
 ## Definition of Done
@@ -68,8 +78,10 @@ node ./bin/after-init.mjs finish --run-id <id>
 ## Project Structure
 
 ```text
-bin/              CLI entrypoint
-src/lib/          CLI library modules
+SKILL.md          Codex skill entrypoint
+agents/           skill UI metadata
+bin/              bundled helper entrypoint
+src/lib/          helper library modules
 templates/        generated workflow artifacts
 .agents/skills/   Codex-compatible repo-local workflow guides
 schemas/          JSON schema contracts
@@ -114,13 +126,13 @@ For version-sensitive APIs, prefer the docs index in AGENTS.md and read the refe
 
 ## Docs Index Policy
 
-Use `after-init index-docs` to inject a compressed docs index into the managed section below when this repository gains local docs.
+Use `node ./bin/onboardkit.mjs index-docs` to inject a compressed docs index into the managed section below when this repository gains local docs.
 
-<!-- after-init:docs-index:start -->
+<!-- onboardkit:docs-index:start -->
 [Project Docs Index]|root: docs
 |IMPORTANT: Prefer retrieval-led reasoning over pretraining-led reasoning. Read relevant local docs before coding against version-sensitive APIs.
 |.:{ARCHITECTURE.md,BEST_PRACTICES_AUDIT.md,BUILD_VERIFICATION.md,CODEX_VENDOR_COMPLIANCE.md,DECISIONS.md,EVAL_METHODOLOGY.md,evidence.md,finish-gate.md,IMPROVEMENT_ROADMAP_DESIGN.md,SECURITY_MODEL.md,shared-language.md,SOT.md,STATUS.md,TODO_FEATURE_DESIGNS.md}
-<!-- after-init:docs-index:end -->
+<!-- onboardkit:docs-index:end -->
 
 ## Security Rules
 

@@ -18,18 +18,18 @@ function hasFrontmatterNameAndDescription(file) {
   return /^---\n[\s\S]*?name:\s*.+\n[\s\S]*?description:\s*.+\n[\s\S]*?---/m.test(text);
 }
 
-function isAfterInitRepository(cwd) {
+function isOnboardkitRepository(cwd) {
   const pkg = path.join(cwd, 'package.json');
   if (!fs.existsSync(pkg)) return false;
   try {
     const parsed = JSON.parse(fs.readFileSync(pkg, 'utf8'));
-    return parsed.name === 'after-init';
+    return parsed.name === 'onboardkit-skill' || parsed.name === 'onboardkit';
   } catch {
     return false;
   }
 }
 
-function addAfterInitGovernanceChecks({ cwd, checks, agentsText }) {
+function addOnboardkitGovernanceChecks({ cwd, checks, agentsText }) {
   const docsDir = path.join(cwd, 'docs');
   const sotText = readTextIfExists(path.join(docsDir, 'SOT.md'));
   const roadmapText = readTextIfExists(path.join(docsDir, 'IMPROVEMENT_ROADMAP_DESIGN.md'));
@@ -37,13 +37,14 @@ function addAfterInitGovernanceChecks({ cwd, checks, agentsText }) {
 
   checks.push(check(
     includesAll(sotText, [
-      'lightweight repo preparation toolkit for AI coding agents',
+      'lightweight Codex skill for preparing repositories for AI coding agents',
       'It is not a full autonomous agent runtime',
       'It does not replace Codex, Claude Code, Cursor, Copilot, or other hosts',
+      'It is not an npm package or global CLI distribution',
       'It does not yet provide a full dynamic eval runner',
       'It does not yet provide browser automation evidence'
     ]),
-    'after-init SOT boundary present',
+    'onboardkit SOT boundary present',
     'SOT must keep the MVP product boundary and non-goals explicit.'
   ));
 
@@ -55,7 +56,7 @@ function addAfterInitGovernanceChecks({ cwd, checks, agentsText }) {
       'Artifact/manual evidence v0',
       'Optional run summary'
     ]),
-    'after-init roadmap priority present',
+    'onboardkit roadmap priority present',
     'Governance docs must preserve the command-policy-first roadmap and current core priorities.'
   ));
 
@@ -68,7 +69,7 @@ function addAfterInitGovernanceChecks({ cwd, checks, agentsText }) {
       'Do not require subagents',
       'Do not require browser automation'
     ]),
-    'after-init heavyweight work stays non-core',
+    'onboardkit heavyweight work stays non-core',
     'Roadmap must keep eval, browser automation, and subagent orchestration outside the core pass.'
   ));
 
@@ -77,10 +78,10 @@ function addAfterInitGovernanceChecks({ cwd, checks, agentsText }) {
       'does not bloat AGENTS.md with full documents',
       'does not trust agent completion claims without evidence',
       'does not make every task follow a heavy ceremony',
-      'durable after-init changes',
+      'durable onboardkit changes',
       'does not place host-specific logic in the conceptual core'
     ]),
-    'after-init best-practice audit guards lightweight workflow',
+    'onboardkit best-practice audit guards lightweight workflow',
     'Best-practice audit must preserve the lightweight AGENTS-first, evidence-backed structure.'
   ));
 
@@ -92,7 +93,7 @@ function addAfterInitGovernanceChecks({ cwd, checks, agentsText }) {
       'STATUS.md',
       'TODO_FEATURE_DESIGNS.md'
     ]),
-    'after-init docs index references governance docs',
+    'onboardkit docs index references governance docs',
     'AGENTS.md docs index must route agents to governance docs without inlining them.'
   ));
 }
@@ -108,7 +109,7 @@ export function runDoctor({ cwd, governance = false }) {
     agentsText = fs.readFileSync(agents, 'utf8');
     checks.push(check(agentsText.includes('Definition of Done'), 'Definition of Done present', 'Done must be verifiable.'));
     checks.push(check(
-      agentsText.includes('after-init:docs-index:start'),
+      agentsText.includes('onboardkit:docs-index:start'),
       'Docs index managed section present',
       'Use compressed docs index instead of full docs.'
     ));
@@ -127,14 +128,14 @@ export function runDoctor({ cwd, governance = false }) {
     }
   }
   const pkg = path.join(cwd, 'package.json');
-  checks.push(check(fs.existsSync(pkg), 'package.json exists', 'Useful for repeatable CLI/test commands.', 'warning'));
+  checks.push(check(fs.existsSync(pkg), 'package.json exists', 'Useful for repeatable helper/test commands.', 'warning'));
   if (fs.existsSync(pkg)) {
     const parsed = JSON.parse(fs.readFileSync(pkg, 'utf8'));
-    checks.push(check(Boolean(parsed.scripts?.test), 'npm test script exists', 'Agents need a standard test command.', 'warning'));
+    checks.push(check(Boolean(parsed.scripts?.test), 'test script exists', 'Agents need a standard test command.', 'warning'));
     checks.push(check(Boolean(parsed.scripts?.['lint:syntax'] || parsed.scripts?.lint), 'lint/syntax script exists', 'Agents need a fast static check.', 'warning'));
   }
-  if (governance && isAfterInitRepository(cwd)) {
-    addAfterInitGovernanceChecks({ cwd, checks, agentsText });
+  if (governance && isOnboardkitRepository(cwd)) {
+    addOnboardkitGovernanceChecks({ cwd, checks, agentsText });
   }
   const ok = checks.every(c => c.ok || c.severity === 'warning');
   return { ok, checks };

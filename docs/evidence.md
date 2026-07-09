@@ -1,12 +1,12 @@
 # Evidence Contract
 
-Authority: proof and evidence semantics for after-init.
+Authority: proof and evidence semantics for onboardkit.
 
 Synchronization: when this document changes, check `src/lib/evidence.mjs`, `src/lib/finish-gate.mjs`, `schemas/evidence.schema.json`, `docs/shared-language.md`, and `docs/finish-gate.md`.
 
 ## Evidence Layout
 
-`after-init verify` writes evidence under:
+The bundled helper's `verify` command writes evidence under:
 
 ```text
 .harness/evidence/<run-id>/<criterion-id>/commands.log
@@ -14,7 +14,7 @@ Synchronization: when this document changes, check `src/lib/evidence.mjs`, `src/
 .harness/evidence/<run-id>/run-report.json
 ```
 
-`after-init finish` writes:
+The bundled helper's `finish` command writes:
 
 ```text
 .harness/evidence/<run-id>/finish-report.json
@@ -82,7 +82,7 @@ When `run-report.json` is missing, `finish` still writes an `INCOMPLETE` finish 
 
 ## Non-Command Evidence
 
-The current CLI supports these non-command criteria as file-backed evidence:
+The current helper supports these non-command criteria as file-backed evidence:
 
 - `artifact`
 - `screenshot`
@@ -92,4 +92,4 @@ The current CLI supports these non-command criteria as file-backed evidence:
 
 Each criterion must provide a project-relative `path` to an existing file. Absolute paths, drive-relative paths, UNC paths, traversal paths, and symlink escapes are invalid. Missing or invalid required artifact paths make the finish verdict `INCOMPLETE`; optional problems become warnings.
 
-`screenshot` and `browser-log` are artifact subtypes in core. after-init records and hashes externally produced files; it does not launch a browser.
+`screenshot` and `browser-log` are artifact subtypes in core. onboardkit records and hashes externally produced files; it does not launch a browser.

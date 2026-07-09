@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/after-init/criteria.schema.json",
-  "title": "after-init Criteria",
+  "$id": "https://example.com/onboardkit/criteria.schema.json",
+  "title": "onboardkit Criteria",
   "type": "object",
   "required": [
     "criteria"

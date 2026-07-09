@@ -1,6 +1,6 @@
 ---
 name: retro
-description: Turn repeated mistakes or verification failures into durable after-init updates: AGENTS.md, workflow guides, templates, verifier, or eval cases.
+description: Turn repeated mistakes or verification failures into durable onboardkit updates: AGENTS.md, workflow guides, templates, verifier, or eval cases.
 ---
 
 

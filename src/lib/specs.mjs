@@ -35,13 +35,12 @@ export function createSpecArtifacts({ cwd, toolRoot, slug, title, force = false 
   return { target, files };
 }
 
-export function createProjectScaffold({ target, toolRoot, force = false, hostShims = false }) {
+export function createProjectScaffold({ target, toolRoot, force = false }) {
   ensureDir(target);
   const created = [];
   const skipped = [];
   const rootFiles = [
     ['AGENTS.md', 'AGENTS.template.md'],
-    ['CLAUDE.md', 'CLAUDE.template.md'],
     ['PLANS.md', 'PLANS.template.md'],
     ['.gitignore', 'gitignore.template'],
     ['.harness/security-policy.json', 'security-policy.template.json'],
@@ -54,22 +53,6 @@ export function createProjectScaffold({ target, toolRoot, force = false, hostShi
     else {
       writeText(dest, fs.readFileSync(src, 'utf8'));
       created.push(destRel);
-    }
-  }
-  if (hostShims) {
-    const shimFiles = [
-      ['GEMINI.md', 'GEMINI.template.md'],
-      ['.github/copilot-instructions.md', 'copilot-instructions.template.md'],
-      ['.cursor/rules/after-init.mdc', 'cursor-rule.template.mdc']
-    ];
-    for (const [destRel, template] of shimFiles) {
-      const src = path.join(toolRoot, 'templates', template);
-      const dest = path.join(target, destRel);
-      if (fs.existsSync(dest) && !force) skipped.push(destRel);
-      else {
-        writeText(dest, fs.readFileSync(src, 'utf8'));
-        created.push(destRel);
-      }
     }
   }
   for (const dir of ['.harness/docs-index', '.harness/evidence', '.harness/runs', '.harness/reports', 'specs']) {

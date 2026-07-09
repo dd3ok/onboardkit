@@ -2,11 +2,11 @@
 
 ## Layer model
 
-after-init uses a five-layer architecture.
+onboardkit uses a five-layer architecture.
 
 ```text
 Layer 1. Control Plane
-  AGENTS.md, CLAUDE.md shim, docs index, shared language, Definition of Done, security policy
+  SKILL.md, AGENTS.md, docs index, shared language, Definition of Done, security policy
 
 Layer 2. Workflow Plane
   clarify, specify, design, plan, implement, tdd, verify, review, retro workflow guides
@@ -23,16 +23,16 @@ Layer 5. Eval Plane
 
 ## Control plane
 
-The control plane is intentionally text-first. `AGENTS.md` is short enough to be loaded automatically and stable enough to guide every task. Large docs are not pasted into context; they are indexed and retrieved from local files.
+The control plane is intentionally text-first. Root `SKILL.md` tells Codex how to use onboardkit as a skill. Generated `AGENTS.md` files stay short enough to be loaded automatically and stable enough to guide every task. Large docs are not pasted into context; they are indexed and retrieved from local files.
 
 ### Managed docs index
 
-`after-init index-docs` scans local docs and writes a compact index into:
+The bundled helper's `index-docs` command scans local docs and writes a compact index into:
 
 ```text
-<!-- after-init:docs-index:start -->
+<!-- onboardkit:docs-index:start -->
 ...
-<!-- after-init:docs-index:end -->
+<!-- onboardkit:docs-index:end -->
 ```
 
 This mirrors the Vercel/Next.js finding that a compressed `AGENTS.md` docs index can outperform optional procedure retrieval for broad framework knowledge.
@@ -63,13 +63,13 @@ The evidence plane separates agent claims from proof. A command criterion produc
 
 `proof.json` includes command, normalized command, policy decision, cwd, timestamps, exit code, output hashes, freshness, limits, and pass/fail status.
 
-For artifact-backed criteria, `proof.json` records the project-relative artifact path, absolute workspace path, file size, mtime, SHA-256 hash, and artifact kind. The artifact itself stays where the user or host tool produced it; after-init records and validates metadata.
+For artifact-backed criteria, `proof.json` records the project-relative artifact path, absolute workspace path, file size, mtime, SHA-256 hash, and artifact kind. The artifact itself stays where the user or host tool produced it; onboardkit records and validates metadata.
 
 `finish-report.json` includes the aggregate `PASS`, `FAIL`, or `INCOMPLETE` verdict for a run plus required evidence classifications and optional warnings.
 
 ## Runtime plane
 
-The current MVP stores evidence and reports. Future runtime work should stay minimal and pointer-based:
+The current MVP stores evidence and reports through the bundled helper. Future runtime work should stay minimal and pointer-based:
 
 - optional run summaries that point to evidence
 - explicit approval metadata already captured in proof files
@@ -86,18 +86,6 @@ The MVP includes scenario definitions and a static inventory report. Future dyna
 5. AGENTS.md docs index
 6. hybrid AGENTS.md + workflow guides + evidence gate
 
-## Host adapters
+## Host Boundary
 
-The core should remain host-agnostic. Host-specific behavior belongs in adapters:
-
-```text
-adapters/codex        AGENTS.md, .agents/skills, .codex examples
-adapters/claude-code  CLAUDE.md, slash command guidance
-adapters/cursor       .cursor/rules mapping
-adapters/copilot      .github/copilot-instructions.md mapping
-adapters/opencode     opencode config mapping
-```
-
-Full host adapters are TODO; see `docs/TODO_FEATURE_DESIGNS.md`.
-
-Pointer-only host shims are available through `init --host-shims` for Gemini, GitHub Copilot, and Cursor. They reference canonical `AGENTS.md` guidance and are not full adapter installers.
+The core remains host-agnostic. onboardkit is installed as a Codex skill and installs canonical `AGENTS.md` guidance plus repo-local workflow guides into target repos; it does not generate tool-specific instruction shims in the MVP.

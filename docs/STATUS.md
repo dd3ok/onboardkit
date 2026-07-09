@@ -4,17 +4,18 @@
 
 ### Repository skeleton
 
+- Root `SKILL.md`.
+- `agents/openai.yaml` skill metadata.
 - Root `README.md`.
 - Root `AGENTS.md` with workflow policy, Definition of Done, docs index policy, security rules.
-- `CLAUDE.md` shim.
 - `SOT.md` pointer and `docs/SOT.md` canonical source of truth.
 - `PLANS.md` execution plan template.
 - `.gitignore` template for runtime outputs and local logs.
 - `.codex/config.example.toml` safe Codex configuration example.
 
-### CLI
+### Bundled helper
 
-Implemented in `bin/after-init.mjs` and `src/lib/`:
+Implemented in `bin/onboardkit.mjs` and `src/lib/`:
 
 - `help`
 - `init`
@@ -31,8 +32,6 @@ For this repository, `doctor --governance` also checks SOT boundaries, roadmap p
 `doctor --security` emits stable static security findings with IDs. The v0 audit checks AGENTS.md security guardrails, safe Codex config examples, unsafe active Codex config, runtime-output ignore rules, fail-closed command policy defaults, and evidence redaction patterns.
 
 `doctor --guides` emits stable static guide findings with IDs. The v0 audit checks repo-local guide inventory, frontmatter uniqueness, folder/name alignment, concise trigger descriptions, required contract sections, and lightweight file size.
-
-`init --host-shims` optionally writes pointer-only host compatibility shims for Gemini, GitHub Copilot, and Cursor. These shims point back to canonical `AGENTS.md` guidance and do not install host runtimes or duplicate long rules.
 
 `verify` enforces command policy v0 before executing command criteria. The policy supports exact allow rules, deny rules, prompt-required rules that fail closed unless a criterion carries explicit approval, command timeout, output size limits, safe run/criterion IDs, and policy decision fields in proof output.
 
@@ -112,15 +111,14 @@ These are intentionally not implemented in the MVP and are specified in `docs/TO
 2. Dynamic eval runner.
 3. Browser evidence connector.
 4. YAML criteria parser.
-5. Host adapter installer.
-6. Codex plugin packaging.
-7. Subagent orchestration.
-8. Dashboard/report UI.
-9. Docs pack registry.
-10. Monorepo nested AGENTS.md generator.
-11. GitHub Actions integration.
-12. Automated SOT synchronization.
-13. Semantic workflow-guide trigger eval automation.
+5. npm package publishing and Codex plugin packaging.
+6. Subagent orchestration.
+7. Dashboard/report UI.
+8. Docs pack registry.
+9. Monorepo nested AGENTS.md generator.
+10. GitHub Actions integration.
+11. Automated SOT synchronization.
+12. Semantic workflow-guide trigger eval automation.
 
 ## Recommended next implementation order
 
@@ -128,4 +126,3 @@ These are intentionally not implemented in the MVP and are specified in `docs/TO
 2. Optional run summary, only if `finish` or `status` needs a separate pointer file.
 3. Broader redaction and structured command descriptors.
 4. Semantic workflow-guide trigger eval, only if static `doctor --guides` checks are insufficient.
-5. Host adapter installer, only if pointer-only shims are insufficient.

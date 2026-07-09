@@ -12,13 +12,12 @@ const DEFAULT_POLICY = {
   timeout_ms: DEFAULT_TIMEOUT_MS,
   max_output_bytes: DEFAULT_MAX_OUTPUT_BYTES,
   allow: [
-    'npm test',
-    'npm run lint:syntax',
     'node --test',
     'node --version',
-    'node ./bin/after-init.mjs doctor',
-    'node ./bin/after-init.mjs eval',
-    'node ./bin/after-init.mjs verify --criteria examples/criteria.sample.json'
+    'node --check ./bin/onboardkit.mjs',
+    'node ./bin/onboardkit.mjs doctor',
+    'node ./bin/onboardkit.mjs eval',
+    'node ./bin/onboardkit.mjs verify --criteria examples/criteria.sample.json'
   ],
   deny: [
     { id: 'shell-metacharacter', regex: '(?:&&|\\|\\||[;&|<>`]|\\$\\()', reason: 'Shell metacharacters, command chaining, pipes, and redirects are not allowed in v0 command criteria.' },
@@ -29,7 +28,6 @@ const DEFAULT_POLICY = {
     { id: 'database-drop', regex: '\\bdrop\\s+database\\b', reason: 'Database deletion is denied by default.' }
   ],
   prompt: [
-    { id: 'npm-publish', contains: 'npm publish', reason: 'Publishing packages requires explicit approval.' },
     { id: 'git-push', contains: 'git push', reason: 'Pushing repository state requires explicit approval.' },
     { id: 'gh-release', contains: 'gh release', reason: 'Creating releases requires explicit approval.' },
     { id: 'gh-pr-merge', contains: 'gh pr merge', reason: 'Merging pull requests requires explicit approval.' },

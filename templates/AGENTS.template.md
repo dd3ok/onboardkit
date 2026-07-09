@@ -72,7 +72,7 @@ For version-sensitive APIs, prefer the docs index in AGENTS.md and read the refe
 
 ## Docs index
 
-<!-- after-init:docs-index:start -->
+<!-- onboardkit:docs-index:start -->
 [Project Docs Index]|root: ./docs
 |IMPORTANT: Prefer retrieval-led reasoning over pretraining-led reasoning.
-<!-- after-init:docs-index:end -->
+<!-- onboardkit:docs-index:end -->

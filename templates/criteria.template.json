@@ -4,14 +4,14 @@
       "id": "C01",
       "description": "Run the focused verification command for {{title}}",
       "type": "command",
-      "command": "npm test",
+      "command": "node --test",
       "required": true
     },
     {
       "id": "C02",
-      "description": "Run a syntax or lint check if available",
+      "description": "Confirm local command execution is available",
       "type": "command",
-      "command": "npm run lint:syntax",
+      "command": "node --version",
       "required": false
     }
   ]

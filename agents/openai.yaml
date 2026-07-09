@@ -1,0 +1,6 @@
+interface:
+  display_name: "onboardkit"
+  short_description: "Keep AGENTS.md, docs, and repo-local workflow guides lightweight for coding agents."
+  default_prompt: "Use onboardkit to prepare or refresh this repository's agent-facing guidance."
+policy:
+  allow_implicit_invocation: true

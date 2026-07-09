@@ -2,7 +2,7 @@
 
 Updated: 2026-07-09
 
-This document is the canonical map for after-init. When documents disagree, resolve conflicts using this priority order.
+This document is the canonical map for onboardkit. When documents disagree, resolve conflicts using this priority order.
 
 ## Authority order
 
@@ -21,8 +21,9 @@ This SOT delegates future improvement priority and scope boundaries to `docs/IMP
 
 ## Product definition
 
-after-init is a lightweight repo preparation toolkit for AI coding agents. It combines:
+onboardkit is a lightweight Codex skill for preparing repositories for AI coding agents. It combines:
 
+- A root `SKILL.md` entrypoint for skill installation.
 - AGENTS.md-first durable guidance.
 - Compressed local docs indexes.
 - Shared vocabulary and role contracts.
@@ -31,7 +32,6 @@ after-init is a lightweight repo preparation toolkit for AI coding agents. It co
 - Command policy before criteria execution.
 - Static security audit findings with stable IDs.
 - Static workflow-guide contract findings with stable IDs.
-- Optional pointer-only host shims.
 - Command-backed evidence.
 - File-backed artifact/manual evidence with hashes.
 - Finish verdicts over evidence runs.
@@ -42,6 +42,7 @@ after-init is a lightweight repo preparation toolkit for AI coding agents. It co
 
 - It is not a full autonomous agent runtime.
 - It does not replace Codex, Claude Code, Cursor, Copilot, or other hosts.
+- It is not an npm package or global CLI distribution.
 - It does not yet provide a full dynamic eval runner.
 - It does not yet provide browser automation evidence.
 - It does not enforce OS-level sandboxing itself; it documents and integrates with host sandboxing.

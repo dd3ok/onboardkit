@@ -20,16 +20,16 @@ Add a runner that takes a scenario, creates an isolated temp repo, applies the s
 src/lib/eval-dynamic.mjs
 src/lib/eval-graders.mjs
 src/lib/eval-modes.mjs
-bin/after-init.mjs
+bin/onboardkit.mjs
 evals/scenarios/*.json
 schemas/eval.schema.json
 ```
 
-### CLI API
+### Helper API
 
 ```bash
-after-init eval run --scenario evals/scenarios/version-sensitive-api.json --mode hybrid --runs 5
-after-init eval compare --scenario evals/scenarios/version-sensitive-api.json --modes baseline,guides-default,agents-md-docs-index,hybrid
+node <skill-root>/bin/onboardkit.mjs eval run --scenario evals/scenarios/version-sensitive-api.json --mode hybrid --runs 5
+node <skill-root>/bin/onboardkit.mjs eval compare --scenario evals/scenarios/version-sensitive-api.json --modes baseline,guides-default,agents-md-docs-index,hybrid
 ```
 
 ### Scenario schema
@@ -42,7 +42,7 @@ after-init eval compare --scenario evals/scenarios/version-sensitive-api.json --
   "prompt": "Implement ...",
   "modes": ["baseline", "guides-default", "agents-md-docs-index", "hybrid"],
   "graders": [
-    {"type": "command", "command": "npm test"},
+    {"type": "command", "command": "node --test"},
     {"type": "file-contains", "file": "app/page.tsx", "pattern": "connection()"}
   ]
 }
@@ -118,7 +118,7 @@ docs/SECURITY_MODEL.md
    - `collectNetworkSummary()`
    - `stop()`
 3. Add Playwright optional dependency strategy.
-4. If `npx next-browser --help` is available, use Next.js connector for richer data.
+4. If a Next.js browser connector is available, use it for richer data.
 5. Store artifacts under `.harness/evidence/<run-id>/<criterion-id>/artifacts/`.
 6. Update `proof.json` with artifact paths.
 
@@ -141,10 +141,10 @@ Allow `criteria.yaml` in addition to `criteria.json` without forcing a heavy dep
 
 ### Design options
 
-Option A: Add `yaml` package dependency.
+Option A: Add an optional YAML parser module.
 Option B: Support a strict subset parser.
 
-Recommendation: Use `yaml` as an optional dependency only in the CLI package, because criteria are user-authored and should parse predictably.
+Recommendation: Keep JSON-only until real use proves YAML is needed. If YAML is promoted, prefer an optional parser module used by the bundled helper, because criteria are user-authored and should parse predictably.
 
 ### Files to add/change
 
@@ -160,7 +160,7 @@ templates/criteria.template.yaml
 1. Add `loadCriteria(file)`.
 2. Detect `.json`, `.yaml`, `.yml`.
 3. For YAML, dynamically import `yaml`.
-4. If missing, print `npm install yaml` or fall back to JSON-only error.
+4. If missing, print an actionable "YAML parser unavailable" error or fall back to JSON-only guidance.
 5. Update verify command to use loader.
 
 ### Tests
@@ -171,66 +171,14 @@ templates/criteria.template.yaml
 
 ### Acceptance criteria
 
-- `after-init verify --criteria specs/foo/criteria.yaml` works.
+- `node <skill-root>/bin/onboardkit.mjs verify --criteria specs/foo/criteria.yaml` works.
 - JSON criteria remain supported.
-
-## T04 — Host adapter installer
-
-Status: Pointer-only shims are implemented through `init --host-shims`; the full adapter installer described here remains TODO.
-
-### Goal
-
-Install host-specific instruction files while keeping a host-agnostic core.
-
-### Design
-
-Add adapter modules that generate or update host-specific files from canonical templates.
-
-### Files to add/change
-
-```text
-src/lib/adapters/codex.mjs
-src/lib/adapters/claude-code.mjs
-src/lib/adapters/cursor.mjs
-src/lib/adapters/copilot.mjs
-templates/adapters/*
-bin/after-init.mjs
-```
-
-### CLI API
-
-```bash
-after-init adapter install codex
-after-init adapter install claude-code
-after-init adapter install cursor
-after-init adapter install copilot
-```
-
-### Implementation steps
-
-1. Define adapter interface: `detect`, `install`, `doctor`.
-2. Codex adapter installs `AGENTS.md`, `.agents/skills`, `.codex/config.example.toml`.
-3. Claude adapter installs `CLAUDE.md` shim and slash-command docs.
-4. Cursor adapter maps AGENTS guidance to `.cursor/rules/after-init.mdc`.
-5. Copilot adapter maps guidance to `.github/copilot-instructions.md`.
-6. Add adapter-specific doctor checks.
-
-### Tests
-
-- Snapshot generated files.
-- Idempotency tests.
-- No overwrite unless `--force`.
-
-### Acceptance criteria
-
-- Running installer twice is safe.
-- Adapter files reference canonical AGENTS/SOT instead of duplicating everything.
 
 ## T05 — Codex plugin packaging
 
 ### Goal
 
-Package skills and optional app metadata as a Codex plugin for easier distribution.
+Package the skill and optional app metadata as a Codex plugin if simple skill installation proves insufficient.
 
 ### Design
 
@@ -280,8 +228,8 @@ Add policy file `.harness/security-policy.json` with allow, deny, prompt pattern
 ```json
 {
   "deny": ["rm -rf /", "curl * | sh", "printenv"],
-  "prompt": ["npm install", "pnpm add", "git push", "kubectl", "terraform apply"],
-  "allow": ["npm test", "npm run lint:syntax", "node --test"]
+  "prompt": ["git push", "kubectl", "terraform apply"],
+  "allow": ["node --test", "node --version"]
 }
 ```
 
@@ -367,15 +315,15 @@ Generate static HTML from evidence and eval JSON.
 
 ```text
 src/lib/report-html.mjs
-bin/after-init.mjs
+bin/onboardkit.mjs
 templates/report.html
 ```
 
-### CLI API
+### Helper API
 
 ```bash
-after-init report evidence --run-id <id>
-after-init report eval --report .harness/reports/eval.json
+node <skill-root>/bin/onboardkit.mjs report evidence --run-id <id>
+node <skill-root>/bin/onboardkit.mjs report eval --report .harness/reports/eval.json
 ```
 
 ### Acceptance criteria
@@ -402,16 +350,16 @@ src/lib/docs-packs.mjs
 src/lib/docs-indexer.mjs
 ```
 
-### CLI API
+### Helper API
 
 ```bash
-after-init docs add next --version installed
-after-init docs add react --version 19
+node <skill-root>/bin/onboardkit.mjs docs add next --version installed
+node <skill-root>/bin/onboardkit.mjs docs add react --version 19
 ```
 
 ### Acceptance criteria
 
-- Detects installed package version where possible.
+- Detects installed framework or package version where possible.
 - Stores docs under `.harness/docs/<name>/<version>/` or points to bundled docs.
 - Injects compressed index.
 
@@ -435,7 +383,7 @@ templates/AGENTS.package.template.md
 
 ### Acceptance criteria
 
-- Detects npm/pnpm/yarn workspaces.
+- Detects common workspace manifests.
 - Generates package-specific command sections.
 - Keeps root AGENTS.md under size budget.
 
@@ -452,13 +400,13 @@ Add workflow template and installer.
 ### Files to add/change
 
 ```text
-templates/github/workflows/after-init.yml
+templates/github/workflows/onboardkit.yml
 src/lib/adapters/github-actions.mjs
 ```
 
 ### Acceptance criteria
 
-- CI runs `npm test`, `after-init doctor`, and selected eval commands.
+- CI runs `node --test`, helper doctor, and selected eval commands.
 - Uploads `.harness/reports` as artifacts.
 
 ## T12 — Automated SOT synchronization
@@ -475,17 +423,17 @@ Add a consistency checker that reads SOT references and verifies file existence,
 
 ```text
 src/lib/sot-check.mjs
-bin/after-init.mjs
+bin/onboardkit.mjs
 docs/SOT.md
 docs/STATUS.md
 docs/TODO_FEATURE_DESIGNS.md
 ```
 
-### CLI API
+### Helper API
 
 ```bash
-after-init sot check
-after-init sot update-status --todo T01 --status done
+node <skill-root>/bin/onboardkit.mjs sot check
+node <skill-root>/bin/onboardkit.mjs sot update-status --todo T01 --status done
 ```
 
 ### Acceptance criteria

@@ -1,16 +1,12 @@
 {
-  "$schema": "https://example.com/after-init/security-policy.schema.json",
+  "$schema": "https://example.com/onboardkit/security-policy.schema.json",
   "version": 1,
   "unknown": "deny",
   "timeout_ms": 120000,
   "max_output_bytes": 1048576,
   "allow": [
-    "npm test",
-    "npm run lint:syntax",
     "node --test",
-    "node ./bin/after-init.mjs doctor",
-    "node ./bin/after-init.mjs eval",
-    "node ./bin/after-init.mjs verify --criteria examples/criteria.sample.json"
+    "node --version"
   ],
   "deny": [],
   "prompt": []

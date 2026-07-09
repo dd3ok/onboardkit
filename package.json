@@ -1,38 +1,21 @@
 {
-  "name": "after-init",
+  "name": "onboardkit-skill",
   "version": "0.1.0",
-  "description": "Keep AGENTS.md, agent-facing docs, and repo-local workflow guides lightweight after project setup.",
+  "private": true,
+  "description": "Codex skill source for keeping AGENTS.md, agent-facing docs, and repo-local workflow guides lightweight after project setup.",
   "type": "module",
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "bin": {
-    "after-init": "bin/after-init.mjs"
-  },
   "scripts": {
     "test": "node --test",
-    "doctor": "node ./bin/after-init.mjs doctor",
-    "lint:syntax": "node --check ./bin/after-init.mjs && node --check ./src/lib/docs-indexer.mjs && node --check ./src/lib/evidence.mjs && node --check ./src/lib/doctor.mjs && node --check ./src/lib/specs.mjs && node --check ./src/lib/eval-runner.mjs && node --check ./src/lib/fs.mjs && node --check ./src/lib/hash.mjs && node --check ./src/lib/security-policy.mjs && node --check ./src/lib/security-audit.mjs && node --check ./src/lib/guide-audit.mjs && node --check ./src/lib/finish-gate.mjs",
-    "verify:sample": "node ./bin/after-init.mjs verify --criteria examples/criteria.sample.json",
-    "pack:dry-run": "npm pack --dry-run",
-    "prepublishOnly": "npm test && npm run lint:syntax"
+    "doctor": "node ./bin/onboardkit.mjs doctor",
+    "lint:syntax": "node --check ./bin/onboardkit.mjs && node --check ./src/lib/docs-indexer.mjs && node --check ./src/lib/evidence.mjs && node --check ./src/lib/doctor.mjs && node --check ./src/lib/specs.mjs && node --check ./src/lib/eval-runner.mjs && node --check ./src/lib/fs.mjs && node --check ./src/lib/hash.mjs && node --check ./src/lib/security-policy.mjs && node --check ./src/lib/security-audit.mjs && node --check ./src/lib/guide-audit.mjs && node --check ./src/lib/finish-gate.mjs",
+    "verify:sample": "node ./bin/onboardkit.mjs verify --criteria examples/criteria.sample.json"
   },
-  "files": [
-    ".agents/skills/",
-    ".codex/config.example.toml",
-    "bin/",
-    "evals/",
-    "examples/",
-    "schemas/",
-    "src/",
-    "templates/"
-  ],
   "engines": {
     "node": ">=20"
   },
   "keywords": [
-    "after-init",
+    "onboardkit",
     "codex",
     "agents-md",
     "agent-context",

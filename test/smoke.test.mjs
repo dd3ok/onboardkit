@@ -125,21 +125,21 @@ test('doctor validates current repository basics', () => {
   assert.equal(report.checks.some(c => c.name.startsWith('Guide metadata') && c.ok), true);
 });
 
-test('doctor leaves after-init governance checks opt-in', () => {
+test('doctor leaves onboardkit governance checks opt-in', () => {
   const report = runDoctor({ cwd: process.cwd() });
 
   assert.equal(report.ok, true);
-  assert.equal(report.checks.some(c => c.name === 'after-init SOT boundary present'), false);
+  assert.equal(report.checks.some(c => c.name === 'onboardkit SOT boundary present'), false);
 });
 
-test('doctor validates after-init governance boundaries when requested', () => {
+test('doctor validates onboardkit governance boundaries when requested', () => {
   const report = runDoctor({ cwd: process.cwd(), governance: true });
   const requiredChecks = [
-    'after-init SOT boundary present',
-    'after-init roadmap priority present',
-    'after-init heavyweight work stays non-core',
-    'after-init best-practice audit guards lightweight workflow',
-    'after-init docs index references governance docs'
+    'onboardkit SOT boundary present',
+    'onboardkit roadmap priority present',
+    'onboardkit heavyweight work stays non-core',
+    'onboardkit best-practice audit guards lightweight workflow',
+    'onboardkit docs index references governance docs'
   ];
 
   for (const name of requiredChecks) {
@@ -152,12 +152,12 @@ test('security audit emits stable finding IDs for current repository', () => {
 
   assert.equal(report.ok, true);
   assert.deepEqual(report.findings.map(finding => finding.id), [
-    'AFTER-SEC-001',
-    'AFTER-SEC-002',
-    'AFTER-SEC-003',
-    'AFTER-SEC-004',
-    'AFTER-SEC-005',
-    'AFTER-SEC-006'
+    'ONBOARDKIT-SEC-001',
+    'ONBOARDKIT-SEC-002',
+    'ONBOARDKIT-SEC-003',
+    'ONBOARDKIT-SEC-004',
+    'ONBOARDKIT-SEC-005',
+    'ONBOARDKIT-SEC-006'
   ]);
   assert.equal(report.findings.every(finding => ['pass', 'warn', 'fail'].includes(finding.status)), true);
 });
@@ -175,7 +175,7 @@ test('security audit fails unsafe active Codex config', () => {
   ].join('\n'));
 
   const report = runSecurityAudit({ cwd: dir });
-  const finding = report.findings.find(item => item.id === 'AFTER-SEC-003');
+  const finding = report.findings.find(item => item.id === 'ONBOARDKIT-SEC-003');
 
   assert.equal(report.ok, false);
   assert.equal(finding.status, 'fail');
@@ -189,11 +189,11 @@ test('guide audit emits stable finding IDs for current repository', () => {
 
   assert.equal(report.ok, true);
   assert.deepEqual(report.findings.map(finding => finding.id), [
-    'AFTER-GUIDE-001',
-    'AFTER-GUIDE-002',
-    'AFTER-GUIDE-003',
-    'AFTER-GUIDE-004',
-    'AFTER-GUIDE-005'
+    'ONBOARDKIT-GUIDE-001',
+    'ONBOARDKIT-GUIDE-002',
+    'ONBOARDKIT-GUIDE-003',
+    'ONBOARDKIT-GUIDE-004',
+    'ONBOARDKIT-GUIDE-005'
   ]);
   assert.equal(report.findings.every(finding => ['pass', 'warn', 'fail'].includes(finding.status)), true);
 });
@@ -234,11 +234,11 @@ test('guide audit fails duplicate names and missing contracts', () => {
   const byId = new Map(report.findings.map(finding => [finding.id, finding]));
 
   assert.equal(report.ok, false);
-  assert.equal(byId.get('AFTER-GUIDE-002').status, 'fail');
-  assert.match(byId.get('AFTER-GUIDE-002').detail, /duplicate/);
-  assert.equal(byId.get('AFTER-GUIDE-003').status, 'fail');
-  assert.equal(byId.get('AFTER-GUIDE-004').status, 'fail');
-  assert.equal(byId.get('AFTER-GUIDE-005').status, 'fail');
+  assert.equal(byId.get('ONBOARDKIT-GUIDE-002').status, 'fail');
+  assert.match(byId.get('ONBOARDKIT-GUIDE-002').detail, /duplicate/);
+  assert.equal(byId.get('ONBOARDKIT-GUIDE-003').status, 'fail');
+  assert.equal(byId.get('ONBOARDKIT-GUIDE-004').status, 'fail');
+  assert.equal(byId.get('ONBOARDKIT-GUIDE-005').status, 'fail');
 });
 
 test('doctor does not require internal planning or SOT documents', () => {
@@ -251,9 +251,9 @@ test('doctor does not require internal planning or SOT documents', () => {
     '',
     '- Run checks.',
     '',
-    '<!-- after-init:docs-index:start -->',
+    '<!-- onboardkit:docs-index:start -->',
     '[Project Docs Index]|root: ./docs',
-    '<!-- after-init:docs-index:end -->',
+    '<!-- onboardkit:docs-index:end -->',
     ''
   ].join('\n'));
   fs.writeFileSync(path.join(dir, '.agents', 'skills', 'sample', 'SKILL.md'), [
@@ -282,38 +282,22 @@ test('init scaffold includes security policy template', () => {
 
   assert.equal(policy.version, 1);
   assert.equal(policy.unknown, 'deny');
-  assert.equal(policy.allow.includes('npm test'), true);
+  assert.equal(policy.allow.includes('node --test'), true);
   assert.match(agents, /danger-full-access/);
   assert.match(agents, /network access off by default/);
   assert.match(gitignore, /\.harness\/evidence\/\*/);
   assert.match(gitignore, /\.harness\/reports\/\*/);
 });
 
-test('init scaffold installs optional host adapter shims only when requested', () => {
-  const basicDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ahk-init-basic-'));
-  const shimDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ahk-init-shims-'));
+test('init scaffold does not install host adapter shims', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ahk-init-basic-'));
 
-  createProjectScaffold({ target: basicDir, toolRoot: process.cwd() });
-  const result = createProjectScaffold({ target: shimDir, toolRoot: process.cwd(), hostShims: true });
+  createProjectScaffold({ target: dir, toolRoot: process.cwd() });
 
-  const gemini = path.join(shimDir, 'GEMINI.md');
-  const copilot = path.join(shimDir, '.github', 'copilot-instructions.md');
-  const cursor = path.join(shimDir, '.cursor', 'rules', 'after-init.mdc');
-
-  assert.equal(fs.existsSync(path.join(basicDir, 'GEMINI.md')), false);
-  assert.equal(fs.existsSync(path.join(basicDir, '.github', 'copilot-instructions.md')), false);
-  assert.equal(fs.existsSync(path.join(basicDir, '.cursor', 'rules', 'after-init.mdc')), false);
-  assert.equal(fs.existsSync(gemini), true);
-  assert.equal(fs.existsSync(copilot), true);
-  assert.equal(fs.existsSync(cursor), true);
-  assert.equal(result.created.includes('GEMINI.md'), true);
-  assert.equal(result.created.includes('.github/copilot-instructions.md'), true);
-  assert.equal(result.created.includes('.cursor/rules/after-init.mdc'), true);
-  for (const file of [gemini, copilot, cursor]) {
-    const text = fs.readFileSync(file, 'utf8');
-    assert.match(text, /AGENTS\.md/);
-    assert.match(text, /canonical/i);
-  }
+  assert.equal(fs.existsSync(path.join(dir, 'CLAUDE.md')), false);
+  assert.equal(fs.existsSync(path.join(dir, 'GEMINI.md')), false);
+  assert.equal(fs.existsSync(path.join(dir, '.github', 'copilot-instructions.md')), false);
+  assert.equal(fs.existsSync(path.join(dir, '.cursor', 'rules', 'onboardkit.mdc')), false);
 });
 
 test('command evidence proof includes schema-required creation timestamp', () => {
@@ -371,9 +355,9 @@ test('command policy fails prompt-required commands closed', () => {
     criteria: [
       {
         id: 'C01',
-        description: 'Publishing command',
+        description: 'Release command',
         type: 'command',
-        command: 'npm publish'
+        command: 'gh release create v1.0.0'
       }
     ]
   }));
@@ -384,7 +368,7 @@ test('command policy fails prompt-required commands closed', () => {
   assert.equal(report.ok, false);
   assert.equal(proof.ok, false);
   assert.equal(proof.policy_status, 'prompt-required');
-  assert.equal(proof.policy_rule, 'prompt:npm-publish');
+  assert.equal(proof.policy_rule, 'prompt:gh-release');
 });
 
 test('command policy allows explicitly approved prompt-required commands', () => {
@@ -792,9 +776,9 @@ test('finish gate marks empty run reports incomplete', async () => {
   assert.equal(verdict.required[0].reason, 'no-results');
 });
 
-test('finish CLI exits zero only for PASS verdict', () => {
+test('finish helper exits zero only for PASS verdict', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ahk-finish-cli-'));
-  const bin = path.join(process.cwd(), 'bin', 'after-init.mjs');
+  const bin = path.join(process.cwd(), 'bin', 'onboardkit.mjs');
   writeRunReport(dir, 'pass-run', [
     { id: 'C01', ok: true, required: true }
   ]);
@@ -818,24 +802,25 @@ test('finish CLI exits zero only for PASS verdict', () => {
 });
 
 test('help presents lightweight workflow groups', () => {
-  const bin = path.join(process.cwd(), 'bin', 'after-init.mjs');
+  const bin = path.join(process.cwd(), 'bin', 'onboardkit.mjs');
   const result = spawnSync(process.execPath, [bin, 'help'], {
     cwd: process.cwd(),
     encoding: 'utf8'
   });
 
   assert.equal(result.status, 0);
+  assert.match(result.stdout, /Bundled helper usage/);
   assert.match(result.stdout, /Core workflow/);
-  assert.match(result.stdout, /after-init init\n/);
+  assert.match(result.stdout, /node <skill-root>\/bin\/onboardkit\.mjs init --target <repo>/);
   assert.match(result.stdout, /Guardrails/);
-  assert.match(result.stdout, /after-init doctor --security/);
-  assert.match(result.stdout, /after-init doctor --guides/);
+  assert.match(result.stdout, /doctor --cwd <repo> --security/);
+  assert.match(result.stdout, /doctor --cwd <repo> --guides/);
   assert.match(result.stdout, /Optional proof workflow/);
-  assert.match(result.stdout, /after-init verify --criteria/);
+  assert.match(result.stdout, /verify --criteria <criteria\.json>/);
 });
 
 test('removed doctor skills flag is rejected', () => {
-  const bin = path.join(process.cwd(), 'bin', 'after-init.mjs');
+  const bin = path.join(process.cwd(), 'bin', 'onboardkit.mjs');
   const result = spawnSync(process.execPath, [bin, 'doctor', '--skills'], {
     cwd: process.cwd(),
     encoding: 'utf8'
@@ -845,23 +830,39 @@ test('removed doctor skills flag is rejected', () => {
   assert.match(result.stderr, /Unknown flag: --skills/);
 });
 
+test('removed init host-shims flag is rejected', () => {
+  const bin = path.join(process.cwd(), 'bin', 'onboardkit.mjs');
+  const result = spawnSync(process.execPath, [bin, 'init', '--host-shims'], {
+    cwd: fs.mkdtempSync(path.join(os.tmpdir(), 'ahk-init-host-shims-')),
+    encoding: 'utf8'
+  });
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /Unknown flag: --host-shims/);
+});
+
 test('README leads with lightweight agent context and workflow guides', () => {
   const text = fs.readFileSync(path.join(process.cwd(), 'README.md'), 'utf8');
 
-  assert.match(text, /prepares a repo for AI coding agents/i);
+  assert.match(text, /Codex-compatible agent skill/i);
   assert.match(text, /AGENTS\.md[\s\S]*repo-local workflow guides/);
-  assert.match(text, /Optional Proof Workflow/);
+  assert.match(text, /Bundled Helper/);
   assert.match(text, /Origin And References/);
   assert.match(text, /SWE-bench/);
   assert.match(text, /Vercel/);
   assert.match(text, /OpenAI Codex/);
+  assert.match(text, /~\/\.agents\/skills\/onboardkit/);
+  assert.match(text, /~\/\.claude\/skills\/onboardkit/);
+  assert.match(text, /~\/\.gemini\/config\/skills\/onboardkit/);
+  assert.match(text, /<project-root>\/\.agents\/skills\/onboardkit/);
+  assert.doesNotMatch(text, /npm install|npx/);
 });
 
 test('syntax lint script checks every source module directly', () => {
   const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
   const script = pkg.scripts['lint:syntax'];
 
-  assert.match(script, /node --check \.\/bin\/after-init\.mjs/);
+  assert.match(script, /node --check \.\/bin\/onboardkit\.mjs/);
   assert.match(script, /node --check \.\/src\/lib\/fs\.mjs/);
   assert.match(script, /node --check \.\/src\/lib\/hash\.mjs/);
   assert.match(script, /node --check \.\/src\/lib\/security-policy\.mjs/);
@@ -870,31 +871,40 @@ test('syntax lint script checks every source module directly', () => {
   assert.match(script, /node --check \.\/src\/lib\/finish-gate\.mjs/);
 });
 
-test('package manifest is ready for npm distribution', () => {
+test('package manifest stays private for skill-only distribution', () => {
   const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
 
-  assert.equal(pkg.name, 'after-init');
-  assert.equal(pkg.bin['after-init'], 'bin/after-init.mjs');
-  assert.equal(pkg.publishConfig.access, 'public');
-  assert.match(pkg.scripts.prepublishOnly, /npm test/);
-  assert.match(pkg.scripts.prepublishOnly, /npm run lint:syntax/);
-  assert.equal(pkg.files.includes('bin/'), true);
-  assert.equal(pkg.files.includes('src/'), true);
-  assert.equal(pkg.files.includes('templates/'), true);
-  assert.equal(pkg.files.includes('.agents/skills/'), true);
-  assert.equal(pkg.files.some(item => item.startsWith('.harness')), false);
+  assert.equal(pkg.name, 'onboardkit-skill');
+  assert.equal(pkg.private, true);
+  assert.equal(pkg.bin, undefined);
+  assert.equal(pkg.publishConfig, undefined);
+  assert.equal(pkg.files, undefined);
+  assert.equal(pkg.scripts.prepublishOnly, undefined);
+  assert.equal(pkg.scripts['pack:dry-run'], undefined);
 });
 
-test('package-facing repository content uses after-init names', () => {
+test('skill-facing repository content uses onboardkit names', () => {
   const license = fs.readFileSync(path.join(process.cwd(), 'LICENSE'), 'utf8');
-  const gemini = fs.readFileSync(path.join(process.cwd(), 'templates', 'GEMINI.template.md'), 'utf8');
-  const cursor = fs.readFileSync(path.join(process.cwd(), 'templates', 'cursor-rule.template.mdc'), 'utf8');
+  const skill = fs.readFileSync(path.join(process.cwd(), 'SKILL.md'), 'utf8');
+  const openaiYaml = fs.readFileSync(path.join(process.cwd(), 'agents', 'openai.yaml'), 'utf8');
   const evalScenarioFiles = fs.readdirSync(path.join(process.cwd(), 'evals', 'scenarios'))
     .filter(file => file.endsWith('.json'));
 
-  assert.match(license, /after-init contributors/);
-  assert.doesNotMatch(gemini, /docs\/SOT\.md/);
-  assert.doesNotMatch(cursor, /docs\/SOT\.md/);
+  assert.match(license, /onboardkit contributors/);
+  assert.match(skill, /name: onboardkit/);
+  assert.match(skill, /Do not require an npm package install/);
+  assert.match(skill, /## Examples/);
+  assert.match(skill, /## Constraints/);
+  assert.match(skill, /Do not create host-specific shim files/);
+  assert.match(openaiYaml, /interface:/);
+  assert.match(openaiYaml, /display_name: "onboardkit"/);
+  assert.match(openaiYaml, /policy:/);
+  assert.match(openaiYaml, /allow_implicit_invocation: true/);
+  assert.equal(fs.existsSync(path.join(process.cwd(), 'CLAUDE.md')), false);
+  assert.equal(fs.existsSync(path.join(process.cwd(), 'templates', 'CLAUDE.template.md')), false);
+  assert.equal(fs.existsSync(path.join(process.cwd(), 'templates', 'GEMINI.template.md')), false);
+  assert.equal(fs.existsSync(path.join(process.cwd(), 'templates', 'copilot-instructions.template.md')), false);
+  assert.equal(fs.existsSync(path.join(process.cwd(), 'templates', 'cursor-rule.template.mdc')), false);
 
   for (const file of evalScenarioFiles) {
     const scenario = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'evals', 'scenarios', file), 'utf8'));
@@ -907,7 +917,7 @@ test('sample criteria runs the standard syntax lint command', () => {
   const syntaxCriterion = criteria.criteria.find(item => item.id === 'C02');
 
   assert.equal(syntaxCriterion.description, 'Run syntax lint');
-  assert.equal(syntaxCriterion.command, 'npm run lint:syntax');
+  assert.equal(syntaxCriterion.command, 'node --check ./bin/onboardkit.mjs');
 });
 
 test('project naming avoids stale harness terms', () => {

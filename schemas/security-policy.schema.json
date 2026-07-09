@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/after-init/security-policy.schema.json",
-  "title": "after-init Security Policy",
+  "$id": "https://example.com/onboardkit/security-policy.schema.json",
+  "title": "onboardkit Security Policy",
   "type": "object",
   "required": [
     "version"

@@ -36,37 +36,35 @@ function assertKnownFlags(allowed) {
 }
 
 function help() {
-  console.log(`after-init
+  console.log(`onboardkit
 
-after-init keeps AGENTS.md, agent-facing docs, and repo-local workflow guides
+onboardkit keeps AGENTS.md, agent-facing docs, and repo-local workflow guides
 lightweight after project setup.
 
-Usage:
-  after-init help
-  after-init init [--target <dir>] [--force] [--host-shims]
-  after-init doctor [--cwd <dir>] [--security] [--guides] [--governance]
-  after-init index-docs --source <dir> --name <name> [--inject] [--root-alias <path>]
-  after-init new --slug <slug> --title <title>
-  after-init verify --criteria <criteria.json> [--run-id <id>]
-  after-init finish --run-id <id>
-  after-init eval
-  after-init status
+Bundled helper usage:
+  node <skill-root>/bin/onboardkit.mjs help
+  node <skill-root>/bin/onboardkit.mjs init [--target <dir>] [--force]
+  node <skill-root>/bin/onboardkit.mjs doctor [--cwd <dir>] [--security] [--guides] [--governance]
+  node <skill-root>/bin/onboardkit.mjs index-docs --source <dir> --name <name> [--inject] [--root-alias <path>]
+  node <skill-root>/bin/onboardkit.mjs new --slug <slug> --title <title>
+  node <skill-root>/bin/onboardkit.mjs verify --criteria <criteria.json> [--run-id <id>]
+  node <skill-root>/bin/onboardkit.mjs finish --run-id <id>
+  node <skill-root>/bin/onboardkit.mjs eval
+  node <skill-root>/bin/onboardkit.mjs status
 
 Core workflow:
-  after-init init
-  after-init doctor
-  after-init index-docs --source docs --name local-docs --inject
-  after-init new --slug login-flow --title "Login flow"
+  node <skill-root>/bin/onboardkit.mjs init --target <repo>
+  node <skill-root>/bin/onboardkit.mjs doctor --cwd <repo>
+  node <skill-root>/bin/onboardkit.mjs index-docs --source <repo>/docs --name local-docs --inject
 
 Guardrails:
-  after-init doctor --security
-  after-init doctor --guides
-  after-init doctor --governance
-  after-init init --host-shims
+  node <skill-root>/bin/onboardkit.mjs doctor --cwd <repo> --security
+  node <skill-root>/bin/onboardkit.mjs doctor --cwd <repo> --guides
+  node <skill-root>/bin/onboardkit.mjs doctor --governance
 
 Optional proof workflow:
-  after-init verify --criteria examples/criteria.sample.json
-  after-init finish --run-id <id>
+  node <skill-root>/bin/onboardkit.mjs verify --criteria <criteria.json> --run-id <id>
+  node <skill-root>/bin/onboardkit.mjs finish --run-id <id>
 `);
 }
 
@@ -87,9 +85,9 @@ try {
   if (command === 'help' || command === '--help' || command === '-h') {
     help();
   } else if (command === 'init') {
-    assertKnownFlags(['--target', '--force', '--host-shims']);
+    assertKnownFlags(['--target', '--force']);
     const target = path.resolve(cwd, valueOf('--target', '.'));
-    const result = createProjectScaffold({ target, toolRoot, force: has('--force'), hostShims: has('--host-shims') });
+    const result = createProjectScaffold({ target, toolRoot, force: has('--force') });
     console.log(`Initialized ${target}`);
     for (const item of result.created) console.log(`  created ${item}`);
     for (const item of result.skipped) console.log(`  skipped ${item}`);
@@ -155,7 +153,7 @@ try {
       console.log(`- ${scenario.id}: ${scenario.title}`);
     }
   } else if (command === 'status') {
-    console.log('CLI entrypoint: bin/after-init.mjs');
+    console.log('Bundled helper: bin/onboardkit.mjs');
     console.log('Library modules: src/lib/');
     console.log('Repo-local guides: .agents/skills/');
     console.log('Runtime evidence: .harness/evidence/<run-id>/');
@@ -163,6 +161,6 @@ try {
     throw new Error(`Unknown command: ${command}`);
   }
 } catch (err) {
-  console.error(`after-init error: ${err.message}`);
+  console.error(`onboardkit error: ${err.message}`);
   process.exitCode = 1;
 }

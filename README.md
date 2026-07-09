@@ -1,130 +1,109 @@
-# after-init
+# onboardkit
 
-after-init prepares a repo for AI coding agents after project setup.
+onboardkit is a Codex-compatible agent skill for keeping agent-facing repository guidance lightweight after project setup.
 
-It keeps `AGENTS.md`, agent-facing docs, and repo-local workflow guides lightweight, accurate, and useful without turning the repo into an agent runtime.
-
-The default shape is intentionally small:
+It helps an agent create and maintain:
 
 ```text
-AGENTS.md          always-on rules, kept short
-docs/              longer context, decisions, and references
-workflow guides    repo-local procedures for recurring work
-guardrails         doctor, security, guide, and command-policy checks
-optional proof     verify and finish when done claims need evidence
+AGENTS.md          short always-on project rules
+.agents/skills/   explicit workflow guides for recurring work
+docs/              longer source-of-truth context
+.harness/          optional policy and evidence receipts
 ```
 
-after-init is not an autonomous agent runtime, dashboard, browser runner, subagent orchestrator, or all-action task ledger.
+onboardkit is not an npm package, autonomous agent runtime, dashboard, browser runner, subagent orchestrator, or all-action task ledger.
 
 ## Quick Start
 
-Install after-init once, then run `after-init init` in each repo you want to prepare. Think of it like `git init` for lightweight AI-agent context.
+Install this repository as a skill in the agent you use:
 
 ```bash
-npm install -g after-init
+# Codex user skill
+git clone <repo-url> ~/.agents/skills/onboardkit
+
+# Claude Code user skill
+git clone <repo-url> ~/.claude/skills/onboardkit
+
+# Google Antigravity global skill
+git clone <repo-url> ~/.gemini/config/skills/onboardkit
 ```
 
-Prepare a repo and check the lightweight setup:
+Antigravity also supports project-scoped skills under a target repository:
 
 ```bash
-after-init init
-after-init doctor
+git clone <repo-url> <project-root>/.agents/skills/onboardkit
 ```
 
-Without a global install:
+Then ask your coding agent in any target repository:
+
+```text
+Use onboardkit to set up this repo for coding agents.
+```
+
+or, when explicit skill calls are supported:
+
+```text
+$onboardkit set up this repo
+```
+
+Codex should inspect the repo, create or refresh `AGENTS.md`, install focused workflow guides, and keep longer context in docs instead of bloating `AGENTS.md`.
+
+For Claude Code, invoke the skill as `/onboardkit` when explicit skill calls are preferred. For Codex, use `$onboardkit` when explicit skill mentions are supported. For Antigravity, ask for onboardkit by name or check `/skills` after installation.
+
+## What The Skill Does
+
+- Creates lightweight `AGENTS.md` guidance.
+- Adds repo-local workflow guides under `.agents/skills`.
+- Keeps docs and workflow procedures routed instead of pasted into `AGENTS.md`.
+- Checks whether guidance is stale, duplicated, too broad, or too narrow.
+- Optionally records verification evidence when a done claim needs proof.
+
+## Normal Process
+
+For a new repo, ask:
+
+```text
+Use onboardkit to prepare this repo.
+```
+
+For an existing repo, ask:
+
+```text
+Use onboardkit to check whether the agent docs are still lightweight and current.
+```
+
+For repeated mistakes, ask:
+
+```text
+Use onboardkit to update durable guidance so agents avoid this mistake next time.
+```
+
+The intended result is simple: the repo becomes `onboarded` for coding agents.
+
+## Bundled Helper
+
+The skill includes a deterministic helper for scaffolding and checks. Users do not need to install a global command; the agent can run the helper from the skill directory when useful:
 
 ```bash
-npx after-init init
-npx after-init doctor
+node <skill-root>/bin/onboardkit.mjs init --target <repo>
+node <skill-root>/bin/onboardkit.mjs doctor --cwd <repo>
+node <skill-root>/bin/onboardkit.mjs index-docs --source <repo>/docs --name local-docs --inject
 ```
 
-When a done claim needs proof:
+When proof is needed:
 
 ```bash
-after-init verify --criteria examples/criteria.sample.json
-after-init finish --run-id <id>
+node <skill-root>/bin/onboardkit.mjs verify --criteria <criteria.json> --run-id <id>
+node <skill-root>/bin/onboardkit.mjs finish --run-id <id>
 ```
 
-When working in this repository:
-
-```bash
-npm test
-npm run lint:syntax
-```
-
-After linking the package locally:
-
-```bash
-npm link
-after-init doctor
-```
-
-## Common Workflows
-
-### Core Workflow
-
-Use these first. They keep the repository ready for AI coding agents without adding a heavy process.
-
-```bash
-after-init init
-after-init doctor
-after-init index-docs --source docs --name local-docs --inject
-after-init new --slug login-flow --title "Login flow"
-```
-
-Core features:
-
-- `AGENTS.md` guidance checks with a compact docs-index marker.
-- Repo-local workflow guides under `.agents/skills`.
-- Templates for brief, spec, design, tasks, criteria, review, retro, security policy, `.gitignore`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, Copilot, Cursor, and `PLANS.md`.
-- Optional pointer-only host shims through `init --host-shims`.
-- Static eval scenario inventory from `evals/scenarios`.
-
-Optional host compatibility shims:
-
-```bash
-after-init init --host-shims
-```
-
-### Guardrails
-
-Use these to keep the setup safe and predictable.
-
-```bash
-after-init doctor --security
-after-init doctor --guides
-after-init doctor --governance
-```
-
-Guardrail features:
-
-- Static security audit findings through `doctor --security`.
-- Static guide contract findings through `doctor --guides`.
-- after-init governance checks through `doctor --governance` in this repository.
-- Command policy checks before command-backed criteria execute.
-- Safe config example in `.codex/config.example.toml`.
-
-### Optional Proof Workflow
-
-Use this when "done" needs a receipt, not just a confident status sentence.
-
-```bash
-after-init verify --criteria examples/criteria.sample.json --run-id <id>
-after-init finish --run-id <id>
-```
-
-Proof features:
-
-- JSON criteria execution for command-backed verification.
-- File-backed artifact, screenshot, browser-log, review, and manual evidence for externally produced proof.
-- Evidence output under `.harness/evidence/<run-id>/`.
-- `finish` verdicts of `PASS`, `FAIL`, or `INCOMPLETE`.
+Proof is a receipt for a verification run, not a permanent log of every action.
 
 ## Workflow Guides
 
-`AGENTS.md` should hold only always-needed rules. Deeper procedures live in repo-local workflow guides and should be referenced explicitly when the task matches.
+`AGENTS.md` should hold only always-needed rules. Deeper procedures live in workflow guides and should be invoked explicitly when the task matches.
 
-Current repo-local guides:
+Current guides:
 
 - `clarify`: ambiguous or risky requirements.
 - `specify`: product behavior and acceptance criteria.
@@ -136,54 +115,36 @@ Current repo-local guides:
 - `review`: scope, correctness, simplicity, maintainability, and regression checks.
 - `security-review`: secrets, auth, network, deletion, dependencies, and sandbox risk.
 - `retro`: repeated failures or process gaps that should become durable updates.
-- `docs-index`: compressed local docs indexes for AGENTS.md.
+- `docs-index`: compressed local docs indexes for `AGENTS.md`.
 - `eval`: static scenario inventory and future eval workflows.
-
-## Optional Proof Is A Receipt, Not A Ledger
-
-`after-init verify` reads a criteria JSON file and writes:
-
-```text
-.harness/evidence/<run-id>/<criterion-id>/commands.log
-.harness/evidence/<run-id>/<criterion-id>/proof.json
-.harness/evidence/<run-id>/run-report.json
-```
-
-Command criteria run locally only after policy checks. Proof records the normalized command, allow/deny/prompt decision, timeout, output limit, timestamps, exit status, output hashes, and freshness.
-
-Artifact, screenshot, browser-log, review, and manual criteria use an existing project-relative `path`; proof records file size, mtime, and SHA-256 hash. after-init does not launch a browser for these criteria.
-
-`after-init finish --run-id <id>` reads a run report and proof files, writes `finish-report.json`, and returns `PASS`, `FAIL`, or `INCOMPLETE`. It exits `0` only for `PASS`.
-
-Evidence is not a record of every action. It is a small receipt for a verification run.
 
 ## Source Repository Layout
 
 ```text
-AGENTS.md                 repo guidance for agents
-bin/after-init.mjs        CLI entrypoint
-src/lib/                  CLI implementation modules
-.agents/skills/           repo-local workflow guides
+SKILL.md                   skill entrypoint
+agents/openai.yaml         skill UI metadata
+AGENTS.md                  repo guidance for this source repo
+bin/onboardkit.mjs         bundled helper script
+src/lib/                   helper implementation modules
+.agents/skills/            workflow guides installed into target repos
 .codex/config.example.toml safe Codex configuration example
-docs/                     source-of-truth, architecture, status, and design docs
-schemas/                  JSON schema contracts
-templates/                generated workflow artifact templates
-evals/scenarios/          static eval scenario definitions
-examples/                 sample criteria and artifacts
-test/                     smoke tests
+docs/                      source-of-truth, architecture, status, and design docs
+schemas/                   JSON schema contracts
+templates/                 generated artifact templates
+evals/scenarios/           static eval scenario definitions
+examples/                  sample criteria and artifacts
+test/                      smoke tests
 ```
 
-The published npm package intentionally includes the runtime CLI, templates, schemas, examples, eval scenarios, and repo-local guides. Internal source-of-truth and research documents under `docs/` stay in the source repository unless they are promoted into templates or public examples.
+`package.json` is private development metadata for this source repo. It is not a publishing contract.
 
 ## Generated Files And Commit Policy
 
-Commit source-of-truth files such as `AGENTS.md`, `docs/`, `.agents/skills/`, `templates/`, `schemas/`, `examples/`, and `evals/`.
+Commit durable source-of-truth files such as `AGENTS.md`, `docs/`, `.agents/skills/`, `templates/`, `schemas/`, `examples/`, and `evals/`.
 
 Commit `.harness/security-policy.json` when it defines project command policy. It is configuration, not runtime evidence.
 
 Do not commit runtime outputs under `.harness/evidence/`, `.harness/runs/`, `.harness/reports/`, `.harness/tmp/`, generated docs indexes under `.harness/docs-index/`, root local scratch `/specs/`, or `*.log` files.
-
-When `after-init index-docs --inject` updates `AGENTS.md`, commit the `AGENTS.md` change, not the generated `.harness/docs-index/*` file.
 
 If a generated planning artifact or scratch spec should become durable project documentation, move or copy it into `docs/`, `examples/`, or `templates/` first, then commit it there.
 
@@ -194,12 +155,11 @@ If a generated planning artifact or scratch spec should become durable project d
 - `eval` currently writes a static scenario inventory; it does not execute dynamic eval runs.
 - Command policy v0 is exact-allow and pattern-based; it is not an OS sandbox.
 - `doctor --security` is a shallow local audit, not a runtime permission system.
-- `doctor --guides` is a static guide contract audit, not semantic LLM trigger evaluation.
-- `init --host-shims` writes thin pointer files; it is not a full adapter installer.
+- `doctor --guides` is a static guide contract audit, not semantic trigger evaluation.
 
 ## Origin And References
 
-after-init started from a practical problem: AI coding agents can miss project guidance, follow stale docs, accumulate overly specific instructions, or run risky commands while verifying work. The design response is to keep always-needed guidance small, route deeper procedures to repo-local guides, and use proof only when a done claim needs it.
+onboardkit started from a practical problem: AI coding agents can miss project guidance, follow stale docs, accumulate overly specific instructions, or run risky commands while verifying work. The design response is to keep always-needed guidance small, route deeper procedures to repo-local guides, and use proof only when a done claim needs it.
 
 Representative research papers:
 
@@ -210,14 +170,16 @@ Representative technical references:
 
 - [Vercel: AGENTS.md outperforms skills in our agent evals](https://vercel.com/blog/agents-md-outperforms-skills-in-our-agent-evals) - supports keeping reliable, compressed project context in `AGENTS.md`.
 - [AGENTS.md open format](https://agents.md/) - common convention for durable agent-facing project instructions.
-- [Agent Skills open standard](https://agentskills.io/home) - useful prior art for progressive-disclosure procedure files, even when guides stay repo-local.
 
 Representative vendor guidance:
 
 - [OpenAI Codex best practices](https://developers.openai.com/codex/learn/best-practices) - `AGENTS.md` should cover repo layout, commands, constraints, and how to verify done.
-- [OpenAI Codex AGENTS.md guide](https://developers.openai.com/codex/guides/agents-md) - Codex loads layered `AGENTS.md` guidance before work and has a default project-doc size limit.
-- [OpenAI Codex skills guide](https://developers.openai.com/codex/skills) - progressive-disclosure workflows informed the repo-local guide shape.
+- [OpenAI Codex AGENTS.md guide](https://developers.openai.com/codex/guides/agents-md) - Codex loads layered `AGENTS.md` guidance before work.
+- [OpenAI Codex skills guide](https://developers.openai.com/codex/skills) - progressive-disclosure workflows informed the skill and guide shape.
 - [OpenAI Codex approvals and security](https://developers.openai.com/codex/agent-approvals-security) - command execution and approval posture need explicit safety boundaries.
+- [Claude Code skills guide](https://code.claude.com/docs/en/skills) - Claude Code discovers filesystem skills and uses the description to decide when to load them.
+- [Anthropic Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) - skills package instructions, metadata, and optional scripts/resources with progressive disclosure.
+- [Google Antigravity skills codelab](https://codelabs.developers.google.com/getting-started-with-antigravity-skills) - Antigravity supports global skills and project-scoped `.agents/skills` folders.
 
 ## License
 

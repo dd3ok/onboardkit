@@ -47,7 +47,7 @@ function readGuide(file) {
 function guideInventory(guides) {
   if (guides.length === 0) {
     return finding({
-      id: 'AFTER-GUIDE-001',
+      id: 'ONBOARDKIT-GUIDE-001',
       title: 'Repo-local workflow guides exist',
       status: 'fail',
       severity: 'medium',
@@ -55,7 +55,7 @@ function guideInventory(guides) {
     });
   }
   return finding({
-    id: 'AFTER-GUIDE-001',
+    id: 'ONBOARDKIT-GUIDE-001',
     title: 'Repo-local workflow guides exist',
     status: 'pass',
     severity: 'low',
@@ -80,7 +80,7 @@ function metadataAndNames(guides) {
     if (folders.length > 1) problems.push(`${name}: duplicate in ${folders.join(', ')}`);
   }
   return finding({
-    id: 'AFTER-GUIDE-002',
+    id: 'ONBOARDKIT-GUIDE-002',
     title: 'Guide names and metadata are unique',
     status: problems.length === 0 ? 'pass' : 'fail',
     severity: 'high',
@@ -100,7 +100,7 @@ function descriptionQuality(guides) {
     }
   }
   return finding({
-    id: 'AFTER-GUIDE-003',
+    id: 'ONBOARDKIT-GUIDE-003',
     title: 'Guide descriptions are concise triggers',
     status: problems.length === 0 ? 'pass' : 'fail',
     severity: 'medium',
@@ -118,7 +118,7 @@ function contractSections(guides) {
     }
   }
   return finding({
-    id: 'AFTER-GUIDE-004',
+    id: 'ONBOARDKIT-GUIDE-004',
     title: 'Guide contract sections exist',
     status: problems.length === 0 ? 'pass' : 'fail',
     severity: 'high',
@@ -133,7 +133,7 @@ function guideSize(guides) {
     .map(guide => ({ guide, bytes: Buffer.byteLength(guide.text) }))
     .filter(item => item.bytes > 16 * 1024);
   return finding({
-    id: 'AFTER-GUIDE-005',
+    id: 'ONBOARDKIT-GUIDE-005',
     title: 'Guide files stay lightweight',
     status: oversized.length === 0 ? 'pass' : 'fail',
     severity: 'medium',

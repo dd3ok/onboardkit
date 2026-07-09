@@ -20,11 +20,11 @@ Status: Accepted
 
 Context: YAML is more human-friendly, but a robust YAML parser would add a dependency.
 
-Decision: MVP uses JSON criteria for zero-dependency CLI. YAML support is TODO T03.
+Decision: MVP uses JSON criteria for a zero-dependency helper. YAML support is TODO T03.
 
 Consequences:
 
-- CLI is immediately runnable with Node.js only.
+- The helper is immediately runnable with Node.js only.
 - Future YAML parser can be added without changing evidence schema.
 
 ## ADR-003 — Evidence is machine-readable proof, not prose
@@ -58,7 +58,7 @@ Consequences:
 
 Status: Accepted
 
-Context: Prior art and vendor guidance point toward alignment, small changes, explicit routing, policy-aware execution, reviewed learning loops, and fresh proof-of-done. Dynamic eval runners, browser automation, gateways, schedulers, persistent memory, and subagent orchestration are useful, but they can make after-init feel like a platform rather than a compact repo preparation toolkit.
+Context: Prior art and vendor guidance point toward alignment, small changes, explicit routing, policy-aware execution, reviewed learning loops, and fresh proof-of-done. Dynamic eval runners, browser automation, gateways, schedulers, persistent memory, and subagent orchestration are useful, but they can make onboardkit feel like a platform rather than a compact repo preparation skill.
 
 Decision: At the time of this ADR, implement the next improvement pass in this order: command policy v0, shared language and role contracts, finish gate v0, artifact/manual evidence v0, and optional pointer-only run summary. Keep deterministic eval and browser automation in the non-core backlog until the safety and evidence spine is stable.
 
@@ -66,14 +66,14 @@ Consequences:
 
 - Safer command execution becomes the first implementation boundary.
 - "Done" is derived from fresh evidence and finish verdicts, not from activity logs.
-- Security audit IDs, host shims, and reviewed retro/skill updates can be added as lightweight companion features.
+- Security audit IDs and reviewed retro/skill updates can be added as lightweight companion features.
 - Browser automation, dynamic eval, gateways, schedulers, persistent memory, autonomous skill mutation, and subagent orchestration remain optional instead of core requirements.
 
 ## ADR-006: Enforce command policy before criteria execution
 
 Status: Accepted
 
-Context: `verify` executes user-authored command criteria, which is the current repository's largest safety boundary. The project needs protection from obviously destructive, publishing, network, infrastructure, and shell-chained commands without turning after-init into an OS sandbox or full command runtime.
+Context: `verify` executes user-authored command criteria, which is the current repository's largest safety boundary. The project needs protection from obviously destructive, release, network, infrastructure, and shell-chained commands without turning onboardkit into an OS sandbox or full command runtime.
 
 Decision: Add command policy v0 as an exact-allow and pattern-rule gate before command execution. Deny rules win first, prompt-required rules fail closed unless explicitly approved on the criterion, and allowed commands record policy decisions, timeout, and output limits in `proof.json`.
 
@@ -87,9 +87,9 @@ Consequences:
 
 Status: Accepted
 
-Context: The project needs a completion verdict, but review blockers, subagent roles, browser automation, and task ledgers can easily turn after-init into a workflow runtime.
+Context: The project needs a completion verdict, but review blockers, subagent roles, browser automation, and task ledgers can easily turn onboardkit into a workflow runtime.
 
-Decision: Add `after-init finish --run-id <id>` as an evidence-only gate. It reads `run-report.json` and referenced proofs, validates paths inside the run root, writes `finish-report.json`, and returns `PASS`, `FAIL`, or `INCOMPLETE`. It does not run commands, launch browsers, consume review state, or manage tasks.
+Decision: Add the bundled helper's `finish --run-id <id>` as an evidence-only gate. It reads `run-report.json` and referenced proofs, validates paths inside the run root, writes `finish-report.json`, and returns `PASS`, `FAIL`, or `INCOMPLETE`. It does not run commands, launch browsers, consume review state, or manage tasks.
 
 Consequences:
 
@@ -102,9 +102,9 @@ Consequences:
 
 Status: Accepted
 
-Context: The criteria schema already includes `artifact`, `screenshot`, `browser-log`, `review`, and `manual`, but launching browsers or collecting runtime logs would pull after-init toward a heavier automation platform.
+Context: The criteria schema already includes `artifact`, `screenshot`, `browser-log`, `review`, and `manual`, but launching browsers or collecting runtime logs would pull onboardkit toward a heavier automation platform.
 
-Decision: Treat those non-command criteria as file-backed evidence in v0. The user or host tool produces the file, and after-init records project-relative path, absolute workspace path, file size, mtime, SHA-256 hash, and artifact kind. The finish gate validates that referenced artifacts still exist inside the workspace and match the recorded hash.
+Decision: Treat those non-command criteria as file-backed evidence in v0. The user or host tool produces the file, and onboardkit records project-relative path, absolute workspace path, file size, mtime, SHA-256 hash, and artifact kind. The finish gate validates that referenced artifacts still exist inside the workspace and match the recorded hash.
 
 Consequences:
 
@@ -117,9 +117,9 @@ Consequences:
 
 Status: Accepted
 
-Context: OpenClaw-style security audit findings are useful, but after-init should not become a policy daemon or runtime permission service. The current safety boundary is local files, command policy, Codex config posture, and evidence persistence.
+Context: OpenClaw-style security audit findings are useful, but onboardkit should not become a policy daemon or runtime permission service. The current safety boundary is local files, command policy, Codex config posture, and evidence persistence.
 
-Decision: Add `after-init doctor --security` as a shallow static audit with stable `AFTER-SEC-*` finding IDs. The audit checks AGENTS.md security guardrails, safe Codex config example posture, unsafe active Codex config, runtime-output git ignores, fail-closed command policy defaults, and evidence redaction patterns.
+Decision: Add the bundled helper's `doctor --security` as a shallow static audit with stable `ONBOARDKIT-SEC-*` finding IDs. The audit checks AGENTS.md security guardrails, safe Codex config example posture, unsafe active Codex config, runtime-output git ignores, fail-closed command policy defaults, and evidence redaction patterns.
 
 Consequences:
 
@@ -134,7 +134,7 @@ Status: Accepted
 
 Context: Workflow-guide routing depends on concise descriptions and predictable `SKILL.md` contracts. A full semantic trigger eval would require prompts, models, and scoring policy, which would push the core toward a benchmark system.
 
-Decision: Add `after-init doctor --guides` as a static audit with stable `AFTER-GUIDE-*` finding IDs. The audit checks that repo-local workflow guides exist, names are unique and folder-matching, descriptions are concise trigger text, required contract sections exist, and guide files stay lightweight.
+Decision: Add the bundled helper's `doctor --guides` as a static audit with stable `ONBOARDKIT-GUIDE-*` finding IDs. The audit checks that repo-local workflow guides exist, names are unique and folder-matching, descriptions are concise trigger text, required contract sections exist, and guide files stay lightweight.
 
 Consequences:
 
@@ -142,16 +142,17 @@ Consequences:
 - The check reinforces progressive disclosure and one-job-per-skill guidance.
 - Semantic LLM trigger eval remains optional and should be added only if static checks are insufficient.
 
-## ADR-011: Keep host shims pointer-only
+## ADR-011: Use skill-only distribution
 
 Status: Accepted
 
-Context: after-init should be usable from Claude Code, Gemini, Cursor, GitHub Copilot, and similar hosts, but duplicating canonical instructions across host-specific files creates drift. A full adapter installer would be larger than the current improvement pass.
+Context: onboardkit should be easy to invoke from an agent, but npm packaging and host-specific shim files add distribution work, naming pressure, and drift. The useful core is the skill's procedure plus a deterministic helper, not a globally installed command.
 
-Decision: Add optional `init --host-shims` support for thin `GEMINI.md`, `.github/copilot-instructions.md`, and `.cursor/rules/after-init.mdc` files. Each shim points back to canonical `AGENTS.md` guidance and avoids copying long rules. `CLAUDE.md` remains the existing thin default shim.
+Decision: Make the repository an installable Codex skill source with root `SKILL.md` and `agents/openai.yaml`. Keep `bin/onboardkit.mjs` as a bundled helper script that the skill can call explicitly. Do not publish an npm package, require a global `onboardkit` command, or generate host-specific shim files in the MVP.
 
 Consequences:
 
-- Teams can opt into common host compatibility files without changing the core workflow.
-- Canonical project guidance remains in `AGENTS.md`.
-- Full adapter installers, generated host-specific skill packages, and host runtime integration remain backlog work.
+- Users install the skill once and ask Codex to set up or check a repo.
+- Canonical project guidance remains in generated `AGENTS.md`.
+- The helper remains deterministic and testable without becoming the product surface.
+- Additional host adapters, plugin packaging, and npm publishing remain outside the core.
