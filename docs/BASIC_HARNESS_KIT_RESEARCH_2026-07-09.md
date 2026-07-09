@@ -61,7 +61,7 @@ OpenAI Codex guidance maps closely to the current design:
 - Skills should be focused on one job, prefer instructions over scripts unless deterministic behavior is needed, and use concise trigger descriptions.
 - Codex security separates approval policy from sandbox mode and warns against no-sandbox/no-approval operation as a default.
 
-Assessment: pass for structure, partial for enforcement. The next implementation work should stay focused on command policy, proof freshness, and finish verdicts.
+Assessment: pass for MVP structure and enforcement. Remaining work should focus on proof freshness hardening and richer adapters only when the lightweight core needs them.
 
 ### Anthropic Claude Code
 

@@ -10,6 +10,7 @@ import { runCriteriaFile } from '../src/lib/evidence.mjs';
 import { runSecurityAudit } from '../src/lib/security-audit.mjs';
 import { runSkillAudit } from '../src/lib/skill-audit.mjs';
 import { createProjectScaffold } from '../src/lib/specs.mjs';
+import { sha256Buffer, sha256Json } from '../src/lib/hash.mjs';
 
 function listTextFiles(root) {
   const out = [];
@@ -51,6 +52,9 @@ function writeProof(root, runId, item) {
     criterion_id: item.id,
     type: item.type || 'command',
     description: item.description || item.id,
+    criterion_hash: item.criterionHash,
+    criteria_file: item.criteriaFile,
+    criteria_file_sha256: item.criteriaFileHash,
     required: item.required !== false,
     created_at: item.created_at || new Date().toISOString(),
     fresh: item.fresh !== false,
@@ -70,13 +74,27 @@ function writeProof(root, runId, item) {
 function writeRunReport(root, runId, items) {
   const runRoot = path.join(root, '.harness', 'evidence', runId);
   fs.mkdirSync(runRoot, { recursive: true });
+  const criteriaFile = path.join(root, 'criteria.json');
+  const criteria = items.map(item => ({
+    id: item.id,
+    description: item.description || item.id,
+    type: item.type || 'command',
+    required: item.required !== false,
+    command: 'node --version'
+  }));
+  fs.writeFileSync(criteriaFile, JSON.stringify({ criteria }, null, 2));
+  const criteriaFileHash = sha256Buffer(fs.readFileSync(criteriaFile));
   const results = items.map(item => {
-    const evidencePath = item.missing ? path.join(runRoot, item.id, 'proof.json') : writeProof(root, runId, item);
+    const criterion = criteria.find(candidate => candidate.id === item.id);
+    const criterionHash = criterion ? sha256Json(criterion) : null;
+    const itemWithHashes = { ...item, criterionHash, criteriaFile, criteriaFileHash };
+    const evidencePath = item.missing ? path.join(runRoot, item.id, 'proof.json') : writeProof(root, runId, itemWithHashes);
     return {
       id: item.id,
       description: item.description || item.id,
       required: item.required !== false,
       ok: item.ok === true,
+      criterionHash,
       evidencePath
     };
   });
@@ -84,7 +102,9 @@ function writeRunReport(root, runId, items) {
     runId,
     ok: results.every(item => item.ok || !item.required),
     createdAt: new Date().toISOString(),
-    criteriaFile: path.join(root, 'criteria.json'),
+    criteriaFile,
+    criteriaFileHash,
+    criteriaCount: criteria.length,
     results
   }, null, 2));
 }
@@ -640,6 +660,47 @@ test('finish gate marks missing or changed artifacts incomplete', async () => {
 
   assert.equal(verdict.verdict, 'INCOMPLETE');
   assert.deepEqual(verdict.required.map(item => item.reason), ['missing-artifact', 'artifact-hash-mismatch']);
+});
+
+test('finish gate marks changed criteria incomplete', async () => {
+  const { finishRun } = await import('../src/lib/finish-gate.mjs');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ahk-finish-criteria-stale-'));
+  const criteriaFile = path.join(dir, 'criteria.json');
+  fs.writeFileSync(criteriaFile, JSON.stringify({
+    criteria: [
+      {
+        id: 'C01',
+        description: 'Original command',
+        type: 'command',
+        command: 'node --version'
+      }
+    ]
+  }));
+
+  runCriteriaFile({ cwd: dir, criteriaFile, runId: 'criteria-stale-run' });
+  fs.writeFileSync(criteriaFile, JSON.stringify({
+    criteria: [
+      {
+        id: 'C01',
+        description: 'Changed command',
+        type: 'command',
+        command: 'node --version'
+      },
+      {
+        id: 'C02',
+        description: 'New required command',
+        type: 'command',
+        command: 'node --version'
+      }
+    ]
+  }));
+  const verdict = finishRun({ cwd: dir, runId: 'criteria-stale-run' });
+  const reasons = verdict.required.map(item => item.reason);
+
+  assert.equal(verdict.verdict, 'INCOMPLETE');
+  assert.equal(reasons.includes('criteria-file-hash-mismatch'), true);
+  assert.equal(reasons.includes('criterion-hash-mismatch'), true);
+  assert.equal(reasons.includes('missing-result-for-current-criterion'), true);
 });
 
 test('finish gate passes required fresh evidence and warns on optional failures', async () => {

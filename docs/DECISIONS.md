@@ -60,7 +60,7 @@ Status: Accepted
 
 Context: Reference frameworks such as Superpowers, Superloopy, BMAD, Matt Pocock skills, Spec Kit, Vercel AGENTS.md guidance, OpenAI Codex guidance, OpenClaw, and Hermes all point toward alignment, small changes, explicit routing, policy-aware execution, reviewed learning loops, and fresh proof-of-done. Dynamic eval runners, browser automation, gateways, schedulers, persistent memory, and subagent orchestration are useful, but they can make Agent Onboard feel like a platform rather than a compact repo onboarding kit.
 
-Decision: Implement the next improvement pass in this order: command policy v0, shared language and role contracts, finish gate v0, artifact/manual evidence v0, and optional pointer-only run summary. Keep deterministic eval and browser automation in the non-core backlog until the safety and evidence spine is stable.
+Decision: At the time of this ADR, implement the next improvement pass in this order: command policy v0, shared language and role contracts, finish gate v0, artifact/manual evidence v0, and optional pointer-only run summary. Keep deterministic eval and browser automation in the non-core backlog until the safety and evidence spine is stable.
 
 Consequences:
 

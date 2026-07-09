@@ -64,7 +64,7 @@ Inputs: criteria file, command policy, changed files, expected commands, and exi
 
 Outputs: proof files, command logs, run report, and clear status for pass, fail, incomplete, pending, missing, stale, and warn conditions.
 
-Stop conditions: denied command policy, missing required tools, stale or missing required evidence, unsafe path, unredacted secret risk, or non-command evidence without an adapter.
+Stop conditions: denied command policy, missing required tools, stale or missing required evidence, unsafe path, unredacted secret risk, or unsupported non-command evidence without an existing artifact path or adapter.
 
 ### Reviewer
 

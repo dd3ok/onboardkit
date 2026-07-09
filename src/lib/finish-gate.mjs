@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { readJson, writeJson } from './fs.mjs';
-import { sha256Buffer } from './hash.mjs';
+import { sha256Buffer, sha256Json } from './hash.mjs';
 import { assertSafePathSegment } from './security-policy.mjs';
 
 function inside(child, parent) {
@@ -34,6 +34,124 @@ function statusItem({ result, status, reason, evidencePath }) {
     reason,
     evidencePath
   };
+}
+
+function criteriaIssue({ id, description, reason, evidencePath }) {
+  return statusItem({
+    result: { id, description, required: true },
+    status: 'incomplete',
+    reason,
+    evidencePath
+  });
+}
+
+function readCurrentCriteria({ cwd, report }) {
+  const issues = [];
+  const byId = new Map();
+  const criteriaFile = report.criteriaFile;
+
+  if (!criteriaFile) {
+    issues.push(criteriaIssue({
+      id: 'criteria-file',
+      description: 'Criteria file',
+      reason: 'missing-criteria-file-reference',
+      evidencePath: null
+    }));
+    return { issues, byId };
+  }
+
+  const resolved = path.resolve(criteriaFile);
+  if (!inside(resolved, cwd)) {
+    issues.push(criteriaIssue({
+      id: 'criteria-file',
+      description: 'Criteria file',
+      reason: 'criteria-file-outside-workspace',
+      evidencePath: resolved
+    }));
+    return { issues, byId };
+  }
+
+  if (!fs.existsSync(resolved) || !fs.statSync(resolved).isFile()) {
+    issues.push(criteriaIssue({
+      id: 'criteria-file',
+      description: 'Criteria file',
+      reason: 'missing-current-criteria-file',
+      evidencePath: resolved
+    }));
+    return { issues, byId };
+  }
+
+  const buffer = fs.readFileSync(resolved);
+  const currentHash = sha256Buffer(buffer);
+  if (!report.criteriaFileHash) {
+    issues.push(criteriaIssue({
+      id: 'criteria-file',
+      description: 'Criteria file',
+      reason: 'missing-criteria-file-hash',
+      evidencePath: resolved
+    }));
+  } else if (currentHash !== report.criteriaFileHash) {
+    issues.push(criteriaIssue({
+      id: 'criteria-file',
+      description: 'Criteria file',
+      reason: 'criteria-file-hash-mismatch',
+      evidencePath: resolved
+    }));
+  }
+
+  let doc;
+  try {
+    doc = JSON.parse(buffer.toString('utf8'));
+  } catch {
+    issues.push(criteriaIssue({
+      id: 'criteria-file',
+      description: 'Criteria file',
+      reason: 'invalid-current-criteria-file',
+      evidencePath: resolved
+    }));
+    return { issues, byId };
+  }
+
+  if (!Array.isArray(doc.criteria)) {
+    issues.push(criteriaIssue({
+      id: 'criteria-file',
+      description: 'Criteria file',
+      reason: 'invalid-current-criteria-shape',
+      evidencePath: resolved
+    }));
+    return { issues, byId };
+  }
+
+  const reportedIds = new Set((report.results || []).map(result => result.id));
+  for (const [index, criterion] of doc.criteria.entries()) {
+    const id = criterion.id || `criterion-${index + 1}`;
+    if (typeof id !== 'string' || !/^[a-zA-Z0-9._-]+$/.test(id)) {
+      issues.push(criteriaIssue({
+        id: `criterion-${index + 1}`,
+        description: 'Current criterion',
+        reason: 'invalid-current-criterion-id',
+        evidencePath: resolved
+      }));
+      continue;
+    }
+    const entry = {
+      id,
+      description: criterion.description || id,
+      required: criterion.required !== false,
+      hash: sha256Json(criterion)
+    };
+    byId.set(id, entry);
+    if (entry.required && !reportedIds.has(id)) {
+      issues.push(criteriaIssue({
+        id,
+        description: entry.description,
+        reason: 'missing-result-for-current-criterion',
+        evidencePath: resolved
+      }));
+    }
+  }
+
+  return { issues, byId };
 }
 
 function readProof({ runRoot, runId, result }) {
@@ -71,13 +189,23 @@ function readProof({ runRoot, runId, result }) {
   }
 }
 
-function classifyProof({ cwd, result, runId, runRoot }) {
+function classifyProof({ cwd, result, runId, runRoot, criteriaState }) {
   const read = readProof({ runRoot, runId, result });
   if (read.status === 'incomplete') {
     return statusItem({ result, status: 'incomplete', reason: read.reason, evidencePath: read.evidencePath });
   }
 
   const proof = read.proof;
+  const currentCriterion = criteriaState.byId.get(result.id);
+  if (!currentCriterion) {
+    return statusItem({ result, status: 'incomplete', reason: 'criterion-missing-from-current-criteria', evidencePath: read.evidencePath });
+  }
+  if (!result.criterionHash || !proof.criterion_hash) {
+    return statusItem({ result, status: 'incomplete', reason: 'missing-criterion-hash', evidencePath: read.evidencePath });
+  }
+  if (result.criterionHash !== currentCriterion.hash || proof.criterion_hash !== currentCriterion.hash) {
+    return statusItem({ result, status: 'incomplete', reason: 'criterion-hash-mismatch', evidencePath: read.evidencePath });
+  }
   const artifactProblem = validateArtifact({ cwd, proof });
   if (artifactProblem) {
     return statusItem({ result, status: 'incomplete', reason: artifactProblem, evidencePath: read.evidencePath });
@@ -142,7 +270,11 @@ export function finishRun({ cwd, runId }) {
   }
 
   const report = readJson(reportPath);
-  const classified = (report.results || []).map(result => classifyProof({ cwd, result, runId: safeId, runRoot }));
+  const criteriaState = readCurrentCriteria({ cwd, report });
+  const classified = [
+    ...criteriaState.issues,
+    ...(report.results || []).map(result => classifyProof({ cwd, result, runId: safeId, runRoot, criteriaState }))
+  ];
   if (classified.length === 0) {
     const result = {
       runId: safeId,

@@ -25,6 +25,7 @@ Synchronization: when this document changes, check `src/lib/evidence.mjs`, `src/
 A proof is the machine-readable record for one criterion. For command criteria, proof records:
 
 - run ID and criterion ID
+- criterion hash and criteria file hash
 - command and normalized command
 - command policy status, rule, reason, and approval fields
 - timeout and output limit
@@ -48,13 +49,15 @@ For artifact-backed criteria, proof records:
 
 ## Run Report
 
-`run-report.json` is the verifier's index for a run. It records the criteria file, run ID, and result entries pointing to proof paths.
+`run-report.json` is the verifier's index for a run. It records the criteria file, criteria file hash, run ID, and result entries pointing to proof paths and criterion hashes.
 
 The run report is not a finish verdict. It indexes individual criterion results; `finish` decides the aggregate run verdict.
 
 For command proofs, the finish gate also checks that referenced command logs exist inside the same evidence run root.
 
 For artifact-backed proofs, the finish gate checks that the referenced artifact still exists inside the workspace and that the current SHA-256 hash matches the recorded hash.
+
+For every proof, the finish gate checks that the current criteria file still matches the recorded file hash and that each current required criterion has matching proof.
 
 ## Finish Report
 

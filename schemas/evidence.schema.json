@@ -24,6 +24,15 @@
     "description": {
       "type": "string"
     },
+    "criterion_hash": {
+      "type": "string"
+    },
+    "criteria_file": {
+      "type": "string"
+    },
+    "criteria_file_sha256": {
+      "type": "string"
+    },
     "command": {
       "type": "string"
     },

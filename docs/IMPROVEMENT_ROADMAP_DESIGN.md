@@ -590,7 +590,7 @@ Completed core slices:
 - Finish gate v0
 - Artifact/manual evidence v0
 - Static security audit findings with stable IDs
-- Skill trigger and contract checks v0
+- Static skill contract checks v0
 - Optional pointer-only host shims
 ```
 
@@ -639,7 +639,7 @@ This keeps Agent Onboard usable in Codex, Claude Code, Cursor, Copilot, or manua
 - Do not make dynamic eval part of ordinary done.
 - Do not require subagents.
 - Do not require browser automation.
-- Do not implement YAML criteria parsing in this improvement pass.
+- Do not implement YAML criteria parsing in the completed safety/evidence pass.
 - Do not implement host adapter installers in this improvement pass.
 - Do not implement Codex plugin packaging in this improvement pass.
 - Do not implement dashboard/report UI in this improvement pass.

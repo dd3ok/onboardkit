@@ -34,11 +34,14 @@ Warnings: optional evidence that is missing, stale, pending, unsupported, tool-u
 ## V0 Rules
 
 - Read only the selected run's `run-report.json`.
+- Re-read the current criteria file referenced by the run report.
+- Require the current criteria file hash and current required criterion hashes to match recorded proof.
 - Resolve each proof path and require it to stay inside `.harness/evidence/<run-id>/`.
 - Resolve command log paths referenced by proofs and require them to stay inside `.harness/evidence/<run-id>/`.
 - Resolve artifact paths referenced by proofs and require them to stay inside the workspace.
 - Reject relative, outside-workspace, drive-relative, UNC, traversal, or symlink-escaping artifact references.
 - Required missing proof blocks completion as `INCOMPLETE`.
+- Required missing or changed criterion proof blocks completion as `INCOMPLETE`.
 - Required missing command log blocks completion as `INCOMPLETE`.
 - Required missing artifact or artifact hash mismatch blocks completion as `INCOMPLETE`.
 - Required pending or stale proof blocks completion as `INCOMPLETE`.

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { ensureDir, readJson, writeJson, writeText } from './fs.mjs';
-import { safeRunId, sha256, sha256Buffer } from './hash.mjs';
+import { safeRunId, sha256, sha256Buffer, sha256Json } from './hash.mjs';
 import {
   assertSafePathSegment,
   commandExecutionLimits,
@@ -53,7 +53,7 @@ function realPathInsideWorkspace(cwd, artifactPath) {
   return isInside(realArtifact, realCwd);
 }
 
-function writeNonCommandProof({ cwd, runId, criterion, id, required, description, itemDir }) {
+function writeNonCommandProof({ cwd, runId, criterion, criterionHash, criteriaFile, criteriaFileHash, id, required, description, itemDir }) {
   const createdAt = new Date().toISOString();
   const artifact = resolveArtifactPath(cwd, criterion.path);
   const base = {
@@ -61,6 +61,9 @@ function writeNonCommandProof({ cwd, runId, criterion, id, required, description
     criterion_id: id,
     type: criterion.type,
     description,
+    criterion_hash: criterionHash,
+    criteria_file: criteriaFile,
+    criteria_file_sha256: criteriaFileHash,
     required,
     created_at: createdAt,
     observed_at: createdAt,
@@ -119,6 +122,7 @@ function writeNonCommandProof({ cwd, runId, criterion, id, required, description
 }
 
 export function runCriteriaFile({ cwd, criteriaFile, runId = safeRunId('evidence') }) {
+  const criteriaFileHash = sha256Buffer(fs.readFileSync(criteriaFile));
   const doc = readJson(criteriaFile);
   if (!Array.isArray(doc.criteria)) throw new Error('criteria file must contain { "criteria": [...] }');
   const safeId = assertSafePathSegment(runId, 'run id');
@@ -128,13 +132,14 @@ export function runCriteriaFile({ cwd, criteriaFile, runId = safeRunId('evidence
   const results = [];
   for (const criterion of doc.criteria) {
     const id = assertSafePathSegment(criterion.id || `criterion-${results.length + 1}`, 'criterion id');
+    const criterionHash = sha256Json(criterion);
     const required = criterion.required !== false;
     const description = criterion.description || id;
     const itemDir = path.join(runRoot, id);
     ensureDir(itemDir);
     if (criterion.type && criterion.type !== 'command') {
-      const { proof, evidencePath } = writeNonCommandProof({ cwd, runId: safeId, criterion, id, required, description, itemDir });
-      results.push({ id, description, required, ok: proof.ok, evidencePath });
+      const { proof, evidencePath } = writeNonCommandProof({ cwd, runId: safeId, criterion, criterionHash, criteriaFile, criteriaFileHash, id, required, description, itemDir });
+      results.push({ id, description, required, ok: proof.ok, criterionHash, evidencePath });
       continue;
     }
     if (!criterion.command) throw new Error(`criterion ${id} is missing command`);
@@ -159,6 +164,9 @@ export function runCriteriaFile({ cwd, criteriaFile, runId = safeRunId('evidence
         criterion_id: id,
         type: 'command',
         description,
+        criterion_hash: criterionHash,
+        criteria_file: criteriaFile,
+        criteria_file_sha256: criteriaFileHash,
         command: redactedCommand,
         normalized_command: redactedNormalizedCommand,
         cwd,
@@ -186,7 +194,7 @@ export function runCriteriaFile({ cwd, criteriaFile, runId = safeRunId('evidence
       };
       const evidencePath = path.join(itemDir, 'proof.json');
       writeJson(evidencePath, proof);
-      results.push({ id, description, required, ok: false, evidencePath, exitCode: null });
+      results.push({ id, description, required, ok: false, criterionHash, evidencePath, exitCode: null });
       continue;
     }
     const startedAt = new Date().toISOString();
@@ -221,6 +229,9 @@ export function runCriteriaFile({ cwd, criteriaFile, runId = safeRunId('evidence
       criterion_id: id,
       type: 'command',
       description,
+      criterion_hash: criterionHash,
+      criteria_file: criteriaFile,
+      criteria_file_sha256: criteriaFileHash,
       command: redactedCommand,
       normalized_command: redactedNormalizedCommand,
       cwd,
@@ -249,13 +260,15 @@ export function runCriteriaFile({ cwd, criteriaFile, runId = safeRunId('evidence
     };
     const evidencePath = path.join(itemDir, 'proof.json');
     writeJson(evidencePath, proof);
-    results.push({ id, description, required, ok: proof.ok, evidencePath, exitCode: proc.status });
+    results.push({ id, description, required, ok: proof.ok, criterionHash, evidencePath, exitCode: proc.status });
   }
   const report = {
     runId: safeId,
     ok: results.every(r => r.ok || !r.required),
     createdAt: new Date().toISOString(),
     criteriaFile,
+    criteriaFileHash,
+    criteriaCount: doc.criteria.length,
     results
   };
   writeJson(path.join(runRoot, 'run-report.json'), report);
