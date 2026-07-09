@@ -1,6 +1,6 @@
 # Source of Truth (SOT)
 
-Updated: 2026-07-08
+Updated: 2026-07-09
 
 This document is the canonical map for Agent Onboard. When documents disagree, resolve conflicts using this priority order.
 
@@ -81,6 +81,7 @@ Each update must also check:
 - Reference repository matrix: `docs/REFERENCE_REPOSITORY_MATRIX.md`
 - Build verification: `docs/BUILD_VERIFICATION.md`
 - Improvement roadmap design: `docs/IMPROVEMENT_ROADMAP_DESIGN.md`
+- Basic harness kit research addendum: `docs/BASIC_HARNESS_KIT_RESEARCH_2026-07-09.md`
 
 ## External source references
 
@@ -91,3 +92,9 @@ Each update must also check:
 - OpenAI Codex approvals and security: https://developers.openai.com/codex/agent-approvals-security
 - OpenAI Codex config reference: https://developers.openai.com/codex/config-reference
 - Next.js 16.2 AI improvements: https://nextjs.org/blog/next-16-2-ai
+- OpenClaw repository: https://github.com/openclaw/openclaw
+- OpenClaw skills: https://docs.openclaw.ai/tools/skills
+- OpenClaw security audit checks: https://docs.openclaw.ai/gateway/security/audit-checks
+- Hermes repository: https://github.com/NousResearch/hermes-agent
+- Hermes skills system: https://hermes-agent.nousresearch.com/docs/user-guide/features/skills
+- Hermes security: https://hermes-agent.nousresearch.com/docs/user-guide/security

@@ -10,7 +10,7 @@ Synchronization: when this roadmap changes phase order or promotes backlog work 
 
 This design consolidates prior research into one roadmap. It keeps Agent Onboard focused on AGENTS.md-first guidance, lightweight workflow skills, and command-backed evidence.
 
-The prior research included Superpowers, Superloopy, BMAD, Matt Pocock skills, Karpathy-style guidance, Spec Kit, Vercel AGENTS.md findings, and OpenAI Codex guidance. The goal is not to copy any one framework, but to adopt the strongest shared ideas:
+The prior research included Superpowers, Superloopy, BMAD, Matt Pocock skills, Karpathy-style guidance, Spec Kit, Vercel AGENTS.md findings, OpenAI Codex guidance, OpenClaw, and Hermes. The goal is not to copy any one framework, but to adopt the strongest shared ideas:
 
 - align before coding
 - keep durable guidance in AGENTS.md
@@ -111,6 +111,42 @@ Avoid speculative abstractions and large framework-like surfaces before real usa
 Keep always-needed guidance in AGENTS.md and route longer material through compressed docs indexes.
 
 Do not rely on implicit skill discovery for project-wide knowledge.
+
+### OpenClaw
+
+Adopt lightweight security and compatibility lessons:
+
+- structured audit findings with stable IDs
+- policy checks for command execution, sandbox/network posture, data handling, secrets, and skill metadata
+- shallow `doctor` checks separate from deeper audit modes
+- compatible bundle or host-adapter shims that reference canonical guidance instead of duplicating it
+
+Do not copy the runtime platform:
+
+- gateway process
+- chat channels
+- always-on assistant state
+- skill marketplace
+- remote node control plane
+- subagent orchestration
+
+### Hermes
+
+Adopt reviewed learning-loop lessons:
+
+- distinguish memory facts from skill procedures
+- stage durable skill, memory, or instruction changes for approval before they land
+- support diagnostic modes that can ignore local customizations when debugging setup problems
+- keep project context compatibility centered on AGENTS.md
+
+Do not copy the runtime platform:
+
+- autonomous skill mutation
+- persistent personal memory
+- messaging gateway
+- cron scheduler
+- model/provider routing
+- multi-agent task board
 
 ## Architecture Boundaries
 
@@ -241,14 +277,24 @@ Security reviewer:
 
 Add command policy v0:
 
+Implement this in small sub-slices so Phase 1 does not become a platform-sized change.
+
+Minimum v0 slice:
+
 - normalize every command before policy evaluation
-- prefer named command descriptors over free-form shell strings
-- keep legacy command strings only as trusted input, with stricter matching
 - deny clearly destructive commands
 - mark risky commands as prompt-required
 - fail prompt-required commands in non-interactive mode unless an explicit override is present
 - allow only exact known project-local commands after deny and prompt checks
 - record policy decisions in proof output
+- command timeout
+- output size limit
+- common secret redaction before persistence
+
+Hardening follow-up within the same phase:
+
+- prefer named command descriptors over free-form shell strings
+- keep legacy command strings only as trusted input, with stricter matching
 
 Policy precedence is deterministic:
 
@@ -281,8 +327,6 @@ Also add:
 - run ID validation
 - criterion ID validation
 - a shared path containment helper for `.harness/evidence`, `.harness/runs`, and `.harness/reports`
-- command timeout
-- output size limit
 - broader secret redaction
 
 Path containment requirements:
@@ -664,4 +708,4 @@ Defer platform-like features:
 full runtime -> subagent orchestration -> browser automation -> dynamic benchmark runner
 ```
 
-This preserves the best ideas from Matt Pocock skills, BMAD, Superpowers, Superloopy, Spec Kit, Karpathy-style guidance, Vercel AGENTS.md findings, and OpenAI Codex guidance without turning Agent Onboard into a heavy agent platform.
+This preserves the best ideas from Matt Pocock skills, BMAD, Superpowers, Superloopy, Spec Kit, Karpathy-style guidance, Vercel AGENTS.md findings, OpenAI Codex guidance, OpenClaw, and Hermes without turning Agent Onboard into a heavy agent platform.

@@ -114,7 +114,7 @@ Use `agent-onboard index-docs` to inject a compressed docs index into the manage
 <!-- agent-onboard:docs-index:start -->
 [Project Docs Index]|root: docs
 |IMPORTANT: Prefer retrieval-led reasoning over pretraining-led reasoning. Read relevant local docs before coding against version-sensitive APIs.
-|.:{ANALYSIS.md,ARCHITECTURE.md,BEST_PRACTICES_AUDIT.md,BUILD_VERIFICATION.md,CODEX_VENDOR_COMPLIANCE.md,DECISIONS.md,EVAL_METHODOLOGY.md,IMPROVEMENT_ROADMAP_DESIGN.md,REFERENCE_REPOSITORY_MATRIX.md,SECURITY_MODEL.md,SOT.md,STATUS.md,TODO_FEATURE_DESIGNS.md}
+|.:{ANALYSIS.md,ARCHITECTURE.md,BASIC_HARNESS_KIT_RESEARCH_2026-07-09.md,BEST_PRACTICES_AUDIT.md,BUILD_VERIFICATION.md,CODEX_VENDOR_COMPLIANCE.md,DECISIONS.md,EVAL_METHODOLOGY.md,IMPROVEMENT_ROADMAP_DESIGN.md,REFERENCE_REPOSITORY_MATRIX.md,SECURITY_MODEL.md,SOT.md,STATUS.md,TODO_FEATURE_DESIGNS.md}
 <!-- agent-onboard:docs-index:end -->
 
 ## Security Rules

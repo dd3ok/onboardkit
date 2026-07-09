@@ -1,5 +1,5 @@
 interface:
   display_name: "eval"
-  short_description: "Design and run evals comparing baseline, skills-only, AGENTS.md-only, docs-index, and hybr"
+  short_description: "Design evals and run available deterministic checks across AGENTS, skills, docs-index, and hybrid modes"
 policy:
   allow_implicit_invocation: true
