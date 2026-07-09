@@ -23,11 +23,11 @@ The current direction is sound. Agent Onboard should remain an AGENTS.md-first, 
 
 The strongest missing pieces are implementation depth, not philosophy:
 
-1. Command policy and static security audit.
+1. Command policy hardening beyond v0.
 2. Shared vocabulary and role contracts.
 3. Finish gate with fresh evidence semantics.
 4. Artifact/manual evidence with hashes and provenance.
-5. Skill trigger and skill metadata evals.
+5. Skill contract checks and optional semantic trigger evals.
 6. Conflict-aware vendor shims for Claude, Gemini, Cursor, and Copilot.
 7. Retro/skill-change staging so durable learning is reviewed before it lands.
 8. Optional run/verify recipe capture for downstream repos.
@@ -39,13 +39,13 @@ Keep out of core: chat channels, gateways, schedulers, persistent personal memor
 | Surface | Current status | Evidence | Gap |
 | --- | --- | --- | --- |
 | Root `AGENTS.md` | Pass | Concise operating principles, commands, DoD, routing, docs index, security rules | Keep under size budget as docs grow |
-| Codex repo skills | Pass | `.agents/skills/<name>/SKILL.md`; all skills have frontmatter and focused bodies | Add trigger eval automation |
+| Codex repo skills | Pass | `.agents/skills/<name>/SKILL.md`; all skills have frontmatter, focused bodies, and `doctor --skills` static checks | Semantic trigger eval automation remains optional |
 | Claude Code compatibility | Partial pass | Root `CLAUDE.md` shim points to `AGENTS.md`; skills use `SKILL.md` format | No dedicated Claude skill/plugin adapter |
-| Gemini compatibility | Partial | AGENTS.md content can be converted conceptually | No `GEMINI.md` shim or generator |
-| Cursor compatibility | Partial | Rules vs skills split is reflected in design | No `.cursor/rules` adapter |
-| GitHub Copilot compatibility | Partial pass | Root `AGENTS.md` helps Copilot coding agent; guidance is not conflicting | No `.github/copilot-instructions.md` shim |
-| Evidence collection | Partial | Command-backed `verify` exists; non-command evidence is pending | Finish gate, freshness/staleness, artifact hashing are TODO |
-| Security posture | Partial | Security model and safe config example exist | Command policy enforcement and audit findings are TODO |
+| Gemini compatibility | Partial pass | Optional `init --host-shims` creates a thin `GEMINI.md` pointer | No full Gemini adapter or generated skill package |
+| Cursor compatibility | Partial pass | Optional `init --host-shims` creates `.cursor/rules/agent-onboard.mdc` as a thin pointer | No full Cursor adapter or generated skill package |
+| GitHub Copilot compatibility | Partial pass | Root `AGENTS.md` helps Copilot coding agent; optional `init --host-shims` creates `.github/copilot-instructions.md` | No full Copilot adapter |
+| Evidence collection | Pass for MVP | Command-backed `verify`, file-backed artifact/manual evidence, and finish gate v0 exist | Browser automation and dynamic evidence adapters remain TODO |
+| Security posture | Pass for MVP | Security model, safe config example, command policy v0, and shallow `doctor --security` audit exist | Broader redaction and richer parsing remain TODO |
 | Review | Pass as workflow guidance | `review` and `security-review` skills exist | Machine-readable review blocker contract is not ready |
 | Eval | Partial | Static eval inventory exists | Deterministic eval runner and skill-trigger tests are TODO |
 
@@ -83,19 +83,19 @@ Cursor guidance distinguishes static rules from dynamic skills:
 - Avoid dumping huge style guides, every command, or rare edge cases into always-on context.
 - Update rules after repeated mistakes.
 
-Assessment: partial. The design follows this split, but a generated `.cursor/rules/agent-onboard.mdc` adapter would make the kit easier to consume in Cursor without duplicating canonical text.
+Assessment: partial pass. `init --host-shims` now generates a thin `.cursor/rules/agent-onboard.mdc` pointer without duplicating canonical text. A full Cursor adapter remains backlog work.
 
 ### GitHub Copilot
 
 GitHub Copilot supports repository custom instructions and Copilot coding agent support for `AGENTS.md`.
 
-Assessment: partial pass. Root `AGENTS.md` is useful already. A `.github/copilot-instructions.md` shim should be optional and conflict-aware because conflicting instructions are explicitly risky across custom instruction surfaces.
+Assessment: partial pass. Root `AGENTS.md` is useful already, and `init --host-shims` now generates a thin `.github/copilot-instructions.md` pointer. A full Copilot adapter remains backlog work because conflicting instructions are explicitly risky across custom instruction surfaces.
 
 ### Gemini CLI
 
 Gemini CLI uses `GEMINI.md` context files with hierarchical loading.
 
-Assessment: partial. Agent Onboard does not need a new canonical source, but a generated `GEMINI.md` shim can point to `AGENTS.md` and selected docs for Gemini users.
+Assessment: partial pass. `init --host-shims` now generates a thin `GEMINI.md` pointer to `AGENTS.md` for Gemini users. A full Gemini adapter remains backlog work.
 
 ### Agent Skills Open Standard
 
@@ -127,7 +127,7 @@ Detailed notes:
 | `plan` | Pass | Good executable task slicing and criteria output. |
 | `tdd` | Pass | Correctly conditional on feasible automated tests. |
 | `implement` | Pass | Scoped implementation and immediate verification. |
-| `verify` | Pass with implementation TODO | Correctly creates command evidence; needs future policy/freshness integration. |
+| `verify` | Pass for MVP | Correctly creates command and file-backed artifact/manual evidence under command policy and finish semantics. |
 | `review` | Pass | Correctly separates review from verification. |
 | `security-review` | Pass | Correctly focused on secrets, auth, network, injection, destructive ops. |
 | `retro` | Pass with governance TODO | Good learning loop; should stage AGENTS/skill/template changes for review before durable updates land. |
@@ -136,16 +136,16 @@ Detailed notes:
 
 Recommended lightweight skill-quality additions:
 
-1. Add `agent-onboard doctor` checks for skill description length, frontmatter, duplicate names, missing inputs/outputs, and overly broad descriptions.
-2. Add a small trigger-fixture file for each skill with should-trigger and should-not-trigger prompts.
-3. Add an eval mode that checks trigger routing without running LLM-heavy benchmarks by default.
+1. Add `agent-onboard doctor --skills` checks for skill description length, frontmatter, duplicate names, missing inputs/outputs, and overly broad descriptions. Status: implemented v0.
+2. Add a small trigger-fixture file for each skill with should-trigger and should-not-trigger prompts if static checks prove insufficient.
+3. Add an eval mode that checks trigger routing without running LLM-heavy benchmarks by default if teams need semantic routing evidence.
 4. Add a policy that `retro` proposes durable changes as a patch or staged artifact, not silent mutation.
 
 ## What To Add To A Basic Harness Kit
 
 ### 1. Command Policy And Security Audit
 
-Recommendation: command policy is core. Static security audit findings are a companion slice and should not block command policy v0.
+Recommendation: command policy is core. Static security audit findings are a companion slice. Status: command policy v0 and shallow static audit v0 are implemented.
 
 Why: current command-backed criteria are the main place where the kit executes code. This is the highest leverage safety boundary.
 
@@ -203,7 +203,7 @@ Important boundary: self-review is not the same thing as evidence. Review remain
 
 ### 4. Artifact And Manual Evidence
 
-Recommendation: core after finish gate.
+Recommendation: core after finish gate. Status: finish gate v0 and artifact/manual evidence v0 are implemented.
 
 Why: basic kits need to record non-command proof without owning browser automation.
 
@@ -220,7 +220,7 @@ Do not launch a browser in core. Let host tools produce screenshots/logs; Agent 
 
 ### 5. Vendor Shim Generator
 
-Recommendation: optional adapter, not core execution path.
+Recommendation: optional adapter, not core execution path. Status: implemented as pointer-only v0 through `init --host-shims`; full adapter installers remain backlog work.
 
 Why: teams use Codex, Claude Code, Cursor, Copilot, Gemini, and other hosts. Agent Onboard should make canonical guidance portable without duplicating source of truth.
 
@@ -355,22 +355,34 @@ Reasoning: Hermes is strong evidence for a reviewed learning loop, but not for p
 
 ## Recommended Revised Roadmap
 
-The current five-step priority should remain intact:
+The original safety spine is now implemented except for optional run summary, which remains conditional:
 
 ```text
 1. Command policy v0
 2. Shared language and role contracts
 3. Finish gate v0
 4. Artifact/manual evidence v0
-5. Optional run summary, only if needed by finish/status
+5. Optional run summary, only if finish/status needs a separate pointer file
+```
+
+Status note: command policy v0, shared language and role contracts, finish gate v0, artifact/manual evidence v0, and shallow static security audit v0 are now implemented. Optional run summary is not required while `run-report.json` and `finish-report.json` cover the pointer need.
+
+The current next implementation order is:
+
+```text
+1. YAML criteria parser, only if JSON criteria become a usability bottleneck
+2. Optional run summary, only if finish/status needs a separate pointer file
+3. Broader redaction and structured command descriptors
+4. Semantic skill trigger eval, only if static `doctor --skills` checks are insufficient
+5. Host adapter installer, only if pointer-only shims are insufficient
 ```
 
 Add these as explicit companion items, not as priority blockers:
 
 ```text
-1a. Static security audit output with stable finding IDs
+1a. Static security audit output with stable finding IDs (implemented v0)
 2a. Vendor compatibility matrix and shim generator design
-2b. Skill trigger and contract checks in doctor/eval
+2b. Skill trigger and contract checks in doctor (static doctor check implemented v0)
 3a. Review-blocker input contract design, but not in finish v0
 4a. Evidence provenance manifest for artifacts and redacted logs
 5a. Retro/skill-change staging policy
@@ -398,10 +410,10 @@ Keep these in non-core backlog:
 | P0 | Secret redaction and output limits | Yes | Evidence logs can leak sensitive data |
 | P1 | Shared language docs | Yes | Prevents confusion between proof, review, and done |
 | P1 | Finish gate | Yes | Converts evidence into PASS/FAIL/INCOMPLETE |
-| P1 | Artifact/manual evidence hashes | Yes | Covers screenshots, logs, docs, and manual proof without browser runtime |
-| P2 | Skill trigger eval | Yes, lightweight | Keeps skills aligned with vendor progressive-disclosure guidance |
-| P2 | Static security audit IDs | Companion | Useful after command policy v0; should not delay the first safety slice |
-| P2 | Vendor shims | Optional adapter | Useful for Claude/Gemini/Cursor/Copilot without duplicating rules |
+| P1 | Artifact/manual evidence hashes | Yes, implemented v0 | Covers screenshots, logs, docs, and manual proof without browser runtime |
+| P2 | Skill contract checks | Yes, implemented v0 | Keeps skills aligned with vendor progressive-disclosure guidance |
+| P2 | Static security audit IDs | Companion, implemented v0 | Useful after command policy v0; should stay shallow and local |
+| P2 | Vendor shims | Optional adapter, implemented pointer-only v0 | Useful for Claude/Gemini/Cursor/Copilot without duplicating rules |
 | P2 | Retro write approval | Policy now, tool later | Keeps learning loop reviewed |
 | P3 | Run/verify recipe generator | Optional | Helpful setup workflow, not a completion gate |
 | P3 | Nested AGENTS scanner | Optional | Good for monorepos, but generation should be explicit |
@@ -411,12 +423,12 @@ Keep these in non-core backlog:
 | Idea | Source basis | Agent Onboard fit | Placement | Risk if copied too broadly | Recommendation |
 | --- | --- | --- | --- | --- | --- |
 | Keep durable project rules in `AGENTS.md` | AGENTS.md format, OpenAI Codex, Copilot coding agent, Hermes context files | Strong | Core control plane | Bloated always-on context | Keep concise and index docs |
-| Put procedures in skills | Agent Skills standard, OpenAI Codex skills, Claude Code skills, Cursor skills, Hermes skills | Strong | Core workflow plane | Vague trigger descriptions | Keep one job per skill and test triggers |
-| Command approval and sandbox posture | OpenAI Codex approvals, Claude sandboxing, OpenClaw policy checks, Hermes dangerous command approvals | Strong | Core safety layer | Runtime-sized policy service | Implement local command policy v0 first |
-| Structured security audit IDs | OpenClaw security audit checks | Strong | Core-adjacent doctor/audit | Overbroad platform audit | Start with static local findings |
-| Finish gate | Superloopy proof-of-done, current roadmap, Codex verification guidance | Strong | Core runtime plane | Confusing evidence with verdict | Implement evidence-only `finish` v0 |
+| Put procedures in skills | Agent Skills standard, OpenAI Codex skills, Claude Code skills, Cursor skills, Hermes skills | Strong | Core workflow plane | Vague trigger descriptions | Keep one job per skill and run static contract checks |
+| Command approval and sandbox posture | OpenAI Codex approvals, Claude sandboxing, OpenClaw policy checks, Hermes dangerous command approvals | Strong | Core safety layer | Runtime-sized policy service | Keep command policy v0 as the first safety boundary |
+| Structured security audit IDs | OpenClaw security audit checks | Strong | Core-adjacent doctor/audit | Overbroad platform audit | Keep static local findings shallow and ID-based |
+| Finish gate | Superloopy proof-of-done, current roadmap, Codex verification guidance | Strong | Core runtime plane | Confusing evidence with verdict | Keep evidence-only `finish` v0 |
 | Artifact and manual proof | Current criteria schema, Codex verification guidance | Strong | Core evidence plane | Accidental browser runtime | Record and hash external artifacts only |
-| Vendor shims | Claude, Gemini, Cursor, Copilot context surfaces; OpenClaw plugin bundle compatibility | Useful | Optional adapter | Drifting duplicate rules | Generate thin pointers to canonical docs |
+| Vendor shims | Claude, Gemini, Cursor, Copilot context surfaces; OpenClaw plugin bundle compatibility | Useful | Optional adapter | Drifting duplicate rules | Keep thin pointers to canonical docs |
 | Skill write staging | Hermes `skills.write_approval`; current `retro` skill | Useful | Workflow policy, later tool support | Autonomous self-modification | Stage patches for review, never silent mutation |
 | Run/verify recipes | Downstream setup needs; compatibility inference from reusable skill and command patterns | Useful | Optional templates | Mutable task ledger | Capture confirmed commands only |
 | Subagents | BMAD role separation, OpenClaw subagents, Hermes Kanban/subagents | Limited | Backlog | Agent fleet/runtime management | Keep roles as contracts, not core orchestration |
@@ -443,7 +455,7 @@ The addendum and related README/roadmap edits were checked by independent subage
 
 | Review lane | Result | Action taken |
 | --- | --- | --- |
-| Vendor compliance research | Pass with gaps | Kept Codex as pass; marked Claude, Gemini, Cursor, and Copilot as partial until optional shims exist. |
+| Vendor compliance research | Pass with gaps | Kept Codex as pass; marked Claude, Gemini, Cursor, and Copilot as partial because pointer-only shims now exist but full adapters do not. |
 | Architecture scope | Pass | Kept command policy, shared language, finish gate, and artifact/manual evidence as core; kept runtime features out of core. |
 | Evidence and finish semantics | Pass | Preserved the distinction between evidence, finish verdict, review, and action logs. |
 | Adversarial critique | Blocked then fixed | Added OpenClaw/Hermes coverage, reduced priority drift, tightened eval wording, and added this cross-check record. |
@@ -535,7 +547,7 @@ Medium-confidence sources:
 | Current AGENTS.md/skills direction is vendor-aligned | High | Supported by OpenAI, AGENTS.md, Agent Skills, Claude, Cursor, and Copilot guidance |
 | Command policy should stay first | High | Current verifier executes commands; OpenAI/OpenClaw/Hermes all emphasize approvals and sandbox/policy boundaries |
 | Vendor shims are useful but should be optional | High | Multiple hosts use different context files; duplication creates drift risk |
-| Skill trigger eval is a strong next addition | High | Skill activation depends on descriptions across Codex and Agent Skills guidance |
+| Static skill contract checks are a strong addition | High | Skill activation depends on descriptions across Codex and Agent Skills guidance |
 | OpenClaw/Hermes runtime features should stay out of core | High | Their product boundary is broader than repo onboarding |
 | Retro write approval is worth adding | Medium-high | Hermes provides strong prior art; current retro already proposes durable updates |
 | Run/verify recipe capture is useful | Medium | Good workflow ergonomics, but lower risk than command policy and finish gate |

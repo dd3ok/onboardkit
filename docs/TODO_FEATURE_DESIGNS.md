@@ -176,6 +176,8 @@ templates/criteria.template.yaml
 
 ## T04 — Host adapter installer
 
+Status: Pointer-only shims are implemented through `init --host-shims`; the full adapter installer described here remains TODO.
+
 ### Goal
 
 Install host-specific instruction files while keeping a host-agnostic core.
@@ -263,6 +265,8 @@ docs/CODEX_VENDOR_COMPLIANCE.md
 
 ## T06 — Security policy engine
 
+Status: Implemented as command policy v0 plus shallow `doctor --security` static audit; richer parsing, interactive approvals, and broader redaction remain future hardening.
+
 ### Goal
 
 Prevent or flag risky commands before evidence execution.
@@ -295,7 +299,7 @@ docs/SECURITY_MODEL.md
 
 1. Add glob-like matcher.
 2. Deny hard-blocked commands.
-3. In non-interactive mode, fail prompt-required commands.
+3. Fail prompt-required commands unless the criterion carries explicit approval.
 4. In interactive mode, require `--approve-risky` flag.
 5. Record policy decision in `proof.json`.
 

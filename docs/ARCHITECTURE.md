@@ -6,16 +6,16 @@ Agent Onboard uses a five-layer architecture.
 
 ```text
 Layer 1. Control Plane
-  AGENTS.md, CLAUDE.md shim, docs index, Definition of Done, security policy
+  AGENTS.md, CLAUDE.md shim, docs index, shared language, Definition of Done, security policy
 
 Layer 2. Workflow Plane
   clarify, specify, design, plan, implement, tdd, verify, review, retro skills
 
 Layer 3. Evidence Plane
-  criteria.json, commands.log, proof.json, run-report.json
+  criteria.json, commands.log, proof.json, artifact metadata, run-report.json, finish-report.json
 
 Layer 4. Runtime Plane
-  .harness/runs, .harness/evidence, .harness/reports, doctor/status commands
+  .harness/runs, .harness/evidence, .harness/reports, doctor/status/finish commands
 
 Layer 5. Eval Plane
   evals/scenarios, static reports, future dynamic runner
@@ -49,6 +49,8 @@ Skills are on-demand vertical workflows. Each skill has:
 
 Skills are stored in the Codex repo-scoped location `.agents/skills`.
 
+`doctor --skills` validates the static skill contract: inventory, frontmatter, unique folder-matching names, concise trigger descriptions, required sections, and lightweight file size.
+
 ## Evidence plane
 
 The evidence plane separates agent claims from proof. A command criterion produces:
@@ -59,17 +61,19 @@ The evidence plane separates agent claims from proof. A command criterion produc
 .harness/evidence/<run-id>/run-report.json
 ```
 
-`proof.json` includes command, cwd, timestamps, exit code, output hashes, freshness, and pass/fail status.
+`proof.json` includes command, normalized command, policy decision, cwd, timestamps, exit code, output hashes, freshness, limits, and pass/fail status.
+
+For artifact-backed criteria, `proof.json` records the project-relative artifact path, absolute workspace path, file size, mtime, SHA-256 hash, and artifact kind. The artifact itself stays where the user or host tool produced it; Agent Onboard records and validates metadata.
+
+`finish-report.json` includes the aggregate `PASS`, `FAIL`, or `INCOMPLETE` verdict for a run plus required evidence classifications and optional warnings.
 
 ## Runtime plane
 
-The current MVP stores evidence and reports. Future runtime work will add:
+The current MVP stores evidence and reports. Future runtime work should stay minimal and pointer-based:
 
-- checkpoints
-- resumable runs
-- approval records
-- trace links
-- replayable command plans
+- optional run summaries that point to evidence
+- explicit approval metadata already captured in proof files
+- trace links from reports to existing proof, logs, and artifacts
 
 ## Eval plane
 
@@ -94,4 +98,6 @@ adapters/copilot      .github/copilot-instructions.md mapping
 adapters/opencode     opencode config mapping
 ```
 
-Adapters are TODO; see `docs/TODO_FEATURE_DESIGNS.md`.
+Full host adapters are TODO; see `docs/TODO_FEATURE_DESIGNS.md`.
+
+Pointer-only host shims are available through `init --host-shims` for Gemini, GitHub Copilot, and Cursor. They reference canonical `AGENTS.md` guidance and are not full adapter installers.

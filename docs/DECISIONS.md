@@ -38,7 +38,8 @@ Decision: Command criteria produce `proof.json`, `commands.log`, and `run-report
 Consequences:
 
 - Reports are auditable.
-- UI/browser/manual evidence require adapters.
+- File-backed artifact/manual evidence is supported.
+- UI browser automation and richer runtime evidence require adapters.
 
 ## ADR-004 — Provide config example, not active project Codex config
 
@@ -67,3 +68,90 @@ Consequences:
 - "Done" is derived from fresh evidence and finish verdicts, not from activity logs.
 - Security audit IDs, host shims, and reviewed retro/skill updates can be added as lightweight companion features.
 - Browser automation, dynamic eval, gateways, schedulers, persistent memory, autonomous skill mutation, and subagent orchestration remain optional instead of core requirements.
+
+## ADR-006: Enforce command policy before criteria execution
+
+Status: Accepted
+
+Context: `verify` executes user-authored command criteria, which is the current repository's largest safety boundary. The project needs protection from obviously destructive, publishing, network, infrastructure, and shell-chained commands without turning Agent Onboard into an OS sandbox or full command runtime.
+
+Decision: Add command policy v0 as an exact-allow and pattern-rule gate before command execution. Deny rules win first, prompt-required rules fail closed unless explicitly approved on the criterion, and allowed commands record policy decisions, timeout, and output limits in `proof.json`.
+
+Consequences:
+
+- Existing sample criteria stay small and command-backed.
+- Downstream repositories can commit `.harness/security-policy.json` when they need project-specific allow rules.
+- v0 remains intentionally shallow; richer parsing and broader redaction stay as future hardening.
+
+## ADR-007: Keep finish gate evidence-only in v0
+
+Status: Accepted
+
+Context: The project needs a completion verdict, but review blockers, subagent roles, browser automation, and task ledgers can easily turn Agent Onboard into a workflow runtime.
+
+Decision: Add `agent-onboard finish --run-id <id>` as an evidence-only gate. It reads `run-report.json` and referenced proofs, validates paths inside the run root, writes `finish-report.json`, and returns `PASS`, `FAIL`, or `INCOMPLETE`. It does not run commands, launch browsers, consume review state, or manage tasks.
+
+Consequences:
+
+- "Tests ran" is no longer equivalent to "done".
+- Required missing, pending, or stale evidence blocks completion as `INCOMPLETE`.
+- Required failed or policy-blocked evidence returns `FAIL`.
+- Review remains a separate Definition of Done step until a machine-readable review blocker contract exists.
+
+## ADR-008: Record non-command evidence as existing file artifacts
+
+Status: Accepted
+
+Context: The criteria schema already includes `artifact`, `screenshot`, `browser-log`, `review`, and `manual`, but launching browsers or collecting runtime logs would pull Agent Onboard toward a heavier automation platform.
+
+Decision: Treat those non-command criteria as file-backed evidence in v0. The user or host tool produces the file, and Agent Onboard records project-relative path, absolute workspace path, file size, mtime, SHA-256 hash, and artifact kind. The finish gate validates that referenced artifacts still exist inside the workspace and match the recorded hash.
+
+Consequences:
+
+- Screenshot, browser-log, review, and manual evidence can be captured without adding browser or host dependencies.
+- Missing required artifacts are `INCOMPLETE`, not behavioral failures.
+- Optional missing artifacts become finish warnings.
+- Browser automation remains an optional adapter rather than core runtime behavior.
+
+## ADR-009: Keep static security audit shallow and ID-based
+
+Status: Accepted
+
+Context: OpenClaw-style security audit findings are useful, but Agent Onboard should not become a policy daemon or runtime permission service. The current safety boundary is local files, command policy, Codex config posture, and evidence persistence.
+
+Decision: Add `agent-onboard doctor --security` as a shallow static audit with stable `AOS-SEC-*` finding IDs. The audit checks AGENTS.md security guardrails, safe Codex config example posture, unsafe active Codex config, runtime-output git ignores, fail-closed command policy defaults, and evidence redaction patterns.
+
+Consequences:
+
+- Security posture findings are stable enough to discuss, test, and improve over time.
+- The audit remains local and deterministic.
+- It does not replace host sandboxing, approvals, code review, or deeper secret scanning.
+- Broader redaction, richer command parsing, and dependency/network audits remain future hardening.
+
+## ADR-010: Keep skill checks static before semantic eval
+
+Status: Accepted
+
+Context: Skill routing depends on concise descriptions and predictable `SKILL.md` contracts. A full semantic trigger eval would require prompts, models, and scoring policy, which would push the core toward a benchmark system.
+
+Decision: Add `agent-onboard doctor --skills` as a static audit with stable `AOS-SKILL-*` finding IDs. The audit checks that repo skills exist, names are unique and folder-matching, descriptions are concise trigger text, required contract sections exist, and skill files stay lightweight.
+
+Consequences:
+
+- Skill quality can be checked deterministically without model calls.
+- The check reinforces progressive disclosure and one-job-per-skill guidance.
+- Semantic LLM trigger eval remains optional and should be added only if static checks are insufficient.
+
+## ADR-011: Keep host shims pointer-only
+
+Status: Accepted
+
+Context: Agent Onboard should be usable from Claude Code, Gemini, Cursor, GitHub Copilot, and similar hosts, but duplicating canonical instructions across host-specific files creates drift. A full adapter installer would be larger than the current improvement pass.
+
+Decision: Add optional `init --host-shims` support for thin `GEMINI.md`, `.github/copilot-instructions.md`, and `.cursor/rules/agent-onboard.mdc` files. Each shim points back to canonical `AGENTS.md` guidance and avoids copying long rules. `CLAUDE.md` remains the existing thin default shim.
+
+Consequences:
+
+- Teams can opt into common host compatibility files without changing the core workflow.
+- Canonical project guidance remains in `AGENTS.md`.
+- Full adapter installers, generated host-specific skill packages, and host runtime integration remain backlog work.

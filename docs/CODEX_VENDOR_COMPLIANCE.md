@@ -87,9 +87,10 @@ Repository implementation:
 - Most skills are instruction-only.
 - `verify` includes a small deterministic helper script.
 - Inputs, outputs, steps, and completion criteria are included.
-- `docs/TODO_FEATURE_DESIGNS.md` includes a future skill trigger eval suite.
+- `doctor --skills` checks skill inventory, unique folder-matching names, concise trigger descriptions, contract sections, and file size.
+- The roadmap keeps semantic trigger eval optional unless static checks prove insufficient.
 
-Status: **Pass with TODO for trigger eval automation**
+Status: **Pass for static skill contracts; semantic trigger eval automation remains optional TODO**
 
 ## 7. Testing and review
 
@@ -98,10 +99,11 @@ OpenAI recommends asking Codex to create/update tests, run checks, confirm behav
 Repository implementation:
 
 - `verify` executes command-backed criteria.
+- `finish` consumes evidence and produces a `PASS`, `FAIL`, or `INCOMPLETE` verdict.
 - `review` skill checks spec compliance, correctness, evidence, simplicity, security, maintainability, and regression risk.
 - `templates/code_review.template.md` is intended to be referenced from AGENTS.md in downstream repos.
 
-Status: **Pass for command-backed verification; partial for richer review automation**
+Status: **Pass for command-backed verification and finish verdicts; partial for richer review automation**
 
 ## 8. Security, sandboxing, approvals, network access
 
@@ -110,11 +112,13 @@ OpenAI Codex security guidance centers on sandbox mode, approval policy, and net
 Repository implementation:
 
 - `docs/SECURITY_MODEL.md` documents safe defaults.
+- `verify` enforces command policy v0 for command-backed criteria.
+- `doctor --security` emits stable static findings for repo security posture.
 - `.codex/config.example.toml` uses `approval_policy = "on-request"`, `sandbox_mode = "workspace-write"`, and `network_access = false`.
 - No active `.codex/config.toml` is installed by default, avoiding unexpected project-local overrides.
 - `AGENTS.md` prohibits `danger-full-access` as a default.
 
-Status: **Pass for documented safe defaults; enforcement engine TODO**
+Status: **Pass for documented safe defaults, command policy v0, and shallow static audit; broader redaction remains TODO**
 
 References:
 
@@ -132,7 +136,19 @@ Repository implementation:
 
 Status: **Pass**
 
-## 10. Improvement loop
+## 10. Host compatibility shims
+
+Agent hosts use different repository instruction surfaces, but duplicating long guidance across all of them creates drift.
+
+Repository implementation:
+
+- `CLAUDE.md` remains a thin pointer to `AGENTS.md`.
+- `init --host-shims` can optionally create `GEMINI.md`, `.github/copilot-instructions.md`, and `.cursor/rules/agent-onboard.mdc`.
+- These files point back to canonical `AGENTS.md` guidance and avoid duplicating long rules.
+
+Status: **Pass for pointer-only shims; full adapter installers remain TODO**
+
+## 11. Improvement loop
 
 OpenAI recommends updating AGENTS.md after repeated mistakes and using evals/scripts/artifacts for hard iterative work.
 
@@ -147,9 +163,9 @@ Status: **Partial pass** because dynamic eval execution remains TODO.
 
 The repository follows Codex vendor guidance in the areas that can be encoded in a static repository skeleton today. The main gaps are implementation depth, not direction:
 
-- Command policy and static security audit.
-- Finish gate and evidence freshness semantics.
-- Artifact/manual evidence adapters.
-- Skill trigger and contract checks.
+- Browser and dynamic evidence adapters.
+- Evidence freshness hardening beyond current proof flags.
+- Semantic skill trigger eval automation.
 - Dynamic eval runner.
+- Full host adapter installers.
 - Codex plugin packaging.
