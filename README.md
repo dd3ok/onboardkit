@@ -63,7 +63,7 @@ Command criteria run locally, redact common secret environment variable patterns
 
 Commit source-of-truth files such as `AGENTS.md`, `docs/`, `.agents/skills/`, `templates/`, `schemas/`, `examples/`, and `evals/`.
 
-Do not commit runtime outputs under `.harness/evidence/`, `.harness/runs/`, `.harness/reports/`, `.harness/tmp/`, generated docs indexes under `.harness/docs-index/`, local scratch `specs/`, or `*.log` files.
+Do not commit runtime outputs under `.harness/evidence/`, `.harness/runs/`, `.harness/reports/`, `.harness/tmp/`, generated docs indexes under `.harness/docs-index/`, root local scratch `/specs/`, or `*.log` files.
 
 When `agent-onboard index-docs --inject` updates `AGENTS.md`, commit the `AGENTS.md` change, not the generated `.harness/docs-index/*` file.
 

@@ -14,5 +14,5 @@ coverage/
 .harness/reports/*
 !.harness/reports/.gitkeep
 .harness/tmp/
-specs/
+/specs/
 *.log
