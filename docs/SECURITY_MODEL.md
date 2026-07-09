@@ -22,6 +22,32 @@ Agent Onboard is a workflow harness and evidence collector. It is not an OS sand
 - Running infrastructure tools such as Terraform or kubectl.
 - Publishing packages or pushing tags.
 
+## Command policy v0
+
+`agent-onboard verify` evaluates command criteria before execution.
+
+- Deny rules win over allow and prompt rules.
+- Prompt-required rules fail closed unless a criterion carries explicit `policy_approval: true`; approved prompt-required commands are recorded as allowed.
+- Non-prompt commands must match exact allow rules unless the policy explicitly sets `unknown` to `allow`.
+- Built-in defaults deny destructive commands, shell chaining, pipes, redirects, and several host-level destructive operations.
+- Built-in defaults mark publish, push, release, network fetch, infrastructure, and remote shell commands as prompt-required.
+- Policy decisions, timeout, and output limits are recorded in `proof.json`.
+
+Project policy can be committed at `.harness/security-policy.json`; `templates/security-policy.template.json` shows the supported shape.
+
+## Static security audit v0
+
+`agent-onboard doctor --security` emits stable findings with IDs:
+
+- `AOS-SEC-001`: AGENTS.md security guardrails.
+- `AOS-SEC-002`: safe `.codex/config.example.toml`.
+- `AOS-SEC-003`: no unsafe active `.codex/config.toml`.
+- `AOS-SEC-004`: runtime outputs ignored by git.
+- `AOS-SEC-005`: command policy fail-closed defaults.
+- `AOS-SEC-006`: evidence secret redaction patterns.
+
+The audit is intentionally shallow. It checks local files and built-in policy posture; it does not replace host sandboxing, approvals, code review, or a runtime permission service.
+
 ## Evidence redaction
 
 The MVP redacts common environment variable patterns in stdout/stderr:
@@ -31,7 +57,7 @@ The MVP redacts common environment variable patterns in stdout/stderr:
 - `TOKEN=`
 - `SECRET=`
 
-Future work T06 adds a security policy engine and stronger redaction.
+Future hardening should add broader redaction patterns.
 
 ## Codex configuration example
 
@@ -40,5 +66,6 @@ See `.codex/config.example.toml`.
 ## Limitations
 
 - The CLI cannot prevent a host agent from running commands outside the CLI.
-- The CLI does not yet enforce allow/deny command policy.
+- Command policy v0 is exact-allow and pattern-based; it is not an OS sandbox.
+- Static security audit v0 is shallow and local-file based.
 - Browser evidence adapters are not implemented yet.

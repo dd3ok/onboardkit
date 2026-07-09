@@ -1,0 +1,9 @@
+---
+alwaysApply: true
+---
+
+# Agent Onboard
+
+Use `AGENTS.md` as the canonical project guidance. This Cursor rule is a thin compatibility shim and should not duplicate long procedures.
+
+Read `docs/SOT.md` when project source-of-truth priority is unclear.

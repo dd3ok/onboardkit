@@ -1,0 +1,17 @@
+{
+  "$schema": "https://example.com/agent-onboard/security-policy.schema.json",
+  "version": 1,
+  "unknown": "deny",
+  "timeout_ms": 120000,
+  "max_output_bytes": 1048576,
+  "allow": [
+    "npm test",
+    "npm run lint:syntax",
+    "node --test",
+    "node ./bin/agent-onboard.mjs doctor",
+    "node ./bin/agent-onboard.mjs eval",
+    "node ./bin/agent-onboard.mjs verify --criteria examples/criteria.sample.json"
+  ],
+  "deny": [],
+  "prompt": []
+}

@@ -25,9 +25,16 @@ Agent Onboard is a host-agnostic agent workflow harness. It combines:
 
 - AGENTS.md-first durable guidance.
 - Compressed local docs indexes.
+- Shared vocabulary and role contracts.
 - Codex-compatible skills for vertical workflows.
 - Spec/design/tasks artifacts.
+- Command policy before criteria execution.
+- Static security audit findings with stable IDs.
+- Static skill contract findings with stable IDs.
+- Optional pointer-only host shims.
 - Command-backed evidence.
+- File-backed artifact/manual evidence with hashes.
+- Finish verdicts over evidence runs.
 - Best-practice and vendor compliance audits.
 - Eval scenario inventory.
 
@@ -82,6 +89,10 @@ Each update must also check:
 - Build verification: `docs/BUILD_VERIFICATION.md`
 - Improvement roadmap design: `docs/IMPROVEMENT_ROADMAP_DESIGN.md`
 - Basic harness kit research addendum: `docs/BASIC_HARNESS_KIT_RESEARCH_2026-07-09.md`
+- Security model: `docs/SECURITY_MODEL.md`
+- Shared language and role contracts: `docs/shared-language.md`
+- Evidence contract: `docs/evidence.md`
+- Finish gate: `docs/finish-gate.md`
 
 ## External source references
 

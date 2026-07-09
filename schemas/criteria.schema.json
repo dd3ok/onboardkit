@@ -36,6 +36,28 @@
           "command": {
             "type": "string"
           },
+          "path": {
+            "type": "string",
+            "description": "Project-relative path for artifact-backed evidence."
+          },
+          "note": {
+            "type": "string"
+          },
+          "timeout_ms": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "max_output_bytes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "policy_approval": {
+            "type": "boolean",
+            "default": false
+          },
+          "policy_approval_reason": {
+            "type": "string"
+          },
           "required": {
             "type": "boolean",
             "default": true

@@ -62,6 +62,14 @@ When a task matches a skill trigger, invoke the skill explicitly instead of rely
 
 For version-sensitive APIs, prefer the docs index in AGENTS.md and read the referenced local docs before using model memory.
 
+## Security Rules
+
+- Do not use `danger-full-access` as a default sandbox mode.
+- Keep network access off by default unless a specific workflow requires it.
+- Do not print or persist secrets in evidence logs.
+- Ask for approval before adding production dependencies, rotating credentials, deleting data, or running destructive commands.
+- Prefer project-local, reproducible commands over global machine assumptions.
+
 ## Docs index
 
 <!-- agent-onboard:docs-index:start -->

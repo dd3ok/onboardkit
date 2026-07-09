@@ -6,6 +6,9 @@ import { writeDocsIndex } from '../src/lib/docs-indexer.mjs';
 import { runCriteriaFile } from '../src/lib/evidence.mjs';
 import { runDoctor, printDoctorReport } from '../src/lib/doctor.mjs';
 import { runStaticEvalReport } from '../src/lib/eval-runner.mjs';
+import { finishRun } from '../src/lib/finish-gate.mjs';
+import { runSecurityAudit, printSecurityAuditReport } from '../src/lib/security-audit.mjs';
+import { runSkillAudit, printSkillAuditReport } from '../src/lib/skill-audit.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,20 +32,37 @@ function help() {
 
 Usage:
   agent-onboard help
-  agent-onboard init [--target <dir>] [--force]
-  agent-onboard doctor [--cwd <dir>]
+  agent-onboard init [--target <dir>] [--force] [--host-shims]
+  agent-onboard doctor [--cwd <dir>] [--security] [--skills] [--governance]
   agent-onboard index-docs --source <dir> --name <name> [--inject] [--root-alias <path>]
   agent-onboard new --slug <slug> --title <title>
   agent-onboard verify --criteria <criteria.json> [--run-id <id>]
+  agent-onboard finish --run-id <id>
   agent-onboard eval
   agent-onboard status
 
 Examples:
   agent-onboard init --target .
+  agent-onboard init --target . --host-shims
+  agent-onboard doctor --governance
   agent-onboard index-docs --source docs --name local-docs --inject
   agent-onboard new --slug login-flow --title "Login flow"
   agent-onboard verify --criteria examples/criteria.sample.json
+  agent-onboard finish --run-id <id>
 `);
+}
+
+function printFinishReport(report) {
+  console.log(`Finish verdict: ${report.verdict}`);
+  console.log(`Evidence run: ${report.runId}`);
+  for (const item of report.required) {
+    console.log(`${item.status.toUpperCase()} ${item.id}: ${item.reason}`);
+    if (item.evidencePath) console.log(`  evidence: ${item.evidencePath}`);
+  }
+  for (const item of report.warnings) {
+    console.log(`WARN ${item.id}: ${item.reason}`);
+    if (item.evidencePath) console.log(`  evidence: ${item.evidencePath}`);
+  }
 }
 
 try {
@@ -50,14 +70,22 @@ try {
     help();
   } else if (command === 'init') {
     const target = path.resolve(cwd, valueOf('--target', '.'));
-    const result = createProjectScaffold({ target, toolRoot, force: has('--force') });
+    const result = createProjectScaffold({ target, toolRoot, force: has('--force'), hostShims: has('--host-shims') });
     console.log(`Initialized ${target}`);
     for (const item of result.created) console.log(`  created ${item}`);
     for (const item of result.skipped) console.log(`  skipped ${item}`);
   } else if (command === 'doctor') {
     const target = path.resolve(cwd, valueOf('--cwd', '.'));
-    const report = runDoctor({ cwd: target });
-    printDoctorReport(report);
+    const report = has('--security')
+      ? runSecurityAudit({ cwd: target })
+      : (has('--skills') ? runSkillAudit({ cwd: target }) : runDoctor({ cwd: target, governance: has('--governance') }));
+    if (has('--security')) {
+      printSecurityAuditReport(report);
+    } else if (has('--skills')) {
+      printSkillAuditReport(report);
+    } else {
+      printDoctorReport(report);
+    }
     process.exitCode = report.ok ? 0 : 1;
   } else if (command === 'index-docs') {
     const source = valueOf('--source');
@@ -89,6 +117,12 @@ try {
       console.log(`${status} ${item.id}: ${item.description}`);
       if (item.evidencePath) console.log(`  evidence: ${item.evidencePath}`);
     }
+    process.exitCode = report.ok ? 0 : 1;
+  } else if (command === 'finish') {
+    const runId = valueOf('--run-id');
+    if (!runId) throw new Error('Missing --run-id <id>');
+    const report = finishRun({ cwd, runId });
+    printFinishReport(report);
     process.exitCode = report.ok ? 0 : 1;
   } else if (command === 'eval') {
     const report = runStaticEvalReport({ cwd });

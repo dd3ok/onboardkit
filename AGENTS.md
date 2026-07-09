@@ -31,13 +31,13 @@ Run `retro` only when repeated failures or process gaps need to become durable h
 
 When improving Agent Onboard itself, use this order:
 
-1. Command policy v0.
-2. Shared language and role contracts.
-3. Finish gate v0.
-4. Artifact/manual evidence v0.
-5. Optional run summary, only if needed by `finish` or `status`.
+1. YAML criteria parser, only if JSON criteria become a usability bottleneck.
+2. Optional run summary, only if `finish` or `status` needs a separate pointer file.
+3. Broader redaction and structured command descriptors.
+4. Semantic skill trigger eval, only if static `doctor --skills` checks are insufficient.
+5. Host adapter installer, only if pointer-only shims are insufficient.
 
-Keep dynamic eval, browser automation, subagent orchestration, host adapters, plugin packaging, and dashboards outside the core improvement pass unless a later design explicitly promotes them.
+Keep dynamic eval, browser automation, subagent orchestration, plugin packaging, and dashboards outside the core improvement pass unless a later design explicitly promotes them. Host adapter shims are optional pointer-only work; broader adapter installers stay outside core.
 
 Read `docs/IMPROVEMENT_ROADMAP_DESIGN.md` before implementing these roadmap items.
 
@@ -46,9 +46,14 @@ Read `docs/IMPROVEMENT_ROADMAP_DESIGN.md` before implementing these roadmap item
 ```bash
 npm test
 npm run lint:syntax
+node ./bin/agent-onboard.mjs init --target .
 node ./bin/agent-onboard.mjs doctor
+node ./bin/agent-onboard.mjs doctor --governance
+node ./bin/agent-onboard.mjs doctor --security
+node ./bin/agent-onboard.mjs doctor --skills
 node ./bin/agent-onboard.mjs eval
 node ./bin/agent-onboard.mjs verify --criteria examples/criteria.sample.json
+node ./bin/agent-onboard.mjs finish --run-id <id>
 ```
 
 ## Definition of Done
@@ -114,7 +119,7 @@ Use `agent-onboard index-docs` to inject a compressed docs index into the manage
 <!-- agent-onboard:docs-index:start -->
 [Project Docs Index]|root: docs
 |IMPORTANT: Prefer retrieval-led reasoning over pretraining-led reasoning. Read relevant local docs before coding against version-sensitive APIs.
-|.:{ANALYSIS.md,ARCHITECTURE.md,BASIC_HARNESS_KIT_RESEARCH_2026-07-09.md,BEST_PRACTICES_AUDIT.md,BUILD_VERIFICATION.md,CODEX_VENDOR_COMPLIANCE.md,DECISIONS.md,EVAL_METHODOLOGY.md,IMPROVEMENT_ROADMAP_DESIGN.md,REFERENCE_REPOSITORY_MATRIX.md,SECURITY_MODEL.md,SOT.md,STATUS.md,TODO_FEATURE_DESIGNS.md}
+|.:{ANALYSIS.md,ARCHITECTURE.md,BASIC_HARNESS_KIT_RESEARCH_2026-07-09.md,BEST_PRACTICES_AUDIT.md,BUILD_VERIFICATION.md,CODEX_VENDOR_COMPLIANCE.md,DECISIONS.md,EVAL_METHODOLOGY.md,evidence.md,finish-gate.md,IMPROVEMENT_ROADMAP_DESIGN.md,REFERENCE_REPOSITORY_MATRIX.md,SECURITY_MODEL.md,shared-language.md,SOT.md,STATUS.md,TODO_FEATURE_DESIGNS.md}
 <!-- agent-onboard:docs-index:end -->
 
 ## Security Rules

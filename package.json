@@ -10,7 +10,7 @@
   "scripts": {
     "test": "node --test",
     "doctor": "node ./bin/agent-onboard.mjs doctor",
-    "lint:syntax": "node --check ./bin/agent-onboard.mjs && node --check ./src/lib/docs-indexer.mjs && node --check ./src/lib/evidence.mjs && node --check ./src/lib/doctor.mjs && node --check ./src/lib/specs.mjs && node --check ./src/lib/eval-runner.mjs && node --check ./src/lib/fs.mjs && node --check ./src/lib/hash.mjs",
+    "lint:syntax": "node --check ./bin/agent-onboard.mjs && node --check ./src/lib/docs-indexer.mjs && node --check ./src/lib/evidence.mjs && node --check ./src/lib/doctor.mjs && node --check ./src/lib/specs.mjs && node --check ./src/lib/eval-runner.mjs && node --check ./src/lib/fs.mjs && node --check ./src/lib/hash.mjs && node --check ./src/lib/security-policy.mjs && node --check ./src/lib/security-audit.mjs && node --check ./src/lib/skill-audit.mjs && node --check ./src/lib/finish-gate.mjs",
     "verify:sample": "node ./bin/agent-onboard.mjs verify --criteria examples/criteria.sample.json"
   },
   "engines": {

@@ -8,7 +8,7 @@ Synchronization: when this roadmap changes phase order or promotes backlog work 
 
 ## Purpose
 
-This design consolidates prior research into one roadmap. It keeps Agent Onboard focused on AGENTS.md-first guidance, lightweight workflow skills, and command-backed evidence.
+This design consolidates prior research into one roadmap. It keeps Agent Onboard focused on AGENTS.md-first guidance, lightweight workflow skills, and command-backed plus file-backed evidence.
 
 The prior research included Superpowers, Superloopy, BMAD, Matt Pocock skills, Karpathy-style guidance, Spec Kit, Vercel AGENTS.md findings, OpenAI Codex guidance, OpenClaw, and Hermes. The goal is not to copy any one framework, but to adopt the strongest shared ideas:
 
@@ -284,8 +284,8 @@ Minimum v0 slice:
 - normalize every command before policy evaluation
 - deny clearly destructive commands
 - mark risky commands as prompt-required
-- fail prompt-required commands in non-interactive mode unless an explicit override is present
-- allow only exact known project-local commands after deny and prompt checks
+- fail prompt-required commands unless explicit criterion approval is present
+- allow approved prompt-required commands and exact known project-local non-prompt commands after deny checks
 - record policy decisions in proof output
 - command timeout
 - output size limit
@@ -302,9 +302,9 @@ Policy precedence is deterministic:
 1. Normalize command.
 2. Reject malformed commands.
 3. Deny rules win.
-4. Prompt-required rules fail closed unless explicitly approved.
-5. Exact allow rules pass.
-6. Unknown commands fail or warn according to policy mode.
+4. Prompt-required rules pass only with explicit criterion approval; otherwise they fail closed.
+5. Exact allow rules pass for non-prompt commands.
+6. Unknown non-prompt commands fail or warn according to policy mode.
 ```
 
 Core should move toward structured command criteria:
@@ -464,7 +464,9 @@ For `finish` v0, the command should report only the evidence verdict. Review blo
 
 Purpose: validate and hash existing non-command criteria types without owning browser automation.
 
-The criteria schema already reserves `artifact`, `screenshot`, `browser-log`, `review`, and `manual`. This phase turns the current pending/manual placeholder behavior into explicit artifact-backed proof where possible.
+The criteria schema reserves `artifact`, `screenshot`, `browser-log`, `review`, and `manual`. This phase records explicit artifact-backed proof for those supported non-command criteria.
+
+Status: implemented in the current repository as file-backed evidence for existing project-relative paths.
 
 Supported v0 types:
 
@@ -580,21 +582,33 @@ Acceptance criteria:
 
 ## Revised Priority
 
-The implementation order should be:
+Completed core slices:
 
 ```text
-1. Command policy v0
-2. Shared language and role contracts
-3. Finish gate v0
-4. Artifact/manual evidence v0
-5. Optional run summary, only if needed by finish/status
+- Command policy v0
+- Shared language and role contracts
+- Finish gate v0
+- Artifact/manual evidence v0
+- Static security audit findings with stable IDs
+- Skill trigger and contract checks v0
+- Optional pointer-only host shims
+```
+
+The remaining implementation order should be:
+
+```text
+1. YAML criteria parser, only if JSON criteria become a usability bottleneck
+2. Optional run summary, only if finish/status needs a separate pointer file
+3. Broader redaction and structured command descriptors
+4. Semantic skill trigger eval, only if static doctor checks are insufficient
+5. Host adapter installer, only if pointer-only shims are insufficient
 ```
 
 Command policy is placed first because current criteria execution is the main safety boundary.
 
 Shared language and finish gate follow because they define and enforce "done" without building a full runtime.
 
-Artifact/manual evidence replaces near-term browser automation because it provides richer proof with low overhead.
+Artifact/manual evidence replaced near-term browser automation because it provides richer proof with low overhead.
 
 Dynamic eval and browser automation stay in the non-core backlog because they can easily expand into a benchmark platform or browser runtime.
 
