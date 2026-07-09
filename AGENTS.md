@@ -27,6 +27,20 @@ Large feature or migration:
 
 Run `retro` only when repeated failures or process gaps need to become durable harness updates.
 
+## Current Improvement Priority
+
+When improving Agent Onboard itself, use this order:
+
+1. Command policy v0.
+2. Shared language and role contracts.
+3. Finish gate v0.
+4. Artifact/manual evidence v0.
+5. Optional run summary, only if needed by `finish` or `status`.
+
+Keep dynamic eval, browser automation, subagent orchestration, host adapters, plugin packaging, and dashboards outside the core improvement pass unless a later design explicitly promotes them.
+
+Read `docs/IMPROVEMENT_ROADMAP_DESIGN.md` before implementing these roadmap items.
+
 ## Commands
 
 ```bash
