@@ -4,11 +4,10 @@ This repository contains `onboardkit`, an instruction-only skill for keeping `AG
 
 ## Operating Principles
 
-1. Inspect local context before editing guidance.
-2. Keep changes scoped to the user's request.
-3. Prefer official vendor docs and local source over model memory for version-sensitive guidance.
-4. Do not reintroduce helper code, package scripts, schemas, runners, or scaffolding.
-5. Done requires fresh verification from targeted searches, syntax/format checks when available, and diff review.
+1. Inspect local context and scope edits to the request.
+2. Prefer local source and official vendor docs over memory for version-sensitive guidance.
+3. Never add helper code, package scripts, schemas, runners, or scaffolding.
+4. Verify with targeted searches, available syntax/format checks, and diff review.
 
 ## Commands
 
@@ -22,44 +21,29 @@ git diff --check
 git status --short --branch
 ```
 
-## Project Structure
-
-```text
-SKILL.md                   skill entrypoint
-agents/openai.yaml         Codex UI metadata
-evals/evals.json           behavior evaluation cases
-evals/eval_queries.json    trigger boundary cases
-README.md                  user-facing overview
-AGENTS.md                  repository maintenance guidance
-LICENSE                    license
-.gitignore                 local-file exclusions
-.gitattributes             Git text normalization
-```
-
 ## Documentation Routing
 
-Keep `AGENTS.md` short and operational. Put only repo purpose, critical rules, verification expectations, and safety boundaries here.
+Keep `AGENTS.md` to repo purpose, critical rules, verification, and safety.
 
-Delete or merge docs that are stale, duplicated, generated for a completed task, or narrower than future agents need.
+Delete or merge stale, duplicate, completed-task, or overly narrow docs after preserving durable guidance canonically.
 
-When updating `SKILL.md`, preserve the lightweight initialization, routing, cleanup, recurring maintenance, and missing-information policy without adding helper code.
+`SKILL.md` updates must preserve initialization, routing, cleanup, maintenance, and missing-information policy without helper code.
 
-Create one-level `references/` only when necessary detail cannot be compressed into the core workflow; never use references to preserve duplicated procedure.
+Add one-level `references/` only when essential detail cannot fit; never duplicate procedure there.
 
-Keep install instructions conservative. Prefer stable shared skill locations or official runtime docs over hard-coded paths that may drift.
+Keep install guidance conservative; prefer stable shared paths or official runtime docs.
 
 ## Definition of Done
 
-- Helper artifacts are not present.
-- `SKILL.md`, README, and AGENTS agree on the instruction-only product boundary.
-- `SKILL.md` targets 340-360 words and stays at or below 400 unless a verified scenario needs more detail.
-- `SKILL.md` covers initialization, docs routing, cleanup, maintenance, and report shape.
-- `SKILL.md` tells agents to fill from evidence, use universal safe defaults, avoid guessing repo-specific facts, ask when unsafe, and report Needs Input.
-- `SKILL.md` preserves durable guidance before deletion, keeps one canonical destination per fact, requires a no-op when no actionable issue exists, proposes unattended deletion or promotion for review, and separates command-backed from review-backed reporting.
-- Evaluation files are valid JSON and cover missing commands, README/CI conflicts, docs routing, nested AGENTS.md handling, no-op behavior, and positive and negative trigger boundaries.
-- Fresh skill checks use the canonical eval cases or a documented real-repo equivalent.
-- Targeted searches show no stale helper/scaffolder instructions except historical deleted-file diffs.
-- The final report names commands run and any residual risk.
+- No helper artifacts exist; `SKILL.md`, README, AGENTS, and UI metadata agree on the instruction-only boundary.
+- `SKILL.md` stays at 340-360 words and never exceeds 400 without a verified need; it covers initialization, routing, cleanup, maintenance, and reporting.
+- Initialization creates missing root guidance, preserves existing files, and changes only what evidence or routing requires.
+- Generated root `AGENTS.md` without nested scopes targets 200-400 words without filler and omits unsupported sections.
+- Facts come from local evidence. Git history remains observation unless docs, config, CI, templates, or user confirmation corroborate a convention. Unsafe gaps require a question; others become Needs Input.
+- Durable guidance has one canonical destination before deletion. Clean audits are no-ops; unattended deletion or promotion is proposed for review.
+- Reports name changes, merged or deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, and risks; command-backed and review-backed findings stay separate.
+- Evaluation files are valid JSON and cover create/refresh behavior, sparse evidence, history conflicts, conditional sections, docs routing, cleanup, no-op behavior, and positive and negative trigger boundaries.
+- Fresh checks use canonical evals or a documented real-repo equivalent, search for stale helper guidance, validate syntax/format, and review the diff; the final report lists commands and residual risk.
 
 ## Security Rules
 

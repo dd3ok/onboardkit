@@ -40,6 +40,7 @@ Common prompts:
 
 ```text
 Use $onboardkit to initialize lightweight AGENTS.md and docs routing for this repo.
+Use $onboardkit to refresh this existing AGENTS.md, preserving it and changing only what evidence or routing requires.
 Use $onboardkit to audit AGENTS.md and docs for stale or duplicate guidance.
 Use $onboardkit to do a monthly maintenance pass on agent-facing docs.
 ```
@@ -62,16 +63,12 @@ LICENSE                    license
 
 Keep the skill instruction-only unless a future requirement clearly needs deterministic tooling.
 
-When changing the skill, check:
+Use the [AGENTS.md](AGENTS.md) Definition of Done as the canonical maintainer checklist. At minimum:
 
 - `SKILL.md` has only `name` and `description` in frontmatter.
-- No helper files or package metadata were reintroduced.
-- README and AGENTS describe the same product boundary.
-- `SKILL.md` targets 340-360 words and stays at or below 400 unless a verified scenario needs more detail.
-- The skill still covers initialization, routing, cleanup, and recurring maintenance.
-- The skill still fills from evidence, avoids guessing, reports Needs Input, preserves durable guidance before deletion, keeps one canonical destination per fact, requires a no-op when no actionable issue exists, proposes unattended deletion or promotion for review, and distinguishes command results from review findings.
-- `evals/evals.json` covers the core maintenance decisions and `evals/eval_queries.json` balances positive and negative trigger boundaries.
-- Fresh checks use those eval cases or a documented real-repo equivalent.
+- No helper files or package metadata were reintroduced, and README, AGENTS, and `agents/openai.yaml` still match the skill boundary.
+- `SKILL.md` remains within its documented word budget.
+- Fresh validation uses the canonical behavior and trigger cases or a documented real-repo equivalent.
 
 ## References
 
