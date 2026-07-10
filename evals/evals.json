@@ -61,6 +61,46 @@
         "Completed task artifacts are proposed for removal and are not promoted into permanent agent context.",
         "A docs index is created only when the remaining docs need a map."
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "Refresh a repository whose concise root AGENTS.md contains valid safety, routing, and verification guidance. package.json and CI now agree on pnpm test, while AGENTS.md still says npm test.",
+      "expected_output": "The stale test command is updated from evidence while the valid existing guidance and structure are preserved; the file is not reinitialized or broadly rewritten.",
+      "assertions": [
+        "Valid existing safety, routing, and verification guidance is preserved.",
+        "Only the stale command and directly affected wording change.",
+        "The output does not replace the file with a fresh generic scaffold."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Initialize a repository with no nested scope whose README identifies its purpose but whose tracked files contain no manifest, CI, commands, coding conventions, or test framework.",
+      "expected_output": "A grounded root AGENTS.md may stay below 200 words rather than adding filler; absent commands are marked not identified and unresolved material is reported as Needs Input.",
+      "assertions": [
+        "The output does not invent commands, conventions, or a test framework.",
+        "The output may be shorter than 200 words because evidence is sparse.",
+        "The report distinguishes the evidenced purpose from Needs Input."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Audit commit guidance when recent Git history mostly uses Conventional Commit prefixes, but CONTRIBUTING.md requires ticket-prefixed subjects and CI enforces that documented rule.",
+      "expected_output": "Git history is reported as observation rather than policy; the corroborated ticket-prefix rule remains canonical and Conventional Commits are not promoted into AGENTS.md.",
+      "assertions": [
+        "Observed Git history is not treated as repository policy.",
+        "The convention corroborated by CONTRIBUTING.md and CI is preserved.",
+        "Conventional Commits are not promoted merely because they appear frequently in history."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Initialize guidance for a documentation-only repository with Markdown files and a verified CI link-check command, but no source modules, build step, test framework, coding-style policy, or PR template.",
+      "expected_output": "AGENTS.md includes the evidenced documentation paths and link check while omitting unsupported build, testing, coding-style, and PR sections instead of creating empty headings.",
+      "assertions": [
+        "The verified link-check command and relevant documentation paths are included.",
+        "Unsupported sections are omitted rather than emitted as empty headings or placeholders.",
+        "No source, build, test, style, or PR policy is invented."
+      ]
     }
   ]
 }

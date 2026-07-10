@@ -5,37 +5,39 @@ description: "Use for AGENTS.md and agent-facing repo documentation maintenance:
 
 # onboardkit
 
-Keep agent context small and grounded. Never add helper code, scripts, schemas, or target-repo skills.
+Stay grounded. Never add helper code, scripts, schemas, or target-repo skills.
 
 ## Workflow
 
 1. Inventory repo-owned `AGENTS.md`, README, and docs, including new files; skip vendored/generated trees.
-2. Inspect relevant manifests, lockfiles, CI, and config; expand for conflicts or nested scopes.
-3. Identify evidenced commands, paths, generated files, migrations, and constraints.
-4. Create or refresh root `AGENTS.md` with purpose, paths, commands, rules, routing, safety, and checks.
-5. Before merging or removing stale, duplicate, or task-complete docs, preserve durable guidance in one canonical place.
-6. Route below; verify with repo commands, searches, and diff review.
+2. Inspect manifests, lockfiles, CI, config, and nested scopes.
+3. Create root `AGENTS.md` if missing; otherwise preserve it; change only what evidence or routing requires.
+4. Without nested scopes, target 200-400 words; write less with sparse evidence and exceed only for verified constraints.
+5. Use evidenced purpose, structure, commands, conventions, safety/checks, routing, and examples; omit empty or unsupported sections.
+6. Before merging or removing stale, duplicate, or task-complete docs, preserve durable guidance in one canonical place.
+7. Route below; verify with repo commands, searches, and diff review.
 
-## Evidence and Gaps
+## Evidence
 
-- Ground facts in local sources and runs; cite them in the report. Record evidenced commands or `not identified` when absent.
-- Never invent repo tools, owners, release steps, migrations, generated-file rules, or approvals.
-- Inspect, protect secrets, and verify. Ask the user before destructive work or when gaps affect safety or correctness; otherwise report Needs Input.
-- Keep conflicts as `conflicting sources; Needs Input` until the user decides. Cite sources; never alter manifests or CI to align docs.
+- Ground facts locally; cite sources/runs. Record commands or `not identified`.
+- Never invent tools, owners, release steps, migrations, generated-file rules, or approvals.
+- Treat Git history as observation, not policy; promote corroborated conventions from docs, config, CI, templates, or user confirmation.
+- Protect secrets; ask before destructive work or safety/correctness gaps; otherwise report Needs Input.
+- Report conflicts as `conflicting sources; Needs Input` until the user decides. Never alter manifests or CI to align docs.
 
 ## Routing
 
-- Keep in root `AGENTS.md` only stable rules most tasks need.
-- Keep nested `AGENTS.md` overrides; delete or flatten only when the user discards or relocates active rules.
-- Move durable but long, narrow, historical, or domain-specific material to `docs/`.
-- Keep human onboarding, installation, and product overview in README.
+- Root `AGENTS.md` keeps stable, broadly needed facts and rules.
+- Preserve nested overrides; delete or flatten only when the user discards or relocates active rules.
+- Move durable long, narrow, historical, or domain-specific material to `docs/`.
+- Keep README onboarding, installation, and product overview current.
 - Create `docs/README.md` only when docs need a map; never create empty stubs.
-- Update stale README content. Promote only shared invariants, repeated mistakes or PR feedback, and verified failures. Exclude handoffs, session notes, completed plans, and one-offs.
+- Promote only shared invariants, repeated mistakes or feedback, and verified failures; exclude handoffs, session notes, plans, and one-offs.
 
 ## Maintenance
 
-Re-run after merges, releases, repeated mistakes, feedback, or audits. If clean, change nothing; report a no-op. Propose unattended deletion or promotion for review. Prefer references over copies.
+Re-run after merges, releases, repeated mistakes, feedback, or audits. If clean, change nothing; report a no-op. When unattended, propose deletion or promotion for review; prefer references over copies.
 
 ## Report
 
-List changes, merged/deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, and risks. Distinguish command results from review findings.
+Report changes, merged/deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, and risks; separate command-backed and review-backed findings.
