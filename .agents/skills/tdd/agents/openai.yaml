@@ -1,5 +1,0 @@
-interface:
-  display_name: "tdd"
-  short_description: "Run a red-green-refactor loop for behavior changes where tests are feasible."
-policy:
-  allow_implicit_invocation: true

@@ -1,5 +1,0 @@
-interface:
-  display_name: "docs-index"
-  short_description: "Build or update compressed local documentation indexes in AGENTS.md so agents use retrieva"
-policy:
-  allow_implicit_invocation: true

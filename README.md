@@ -1,80 +1,78 @@
-# Agent Onboard
+# onboardkit
 
-Agent Onboard is a small, zero-dependency Node.js toolkit for preparing a repository before AI coding agents start work.
-It installs durable repo guidance, focused skills, generated planning artifacts, and fresh command-backed evidence workflows.
+onboardkit is a lightweight Codex-compatible skill for keeping `AGENTS.md` and repository docs useful for coding agents.
 
-## What Is Implemented
+It helps an agent decide:
 
-- `AGENTS.md` guidance checks with a compact docs-index marker.
-- Repo-scoped Codex-compatible skills under `.agents/skills`.
-- CLI commands: `init`, `doctor`, `index-docs`, `new`, `verify`, `eval`, and `status`.
-- JSON criteria execution for command-backed verification.
-- Evidence output under `.harness/evidence/<run-id>/`.
-- Static eval scenario inventory from `evals/scenarios`.
-- Templates for brief, spec, design, tasks, criteria, review, retro, AGENTS.md, CLAUDE.md, and PLANS.md.
+- how to initialize a small `AGENTS.md`
+- how to fill discovered facts while avoiding invented repo-specific guidance
+- when to ask the user or report Needs Input instead of guessing
+- what belongs in always-on `AGENTS.md`
+- when to create `docs/README.md` and deeper docs
+- what stale, duplicate, generated, or low-signal docs should be removed
+- how README and agent-facing docs should stay aligned
 
-## Quick Start
+There is no helper command, npm package, scaffolder, runner, dashboard, or task ledger in this repository.
 
-```bash
-npm test
-npm run lint:syntax
+## Install
 
-node ./bin/agent-onboard.mjs help
-node ./bin/agent-onboard.mjs doctor
-node ./bin/agent-onboard.mjs new --slug demo-login --title "Demo login flow"
-node ./bin/agent-onboard.mjs verify --criteria examples/criteria.sample.json
-```
-
-After linking the package locally:
+Install this repository as a user-level skill in a directory your agent supports. For Codex-compatible setups, use the cross-runtime skills directory:
 
 ```bash
-npm link
-agent-onboard doctor
+git clone https://github.com/dd3ok/agent-onboard.git ~/.agents/skills/onboardkit
 ```
 
-## Repository Layout
+For other runtimes, use that runtime's current official user-level skills directory.
+
+Then ask your coding agent in a target repository:
 
 ```text
-AGENTS.md                 repo guidance for agents
-bin/agent-onboard.mjs     CLI entrypoint
-src/lib/                  CLI implementation modules
-.agents/skills/           Codex-compatible workflow skills
-.codex/config.example.toml safe Codex configuration example
-schemas/                  JSON schema contracts
-templates/                generated workflow artifact templates
-evals/scenarios/          static eval scenario definitions
-examples/                 sample criteria
-test/                     smoke tests
+Use onboardkit to clean up this repo's AGENTS.md and docs.
 ```
 
-## Evidence
-
-`agent-onboard verify` reads a criteria JSON file and writes:
+Common prompts:
 
 ```text
-.harness/evidence/<run-id>/<criterion-id>/commands.log
-.harness/evidence/<run-id>/<criterion-id>/proof.json
-.harness/evidence/<run-id>/run-report.json
+Use $onboardkit to initialize lightweight AGENTS.md and docs routing for this repo.
+Use $onboardkit to audit AGENTS.md and docs for stale or duplicate guidance.
+Use $onboardkit to do a monthly maintenance pass on agent-facing docs.
 ```
 
-Command criteria run locally, redact common secret environment variable patterns, and record timestamps, exit status, output hashes, and freshness.
+## Files
 
-## Generated Files And Commit Policy
+```text
+SKILL.md                   skill instructions
+agents/openai.yaml         Codex UI metadata
+AGENTS.md                  maintenance guidance for this repo
+README.md                  user-facing summary
+LICENSE                    license
+.gitignore                 local-file exclusions
+.gitattributes             Git text normalization
+```
 
-Commit source-of-truth files such as `AGENTS.md`, `docs/`, `.agents/skills/`, `templates/`, `schemas/`, `examples/`, and `evals/`.
+## Maintenance
 
-Do not commit runtime outputs under `.harness/evidence/`, `.harness/runs/`, `.harness/reports/`, `.harness/tmp/`, generated docs indexes under `.harness/docs-index/`, root local scratch `/specs/`, or `*.log` files.
+Keep the skill instruction-only unless a future requirement clearly needs deterministic tooling.
 
-When `agent-onboard index-docs --inject` updates `AGENTS.md`, commit the `AGENTS.md` change, not the generated `.harness/docs-index/*` file.
+When changing the skill, check:
 
-If a generated planning artifact or scratch spec should become durable project documentation, move or copy it into `docs/`, `examples/`, or `templates/` first, then commit it there.
+- `SKILL.md` has only `name` and `description` in frontmatter.
+- No helper files or package metadata were reintroduced.
+- README and AGENTS describe the same product boundary.
+- `SKILL.md` stays at or below 400 words unless a verified scenario needs more detail.
+- The skill still covers initialization, routing, cleanup, and recurring maintenance.
+- The skill still fills from evidence, avoids guessing, reports Needs Input, preserves durable guidance before deletion, keeps one canonical destination per fact, requires a no-op when no actionable issue exists, stages unattended deletion or promotion for review, and distinguishes command results from review findings.
+- Fresh scenario or real-repo checks show the skill avoids invented commands, routes durable docs, and reports conflicts.
 
-## Current Limits
+## References
 
-- Criteria input is JSON only.
-- Non-command criteria are recorded as pending manual evidence.
-- `eval` currently writes a static scenario inventory; it does not execute dynamic eval runs.
-- Command policy enforcement is not implemented yet, so run criteria files only from trusted sources.
+- [OpenAI Codex skills](https://developers.openai.com/codex/skills)
+- [OpenAI AGENTS.md guidance](https://developers.openai.com/codex/guides/agents-md)
+- [OpenAI Codex best practices](https://developers.openai.com/codex/learn/best-practices)
+- [Claude Code memory guidance](https://code.claude.com/docs/en/memory)
+- [Claude Code skills](https://code.claude.com/docs/en/skills)
+- [GitHub Copilot repository instructions](https://docs.github.com/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot)
+- [AGENTS.md](https://agents.md/)
 
 ## License
 

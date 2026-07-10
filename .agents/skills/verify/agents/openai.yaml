@@ -1,5 +1,0 @@
-interface:
-  display_name: "verify"
-  short_description: "Create fresh command-backed evidence for done criteria; produce proof.json and command log"
-policy:
-  allow_implicit_invocation: true

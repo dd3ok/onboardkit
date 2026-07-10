@@ -1,5 +1,0 @@
-.harness/evidence/
-.harness/runs/
-.harness/reports/
-coverage/
-.env*
