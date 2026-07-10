@@ -34,11 +34,11 @@
     {
       "id": 4,
       "prompt": "Clean up docs when docs/old-handoff.md duplicates docs/architecture.md but contains one still-valid migration safety rule found nowhere else.",
-      "expected_output": "The durable safety rule is moved to docs/architecture.md before the stale handoff is removed or proposed for removal.",
+      "expected_output": "The durable safety rule is moved to docs/architecture.md, while the stale handoff remains and is proposed for deletion pending explicit approval.",
       "assertions": [
-        "The unique migration safety rule is preserved before deletion.",
+        "The unique migration safety rule is preserved in docs/architecture.md.",
         "The same rule is not copied into multiple canonical documents.",
-        "The report names docs/old-handoff.md, its merge or deletion, and docs/architecture.md as the destination."
+        "The report names docs/old-handoff.md as a deletion candidate, docs/architecture.md as the destination, and the required approval."
       ]
     },
     {
@@ -100,6 +100,76 @@
         "The verified link-check command and relevant documentation paths are included.",
         "Unsupported sections are omitted rather than emitted as empty headings or placeholders.",
         "No source, build, test, style, or PR policy is invented."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Audit a repository with no AGENTS.md where .codex/config.toml declares TEAM_GUIDE.md as a fallback instruction file, and services/payments/AGENTS.override.md contains active subtree safety rules.",
+      "expected_output": "The configured root fallback and nested override are inventoried with their scopes and preserved; a redundant root AGENTS.md is not created and active rules are not flattened.",
+      "assertions": [
+        "TEAM_GUIDE.md is recognized as the active root instruction file.",
+        "The payment override and its active rules are preserved and reported as subtree-scoped.",
+        "No redundant root AGENTS.md is created."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Audit AGENTS.md and agent-facing docs in a repository where the agent onboarding section has a stale command, while docs/api.md and docs/user-guide.md contain unrelated outdated product content.",
+      "expected_output": "The evidenced agent onboarding guidance is refreshed, while unrelated API and user documentation remains unchanged except any necessary routing reference and is reported as outside scope.",
+      "assertions": [
+        "The stale agent-facing command is handled from repository evidence.",
+        "Unrelated API and user documentation content is not rewritten.",
+        "Out-of-scope documents are reported as skipped when relevant."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Clean up AGENTS.md and docs. docs/old-handoff.md is fully duplicated by a canonical document, but the request grants no file-deletion approval.",
+      "expected_output": "No file is deleted. The stale handoff remains, unchanged or as a routing pointer, while its canonical destination and the missing deletion approval are reported.",
+      "assertions": [
+        "Generic cleanup without a named deletion target and explicit deletion verb is not treated as approval.",
+        "docs/old-handoff.md still exists and no unique guidance is lost.",
+        "The report names the deletion candidate, canonical destination, and required approval."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Delete docs/old-handoff.md after preserving any unique durable guidance. It duplicates docs/architecture.md except for one still-valid migration safety rule.",
+      "expected_output": "The unique rule is moved to docs/architecture.md and verified before the explicitly authorized handoff file is deleted; the report names both actions.",
+      "assertions": [
+        "The current request is recognized as explicit deletion approval for the named file.",
+        "The unique migration safety rule is preserved in docs/architecture.md before deletion.",
+        "The report distinguishes the content move from the file deletion."
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "Delete stale docs in docs/ after preserving anything useful. The directory contains multiple possible candidates but no file names or file pattern are specified.",
+      "expected_output": "No file is deleted; candidates and canonical destinations are reported with Needs Input requesting literal file paths or a file-matching glob because a directory alone is insufficient approval.",
+      "assertions": [
+        "The directory name docs/ is not treated as approval to delete all stale files beneath it.",
+        "Potential candidates and durable guidance are reviewed without destructive action.",
+        "The report requests literal file paths or a file-matching glob as Needs Input."
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "Refresh agent-facing guidance when README has a suitable Agent onboarding section with a stale npm test command, while package metadata, lockfile, and CI corroborate pnpm test.",
+      "expected_output": "README onboarding is corrected in place to pnpm test; fitting content is not moved into AGENTS.md without a routing need, and evidence files remain unchanged.",
+      "assertions": [
+        "The existing README onboarding section is updated in place from npm test to pnpm test.",
+        "The command is not relocated into AGENTS.md without a demonstrated routing need.",
+        "Package metadata, lockfile, and CI remain unchanged."
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "Initialize guidance in a repository with no root instruction file. .codex/config.toml lists TEAM_GUIDE.md as a fallback, but TEAM_GUIDE.md does not exist or is empty.",
+      "expected_output": "A root AGENTS.md is created because a configured fallback name without an existing nonempty file is inactive; the fallback state is reported.",
+      "assertions": [
+        "Configuration alone is not treated as an active fallback file.",
+        "An existing nonempty fallback file is required to suppress root AGENTS.md creation.",
+        "No missing or empty TEAM_GUIDE.md content is invented."
       ]
     }
   ]

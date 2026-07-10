@@ -24,6 +24,10 @@
     "should_trigger": true
   },
   {
+    "query": "Audit our active AGENTS.override.md and fallback instructions without flattening their scopes.",
+    "should_trigger": true
+  },
+  {
     "query": "Write API documentation for the new payments endpoint.",
     "should_trigger": false
   },
@@ -45,6 +49,10 @@
   },
   {
     "query": "Fix broken links in our public product documentation.",
+    "should_trigger": false
+  },
+  {
+    "query": "Clean up outdated API reference pages and rewrite the public user guide.",
     "should_trigger": false
   }
 ]
