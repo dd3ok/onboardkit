@@ -23,7 +23,7 @@
     },
     {
       "id": 3,
-      "prompt": "Audit a monorepo with a root AGENTS.md and packages/payments/AGENTS.md containing active payment-specific safety rules that do not appear elsewhere.",
+      "prompt": "Audit a monorepo with a root AGENTS.md and packages/payments/AGENTS.md containing active payment-specific safety rules that do not appear elsewhere. A proposed cleanup would flatten the nested file into root and delete it.",
       "expected_output": "The nested file remains in place or its active rules are proposed for relocation; it is not flattened or deleted without a user decision.",
       "assertions": [
         "Unique subtree rules are preserved.",
@@ -33,17 +33,17 @@
     },
     {
       "id": 4,
-      "prompt": "Clean up docs when docs/old-handoff.md duplicates current architecture guidance but contains one still-valid migration safety rule found nowhere else.",
-      "expected_output": "The durable safety rule is moved to one canonical destination before the stale handoff is removed or proposed for removal.",
+      "prompt": "Clean up docs when docs/old-handoff.md duplicates docs/architecture.md but contains one still-valid migration safety rule found nowhere else.",
+      "expected_output": "The durable safety rule is moved to docs/architecture.md before the stale handoff is removed or proposed for removal.",
       "assertions": [
         "The unique migration safety rule is preserved before deletion.",
         "The same rule is not copied into multiple canonical documents.",
-        "The report names the merge or deletion and its destination."
+        "The report names docs/old-handoff.md, its merge or deletion, and docs/architecture.md as the destination."
       ]
     },
     {
       "id": 5,
-      "prompt": "Run a maintenance audit on a repository whose AGENTS.md and docs are concise, current, non-duplicated, and consistent with manifests and CI.",
+      "prompt": "Run a maintenance audit. After inventorying tracked files, inspecting relevant manifests and CI, searching for duplicate guidance, and reviewing the diff, you find that AGENTS.md and docs are concise, current, non-duplicated, and consistent.",
       "expected_output": "No files change. The report states that the audit was a no-op and lists the checks performed.",
       "assertions": [
         "No synthetic edit is made to create activity.",
