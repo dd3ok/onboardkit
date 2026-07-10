@@ -19,7 +19,7 @@ There is no helper command, npm package, scaffolder, runner, dashboard, or task 
 Install this repository as a user-level skill in a directory your agent supports. For Codex-compatible setups, use the cross-runtime skills directory:
 
 ```bash
-git clone https://github.com/dd3ok/agent-onboard.git ~/.agents/skills/onboardkit
+git clone https://github.com/dd3ok/onboardkit.git ~/.agents/skills/onboardkit
 ```
 
 For other runtimes, use that runtime's current official user-level skills directory.
