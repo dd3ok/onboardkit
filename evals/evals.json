@@ -108,7 +108,7 @@
       "expected_output": "The configured root fallback and nested override are inventoried with their scopes and preserved; a redundant root AGENTS.md is not created and active rules are not flattened.",
       "assertions": [
         "TEAM_GUIDE.md is recognized as the active root instruction file.",
-        "The payment override is preserved and reported as subtree-scoped.",
+        "The payment override and its active rules are preserved and reported as subtree-scoped.",
         "No redundant root AGENTS.md is created."
       ]
     },
@@ -138,7 +138,7 @@
       "expected_output": "The unique rule is moved to docs/architecture.md and verified before the explicitly authorized handoff file is deleted; the report names both actions.",
       "assertions": [
         "The current request is recognized as explicit deletion approval for the named file.",
-        "The unique migration safety rule is preserved in the canonical destination before deletion.",
+        "The unique migration safety rule is preserved in docs/architecture.md before deletion.",
         "The report distinguishes the content move from the file deletion."
       ]
     }

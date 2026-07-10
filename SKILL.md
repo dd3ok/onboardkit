@@ -14,7 +14,7 @@ Ground guidance locally. Never add helper code, scripts, schemas, or target-repo
 3. Create root `AGENTS.md` only when no root instruction or active fallback exists; otherwise preserve active guidance and change only what evidence or routing requires.
 4. Without nested instructions, target 200-400 words; write less with sparse evidence and exceed only for verified constraints.
 5. Use evidenced purpose, structure, commands, conventions, safety/checks, routing, and examples; omit empty or unsupported sections.
-6. Before any authorized merge or removal of stale, duplicate, or task-complete docs, preserve durable guidance in one canonical place.
+6. Before authorized merge/removal, preserve durable guidance in its narrowest canonical place; never promote narrow details.
 7. Route below; verify with repo commands, searches, and diff review.
 
 ## Scope
@@ -29,7 +29,7 @@ Delete files only when the current request names each file or exact path pattern
 - Never invent tools, owners, release steps, migrations, generated-file rules, or approvals.
 - Treat Git history as observation, not policy; promote corroborated conventions from docs, config, CI, templates, or user confirmation.
 - Protect secrets; ask about safety/correctness gaps or destructive work outside named approval; report remaining gaps as Needs Input.
-- Report conflicts as `conflicting sources; Needs Input` until the user decides. Never alter manifests or CI to align docs.
+- Treat active instructions as evidence; missing corroboration alone does not invalidate them. Replace them only with stronger local evidence; otherwise report conflicting sources and Needs Input. Never alter manifests or CI to align docs.
 
 ## Routing
 
