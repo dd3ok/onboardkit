@@ -1,71 +1,43 @@
 ---
 name: onboardkit
-description: Set up or maintain lightweight agent-facing repo context. Use when the user asks to prepare a repo for coding agents, create or refresh AGENTS.md, manage repo-local workflow guides, index local docs, remove stale agent guidance, or check that agent docs stay concise and useful.
+description: Use when AGENTS.md or agent-facing repository docs are missing, bloated, stale, duplicated, conflicting, poorly routed, or need initialization or maintenance.
 ---
 
 # onboardkit
 
-Use this skill to prepare and maintain a repository for AI coding agents without turning the repo into an agent runtime.
+Keep agent context small, durable, and evidence-based. Never add onboardkit helper code, package scripts, schemas, or target-repo skills.
 
-## Inputs
+## Workflow
 
-- Target repository path, defaulting to the current working directory.
-- Existing `AGENTS.md`, docs, and `.agents/skills` if present.
-- User intent: setup, check, update docs index, refresh workflow guides, or record a repeated mistake.
+1. Inspect every `AGENTS.md`, README, docs, manifest, lockfile, CI, and config.
+2. Identify evidenced commands, critical paths, generated files, migrations, and repo-wide constraints.
+3. Create or refresh root `AGENTS.md` with purpose, paths, commands, rules, docs routing, safety, and verification.
+4. Route each item using the rules below.
+5. Before merging or deleting stale, duplicate, superseded, speculative, empty, personal, or completed-task docs, preserve durable rules and pointers in one canonical destination.
+6. Verify with repo commands, targeted searches, and diff review. Separate command results from review findings.
 
-## Outputs
+## Evidence and Gaps
 
-- Lightweight `AGENTS.md` with always-needed rules.
-- Repo-local workflow guides under `.agents/skills`.
-- Optional compact docs index in `AGENTS.md`.
-- Optional `.harness/security-policy.json` and evidence metadata when verification is requested.
-- A short report naming changed files and any commands run.
+- Derive facts from local sources and observed runs; cite them. Record only evidenced commands in `AGENTS.md`; if none, write `not identified`, never generic checks.
+- Never invent package managers, runtimes, owners, release steps, migrations, generated-file policy, or approvals.
+- Default to inspection, secret protection, destructive-work approval, verification, and routing long docs.
+- Ask when gaps affect safety or correctness. Follow user-chosen tradeoffs and report risk; otherwise defer under Needs Input.
+- If sources conflict, cite them and mark `conflicting sources; Needs Input`. Use the user's resolution in docs; never edit manifests or CI to align them.
 
-## Core Workflow
+## Routing
 
-1. Inspect the target repository first.
-2. Keep always-needed rules in `AGENTS.md`.
-3. Put longer or specialized procedures in `.agents/skills/<name>/SKILL.md`.
-4. Resolve `<skill-root>` as the directory containing this `SKILL.md`.
-5. Use the bundled helper only when deterministic scaffolding or checks are useful:
-   - `node <skill-root>/bin/onboardkit.mjs init --target <repo>`
-   - `node <skill-root>/bin/onboardkit.mjs doctor --cwd <repo>`
-   - `node <skill-root>/bin/onboardkit.mjs index-docs --source <dir> --name <name> --inject`
-6. Do not require an npm package install or a global `onboardkit` command.
+- Keep in root `AGENTS.md` only stable rules most tasks need.
+- Keep nested `AGENTS.md` for subtree-specific overrides; delete or flatten them only after the user chooses whether to discard or relocate active rules.
+- Move durable but long, narrow, historical, or domain-specific material to `docs/`.
+- Keep human onboarding, installation, and product overview in README.
+- Create `docs/README.md` only when docs need a map; never create empty stubs.
+- Update stale or incorrect README onboarding, installation, product, and docs-routing content.
+- Promote root rules only from repo-wide invariants, repeated mistakes or PR feedback, or verified failures. Exclude handoffs, session notes, completed plans, verbose detail, and one-off findings.
 
-## Maintenance Rules
+## Maintenance
 
-- Keep `AGENTS.md` small and stable.
-- Route detailed procedures to workflow guides or docs.
-- Prefer explicit guide use over hidden process.
-- Treat evidence as a pointer-backed receipt, not a permanent activity ledger.
-- Remove stale, duplicate, host-specific, or overly narrow guidance when it no longer helps agents.
-- Update durable guidance only when it reflects a repeated failure, project rule, or verification gap.
+Re-run after merges, releases, repeated mistakes, PR feedback, or audits. If inspection finds no actionable issue, change no files and report a no-op. Unattended runs propose deletions and promotions for review. Prefer pointers to copies.
 
-## Examples
+## Report
 
-User asks: "Set up this repo for coding agents."
-Do: inspect the repo, create or refresh `AGENTS.md`, install `.agents/skills`, and report changed files.
-
-User asks: "Check whether our agent docs are still lightweight."
-Do: inspect `AGENTS.md`, docs, and workflow guides; flag stale, duplicated, or overly narrow guidance.
-
-User asks: "Agents keep making the same mistake."
-Do: update durable guidance only if the mistake reflects a repeated failure, project rule, or verification gap.
-
-## Constraints
-
-- Do not install npm packages to use onboardkit.
-- Do not create host-specific shim files unless the user explicitly asks for a separate adapter design.
-- Do not turn evidence into a permanent task ledger.
-
-## When Proof Is Needed
-
-Use verification only for work where a done claim needs evidence. The bundled helper can run command-backed criteria and finish checks:
-
-```bash
-node <skill-root>/bin/onboardkit.mjs verify --criteria <criteria.json> --run-id <id>
-node <skill-root>/bin/onboardkit.mjs finish --run-id <id>
-```
-
-For small documentation-only changes, ordinary tests, syntax checks, and review are usually enough.
+List changed files, deleted or merged docs, routing, conflicts, checks actually run, skips, Needs Input, and risks.

@@ -1,5 +1,0 @@
-interface:
-  display_name: "clarify"
-  short_description: "Clarify ambiguous or high-risk coding work before implementation; produce brief.md with qu"
-policy:
-  allow_implicit_invocation: true

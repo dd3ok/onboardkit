@@ -1,5 +1,0 @@
-interface:
-  display_name: "review"
-  short_description: "Review implemented diffs for spec compliance, correctness, simplicity, security, maintaina"
-policy:
-  allow_implicit_invocation: true

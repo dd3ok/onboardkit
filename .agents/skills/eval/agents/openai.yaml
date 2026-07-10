@@ -1,5 +1,0 @@
-interface:
-  display_name: "eval"
-  short_description: "Design evals and run available deterministic checks across AGENTS, workflow guides, docs-index, and hybrid modes"
-policy:
-  allow_implicit_invocation: true
