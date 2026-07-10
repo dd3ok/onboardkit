@@ -1,0 +1,23 @@
+$ git ls-files
+.agents/skills/release-helper/SKILL.md
+.gitignore
+README.md
+
+$ git check-ignore -v .agents/skills/onboardkit/SKILL.md
+.gitignore:1:.agents/skills/onboardkit/ .agents/skills/onboardkit/SKILL.md
+
+$ cat .gitignore
+.agents/skills/onboardkit/
+
+$ cat README.md
+# Release Lab
+
+This repository maintains a project-owned release-helper skill for reviewing release checklists.
+
+$ cat .agents/skills/release-helper/SKILL.md
+---
+name: release-helper
+description: Review this repository's release checklist and report missing evidence.
+---
+
+Review the current release checklist. Report missing evidence without changing release policy.

@@ -24,21 +24,63 @@ jobs:
           import re
           from pathlib import Path
 
-          skill_text = Path("SKILL.md").read_text(encoding="utf-8")
-          parts = skill_text.split("---", 2)
-          assert len(parts) == 3 and not parts[0].strip(), "invalid frontmatter delimiters"
+          def parse_skill(path):
+              text = path.read_text(encoding="utf-8")
+              parts = text.split("---", 2)
+              assert len(parts) == 3 and not parts[0].strip(), f"invalid frontmatter delimiters: {path}"
+              metadata = {}
+              for line in parts[1].splitlines():
+                  if line.strip():
+                      key, value = line.split(":", 1)
+                      metadata[key.strip()] = value.strip().strip('"')
+              return text, metadata, parts[2].strip()
 
-          metadata = {}
-          for line in parts[1].splitlines():
-              if line.strip():
-                  key, value = line.split(":", 1)
-                  metadata[key.strip()] = value.strip().strip('"')
+          runtime = Path("skills/onboardkit")
+          skill_text, metadata, _ = parse_skill(runtime / "SKILL.md")
+          legacy_text, legacy_metadata, legacy_body = parse_skill(Path("SKILL.md"))
 
           assert set(metadata) == {"name", "description"}, "unexpected frontmatter fields"
           assert re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", metadata["name"]), "invalid skill name"
           assert metadata["name"] == "onboardkit", "skill name mismatch"
+          assert runtime.name == metadata["name"], "skill directory/name mismatch"
           assert 1 <= len(metadata["description"]) <= 1024, "invalid description"
           assert len(re.findall(r"\S+", skill_text)) <= 400, "SKILL.md exceeds 400 words"
+          assert legacy_metadata == metadata, "legacy and canonical frontmatter differ"
+          assert len(re.findall(r"\S+", legacy_text)) <= 100, "legacy entrypoint is not minimal"
+
+          expected_legacy_body = (
+              "# onboardkit compatibility entrypoint\n\n"
+              "Read and follow [the canonical onboardkit skill](skills/onboardkit/SKILL.md).\n\n"
+              "This file only preserves existing full-repository installations. "
+              "New installations must install `skills/onboardkit/` directly."
+          )
+          assert legacy_body == expected_legacy_body, "legacy entrypoint drifted"
+
+          required_runtime_files = {"SKILL.md", "LICENSE", "agents/openai.yaml"}
+          runtime_files = {
+              path.relative_to(runtime).as_posix()
+              for path in runtime.rglob("*")
+              if path.is_file()
+          }
+          assert required_runtime_files <= runtime_files, "missing canonical runtime file"
+          for filename in runtime_files:
+              parts = Path(filename).parts
+              allowed_reference = len(parts) == 2 and parts[0] == "references" and Path(filename).suffix == ".md"
+              assert filename in required_runtime_files or allowed_reference, f"unexpected runtime file: {filename}"
+
+          assert Path("agents/openai.yaml").read_bytes() == (runtime / "agents/openai.yaml").read_bytes(), "legacy UI metadata drifted"
+          assert Path("LICENSE").read_bytes() == (runtime / "LICENSE").read_bytes(), "runtime license drifted"
+
+          readme = Path("README.md").read_text(encoding="utf-8")
+          assert "$skill-installer" in readme and "tree/main/skills/onboardkit" in readme, "canonical installer path missing"
+          assert "--no-cone" not in readme, "deprecated non-cone install guidance returned"
+          assert not re.search(r"git(?:\s+-C\s+\S+)?\s+sparse-checkout", readme), "direct git sparse-checkout guidance returned"
+          assert not re.search(r"git clone[^\n]*(?:\.agents|\.codex)/skills", readme), "full repository skill install returned"
+
+          assert "the invoked onboardkit copy if ignored or external" in skill_text, "invoked-copy exclusion lost"
+          assert "ignored/external skill copies" not in skill_text, "repo-owned skills may be over-excluded"
+          assert "Do not restore deleted content" in skill_text, "deleted-content policy is ambiguous"
+          assert "Preserve deletions" not in skill_text, "ambiguous deleted-content wording returned"
 
           eval_doc = json.loads(Path("evals/evals.json").read_text(encoding="utf-8"))
           cases = eval_doc["evals"]
@@ -67,5 +109,5 @@ jobs:
           positive = sum(item["should_trigger"] for item in queries)
           assert 0 < positive < len(queries), "positive and negative trigger cases are required"
 
-          print(f"Validated {len(cases)} evals, {len(queries)} trigger queries, and {len(fixture_refs)} fixture references.")
+          print(f"Validated {len(cases)} evals, {len(queries)} trigger queries, {len(fixture_refs)} fixture references, and {len(runtime_files)} runtime files.")
           PY

@@ -285,6 +285,21 @@
         "The example note is not used to corroborate the tentative weekly-review claim.",
         "Workflow/placement decisions remain outside target guidance."
       ]
+    },
+    {
+      "id": 24,
+      "prompt": "Apply onboardkit to the attached repository snapshot and report which agent skill files belong in the repository inventory.",
+      "expected_output": "The tracked project-owned release-helper skill remains in the repository inventory, while the ignored onboardkit installation copy used for this run is excluded from evidence; ignored status is not generalized into repository policy.",
+      "files": [
+        "evals/files/repo-skill-boundary/repo-snapshot.txt"
+      ],
+      "assertions": [
+        "The tracked release-helper skill is inventoried as current repository-owned guidance.",
+        "The ignored onboardkit copy is excluded specifically as the invoked installation copy.",
+        "The output does not exclude all files under .agents/skills or all ignored skills.",
+        "Ignored status is not described as generated content or promoted into repository policy.",
+        "The report distinguishes the retained repository skill from the excluded invoked copy."
+      ]
     }
   ]
 }
