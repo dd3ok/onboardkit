@@ -54,11 +54,11 @@
     {
       "id": 6,
       "prompt": "Route a growing docs directory containing durable architecture, deployment, completed task plans, and a five-page AGENTS.md. There is no docs index today.",
-      "expected_output": "Stable operational rules stay in a compact AGENTS.md, durable detail moves to docs, completed task artifacts are removed after preserving useful guidance, and docs/README.md is created only if it improves navigation.",
+      "expected_output": "Stable operational rules stay in a compact AGENTS.md, durable detail moves to docs, completed task artifacts are proposed for removal after preserving useful guidance, and docs/README.md is created only if it improves navigation.",
       "assertions": [
         "Root AGENTS.md retains only broadly applicable operational guidance.",
         "Durable narrow detail is routed rather than copied.",
-        "Completed task artifacts are not retained as permanent agent context.",
+        "Completed task artifacts are proposed for removal and are not promoted into permanent agent context.",
         "A docs index is created only when the remaining docs need a map."
       ]
     }

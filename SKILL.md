@@ -34,7 +34,7 @@ Keep agent context small and grounded. Never add helper code, scripts, schemas, 
 
 ## Maintenance
 
-Re-run after merges, releases, repeated mistakes, feedback, or audits. If no action is needed, change no files and report a no-op. Propose unattended cleanup/promotions for review. Prefer pointers.
+Re-run after merges, releases, repeated mistakes, feedback, or audits. If clean, change nothing; report a no-op. Propose unattended deletion or promotion for review. Prefer references over copies.
 
 ## Report
 
