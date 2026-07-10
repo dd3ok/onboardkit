@@ -1,10 +1,11 @@
 # onboardkit
 
-onboardkit is a lightweight Codex-compatible skill for keeping `AGENTS.md` and repository docs useful for coding agents.
+onboardkit is a lightweight, Codex-tested Agent Skill for maintaining `AGENTS.md` and agent-facing repo docs. Other Agent Skills runtimes are compatibility targets, not verified support.
 
 It helps an agent decide:
 
 - how to initialize a small `AGENTS.md`
+- how to respect active overrides, fallback instructions, and nested scopes
 - how to fill discovered facts while avoiding invented repo-specific guidance
 - when to ask the user or report Needs Input instead of guessing
 - what belongs in always-on `AGENTS.md`
@@ -36,18 +37,21 @@ Then ask your coding agent in a target repository:
 Use onboardkit to clean up this repo's AGENTS.md and docs.
 ```
 
+Implicit invocation is enabled. For cleanup, invoke `$onboardkit` explicitly; audit and maintenance do not authorize deletion.
+
 Common prompts:
 
 ```text
 Use $onboardkit to initialize lightweight AGENTS.md and docs routing for this repo.
 Use $onboardkit to refresh this existing AGENTS.md, preserving it and changing only what evidence or routing requires.
-Use $onboardkit to audit AGENTS.md and docs for stale or duplicate guidance.
+Use $onboardkit to audit AGENTS.md and agent-facing docs for stale or duplicate guidance without deleting files.
 Use $onboardkit to do a monthly maintenance pass on agent-facing docs.
 ```
 
 ## Files
 
 ```text
+.github/workflows/validate.yml repository-only static validation
 SKILL.md                   skill instructions
 agents/openai.yaml         Codex UI metadata
 evals/evals.json           behavior evaluation cases
@@ -67,8 +71,9 @@ Use the [AGENTS.md](AGENTS.md) Definition of Done as the canonical maintainer ch
 
 - `SKILL.md` has only `name` and `description` in frontmatter.
 - No helper files or package metadata were reintroduced, and README, AGENTS, and `agents/openai.yaml` still match the skill boundary.
-- `SKILL.md` remains within its documented word budget.
-- Fresh validation uses the canonical behavior and trigger cases or a documented real-repo equivalent.
+- `SKILL.md` stays concise and at or below 400 words unless a verified safety or correctness need requires more.
+- Active instruction discovery, agent-facing scope, and explicit deletion approval remain covered.
+- Eval JSON files are declarative cases, not an automated model runner; fresh release validation compares isolated current and baseline runs.
 
 ## References
 
