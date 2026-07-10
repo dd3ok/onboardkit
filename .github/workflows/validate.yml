@@ -49,11 +49,23 @@ jobs:
           assert len({case["prompt"] for case in cases}) == len(cases), "eval prompts must be unique"
           assert all(case["prompt"] and case["expected_output"] and all(case["assertions"]) for case in cases), "incomplete eval case"
 
+          fixture_refs = []
+          for case in cases:
+              files = case.get("files", [])
+              assert isinstance(files, list), "eval files must be a list"
+              assert all(isinstance(filename, str) and filename for filename in files), "invalid eval file"
+              assert len(files) == len(set(files)), "duplicate eval file"
+              for filename in files:
+                  path = Path(filename)
+                  assert not path.is_absolute() and ".." not in path.parts, "unsafe eval file path"
+                  assert path.parts[:2] == ("evals", "files") and path.is_file(), "missing eval file"
+                  fixture_refs.append(filename)
+
           queries = json.loads(Path("evals/eval_queries.json").read_text(encoding="utf-8"))
           assert len({item["query"] for item in queries}) == len(queries), "trigger queries must be unique"
           assert all(item["query"] and type(item["should_trigger"]) is bool for item in queries), "invalid trigger case"
           positive = sum(item["should_trigger"] for item in queries)
           assert 0 < positive < len(queries), "positive and negative trigger cases are required"
 
-          print(f"Validated {len(cases)} evals and {len(queries)} trigger queries.")
+          print(f"Validated {len(cases)} evals, {len(queries)} trigger queries, and {len(fixture_refs)} fixture references.")
           PY

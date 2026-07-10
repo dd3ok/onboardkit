@@ -5,43 +5,42 @@ description: "Maintain AGENTS.md and agent-facing repo docs: initialize, clean u
 
 # onboardkit
 
-Use repo evidence. Never add helper code, scripts, schemas, or target-repo skills.
+Never add helpers/scripts/schemas or target-repo skills.
 
 ## Workflow
 
-1. Inventory repo instructions, README overview/agent sections, agent docs, new files, and active runtime fallbacks; never edit global instructions; skip vendored/generated trees.
-2. Inspect manifests, locks, CI, config, and nested scopes.
-3. Create root `AGENTS.md` only when no existing nonempty root override, `AGENTS.md`, or configured fallback is active; otherwise preserve guidance and make only evidenced/routing changes.
-4. Without nested instructions, target 200-400 words; less with sparse evidence, more only for verified constraints.
-5. Include evidenced purpose, structure, commands, conventions, checks, and routing; omit empty/unsupported sections.
-6. Before merges or approved deletion, preserve durable content in its narrowest canonical destination.
-7. Verify with repo commands, searches, and diff.
+1. Inventory repo instructions, README overview/agent sections, agent docs, new files, fallbacks, manifests, locks, CI/config, and scopes; never edit global instructions; skip vendored/generated trees.
+2. Create root `AGENTS.md` only if no nonempty root override, `AGENTS.md`, or configured fallback is active; otherwise preserve guidance and make only evidenced/routing changes.
+3. With no nested instructions, target 200-400 words; use less for sparse evidence, more only for verified constraints.
+4. Classify candidates through the Evidence Gate, route, and draft; omit empty/unsupported sections.
+5. Preserve durable content in its narrowest canonical destination before merge/approved deletion; verify with repo commands, searches, and diff.
 
 ## Scope
 
-Leave unrelated product/API docs unchanged except explicit edits or routing references.
+Leave unrelated product/API docs unchanged except explicit edits/routing references.
 
-Delete only when the user says delete/remove and gives each literal path or file-matching glob. Never broaden it or treat directories as approval; otherwise retain candidates and request approval.
+Delete only when user says delete/remove and specifies each literal path or file-matching glob. Never broaden it or treat a directory as approval; otherwise retain candidates and request approval.
 
-## Evidence
+## Evidence Gate
 
-- For project commands, cite source/run or report `not identified`.
-- Never invent tools, owners, release/migration steps, generated rules, or approvals.
-- Git history is observation; require corroboration from docs, config, CI, templates, or the user.
-- Protect secrets. Ask only when unresolved safety/correctness gaps or destructive scope block safe progress; otherwise continue and report Needs Input.
-- Active instructions are evidence; replace only with stronger local evidence and report conflicts as Needs Input. Never change manifests/CI to fit docs.
+- Classify each repo fact/rule as local evidence, active guidance, explicit user rule, routing default, or skill workflow.
+- Use skill workflow for this run, never as target policy. Write the first three classes. Introduce routing defaults only for explicit initialize/reroute requests when necessary, low-risk, and reported.
+- Trace every drafted fact/rule to its class; remove unsupported content or report Needs Input. Never infer repo policy from convention.
+- Require local sources for project commands; note runs or report `not identified`.
+- Corroborate Git history; treat active instructions as evidence. Never change manifests/CI to fit docs.
+- Protect secrets. Ask when unresolved safety/correctness or destructive scope blocks safe progress; otherwise continue and report Needs Input.
 
 ## Routing
 
-- Keep stable, broadly needed root `AGENTS.md` rules: shared invariants, repeated mistakes/feedback, and verified failures. Exclude handoffs, session notes, plans, and one-offs.
-- Preserve active overrides/nested rules; delete or flatten only when the user discards or relocates them.
-- Route durable long/narrow/historical/domain material to its narrowest canonical doc.
-- Keep fitting README onboarding/install content current and in place. Create `docs/README.md` only for a needed map, never an empty stub.
+- Keep root `AGENTS.md` to stable broad rules: shared invariants, repeated mistakes/feedback, verified failures. Exclude handoffs, session notes, plans, one-offs.
+- Preserve overrides/nested rules; delete/flatten only when user discards/relocates them.
+- Route durable narrow/historical/domain material to its canonical doc.
+- Keep fitting README onboarding/install in place and current. Create `docs/README.md` only for needed mapping, never an empty stub.
 
 ## Maintenance
 
-Re-run after merges, releases, feedback, repeated mistakes, or audits. Clean audits are no-ops. Retain unapproved deletion candidates; reference rather than copy.
+Re-run after merges, releases, feedback, mistakes, or audits; make clean audits no-ops; retain unapproved deletion candidates and reference, never copy.
 
 ## Report
 
-Report changes, merged/deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, and risks; distinguish command from review evidence.
+Report sources/runs, changes, introduced defaults, merged/deleted docs/destinations, routing, conflicts, checks, skips, Needs Input, and risks; distinguish command from review evidence.

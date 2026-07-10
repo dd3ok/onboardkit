@@ -58,6 +58,7 @@ SKILL.md                   skill instructions
 agents/openai.yaml         Codex UI metadata
 evals/evals.json           behavior evaluation cases
 evals/eval_queries.json    trigger boundary cases
+evals/files/               isolated behavior fixtures
 AGENTS.md                  maintenance guidance for this repo
 README.md                  user-facing summary
 LICENSE                    license
@@ -69,7 +70,7 @@ LICENSE                    license
 
 Keep the skill instruction-only unless a future requirement clearly needs deterministic tooling.
 
-Use the [AGENTS.md](AGENTS.md) Definition of Done as the canonical maintainer checklist. Eval JSON files remain declarative cases, not an automated model runner; fresh release validation compares isolated current and baseline runs.
+Use the [AGENTS.md](AGENTS.md) Definition of Done as the canonical maintainer checklist. Eval JSON and fixtures remain declarative, not a model runner; fresh release validation copies fixtures into isolated workspaces and compares current with baseline.
 
 ## References
 

@@ -42,8 +42,8 @@ Use stable shared skill paths or official runtime docs.
 - Facts use local evidence. Product/API docs stay unchanged except routing references. Git history needs corroboration from docs, config, CI, templates, or user confirmation.
 - Move durable guidance to its narrowest existing canonical destination before deletion. Delete only user-specified literal paths or file-matching globs; never broaden them or treat a directory alone as approval. Clean audits are no-ops.
 - Reports name changes, merged or deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, and risks; command-backed and review-backed findings stay separate.
-- Evaluation files are valid JSON and cover create/refresh behavior, active overrides, scope exclusions, deletion approval, sparse evidence, conflicts, routing, cleanup, no-op behavior, and trigger boundaries.
-- Fresh release checks compare isolated current and baseline runs, search for stale helper guidance, validate syntax/format, and review the diff; the final report lists commands and residual risk.
+- Evaluation JSON/fixtures cover initialization/refresh, active overrides, scope/deletion, sparse/conflicting evidence, provenance leakage, routing-default transparency, cleanup/no-op, and trigger boundaries.
+- Fresh releases compare isolated fixture runs against baseline, search stale helper guidance, validate syntax/format, review the diff, and report commands/residual risk.
 
 ## Security Rules
 
