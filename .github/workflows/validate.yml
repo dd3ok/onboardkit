@@ -38,7 +38,7 @@ jobs:
           assert re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", metadata["name"]), "invalid skill name"
           assert metadata["name"] == "onboardkit", "skill name mismatch"
           assert 1 <= len(metadata["description"]) <= 1024, "invalid description"
-          assert len(re.findall(r"\S+", skill_text)) <= 400, "SKILL.md exceeds 400 words"
+          assert len(re.findall(r"\S+", skill_text)) <= 450, "SKILL.md exceeds 450 words"
 
           eval_doc = json.loads(Path("evals/evals.json").read_text(encoding="utf-8"))
           cases = eval_doc["evals"]

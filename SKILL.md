@@ -11,7 +11,7 @@ Ground guidance locally. Never add helper code, scripts, schemas, or target-repo
 
 1. Inventory repo `AGENTS.md`, `AGENTS.override.md`, configured fallbacks, README, and agent-facing docs, including new files; never edit global instructions; skip vendored/generated trees.
 2. Inspect manifests, lockfiles, CI, config, and nested scopes.
-3. Create root `AGENTS.md` when no root instruction exists; otherwise preserve it and change only what evidence or routing requires.
+3. Create root `AGENTS.md` only when no root instruction or active fallback exists; otherwise preserve active guidance and change only what evidence or routing requires.
 4. Without nested instructions, target 200-400 words; write less with sparse evidence and exceed only for verified constraints.
 5. Use evidenced purpose, structure, commands, conventions, safety/checks, routing, and examples; omit empty or unsupported sections.
 6. Before merging or removing stale, duplicate, or task-complete docs, preserve durable guidance in one canonical place.
@@ -19,7 +19,7 @@ Ground guidance locally. Never add helper code, scripts, schemas, or target-repo
 
 ## Scope
 
-Unless user names them, leave unrelated product/API docs unchanged except for routing references.
+Unless the user explicitly names them, leave unrelated product/API docs unchanged except for routing references.
 
 ## Evidence
 
