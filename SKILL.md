@@ -21,7 +21,7 @@ Ground guidance locally. Never add helper code, scripts, schemas, or target-repo
 
 Unless the user explicitly names them, leave unrelated product/API docs unchanged except for routing references.
 
-Delete files only when the current request names each file or exact path pattern and explicitly says delete or remove. Otherwise keep them and report the required approval.
+Delete only when the request says delete/remove and names every file or an exact file pattern; a directory alone is insufficient. Otherwise keep candidates and report required approval.
 
 ## Evidence
 
@@ -36,7 +36,7 @@ Delete files only when the current request names each file or exact path pattern
 - Root `AGENTS.md` keeps stable, broadly needed facts and rules.
 - Preserve active overrides and nested rules; delete or flatten only when the user discards or relocates them.
 - Move durable long, narrow, historical, or domain-specific material to `docs/`.
-- Keep README onboarding, installation, and product overview current.
+- Keep README onboarding and installation current; retain fitting content unless routing requires relocation.
 - Create `docs/README.md` only when docs need a map; never create empty stubs.
 - Promote only shared invariants, repeated mistakes or feedback, and verified failures; exclude handoffs, session notes, plans, and one-offs.
 

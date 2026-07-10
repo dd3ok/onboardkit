@@ -37,7 +37,7 @@ Then ask your coding agent in a target repository:
 Use onboardkit to clean up this repo's AGENTS.md and docs.
 ```
 
-Implicit invocation is enabled. Invoke `$onboardkit` explicitly for cleanup; cleanup, audit, and maintenance do not authorize deletion without approval for specific files.
+Implicit invocation is enabled. Invoke `$onboardkit` explicitly for cleanup; cleanup, audit, and maintenance authorize deletion only when the request names every file or an exact file pattern. A directory alone is insufficient.
 
 Common prompts:
 
