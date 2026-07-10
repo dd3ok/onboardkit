@@ -175,7 +175,7 @@
     {
       "id": 18,
       "prompt": "Use onboardkit to initialize lightweight AGENTS.md and docs routing for this repository.",
-      "expected_output": "A small root AGENTS.md retains the evidenced local purpose, notes path, and absence of project commands without turning ignored files or onboardkit workflow into repository policy; any new routing default is reported as introduced.",
+      "expected_output": "A small root AGENTS.md retains the evidenced local purpose, notes path, and absence of project commands without turning ignored files or onboardkit workflow into repository policy; it adds no workflow-derived verification/process rules and reports any necessary guidance-placement default as introduced.",
       "files": [
         "evals/files/claim-gate-base/.gitignore",
         "evals/files/claim-gate-base/.codex/config.toml",
@@ -185,7 +185,7 @@
       "assertions": [
         "Every repository-specific fact or rule is traceable to fixture evidence, active guidance, an explicit user rule, or a reported routing default.",
         "The local repository is not described as public or customer-facing, and ignored skill files are not described as generated content.",
-        "Onboardkit workflow is not presented as existing repository policy.",
+        "Every reported routing default concerns guidance placement only, and no skill-workflow rule is written as target guidance.",
         "The evidenced purpose, notes path, and lack of project commands are retained.",
         "Only the requested guidance artifacts change."
       ]
@@ -193,7 +193,7 @@
     {
       "id": 19,
       "prompt": "Set up concise repository guidance and docs routing for this small documentation project.",
-      "expected_output": "A small root AGENTS.md may describe the documented public customer audience while retaining the notes path and lack of commands; it does not infer generated-file policy, and any new routing default is reported as introduced.",
+      "expected_output": "A small root AGENTS.md may describe the documented public customer audience while retaining the notes path and lack of commands; it does not infer generated-file policy, adds no workflow-derived verification/process rules, and reports any necessary guidance-placement default as introduced.",
       "files": [
         "evals/files/claim-gate-public/.gitignore",
         "evals/files/claim-gate-public/.codex/config.toml",
@@ -203,6 +203,7 @@
       "assertions": [
         "The public customer audience is included only because the README establishes it.",
         "Ignored skill files are not described as generated content or a generated-file policy.",
+        "Every reported routing default concerns guidance placement only, and no skill-workflow rule is written as target guidance.",
         "Every repository-specific fact or rule has an allowed source or is reported as a new routing default.",
         "The evidenced notes path and lack of project commands are retained.",
         "Only the requested guidance artifacts change."
@@ -211,7 +212,7 @@
     {
       "id": 20,
       "prompt": "Initialize a lightweight AGENTS.md for this documentation repository while preserving its existing file rules.",
-      "expected_output": "A small root AGENTS.md preserves the evidenced do-not-edit rule only for site/generated/, retains the local purpose and lack of commands, does not broaden ignored/generated policy or infer a public audience, and reports any new routing default.",
+      "expected_output": "A small root AGENTS.md preserves the evidenced do-not-edit rule only for site/generated/, retains the local purpose and lack of commands, does not broaden ignored/generated policy or infer a public audience, adds no workflow-derived verification/process rules, and reports any necessary guidance-placement default.",
       "files": [
         "evals/files/claim-gate-generated/.gitignore",
         "evals/files/claim-gate-generated/.codex/config.toml",
@@ -224,6 +225,7 @@
         "The do-not-edit rule is preserved for site/generated/ from docs/generated-files.md.",
         "The rule is not broadened to all ignored or generated-looking files.",
         "The local repository is not described as public or customer-facing.",
+        "Every reported routing default concerns guidance placement only, and no skill-workflow rule is written as target guidance.",
         "Every repository-specific fact or rule has an allowed source or is reported as a new routing default.",
         "The generated fixture file and unrelated evidence files remain unchanged."
       ]

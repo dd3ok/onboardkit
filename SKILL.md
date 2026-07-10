@@ -23,8 +23,8 @@ Delete only when user says delete/remove and specifies each literal path or file
 
 ## Evidence Gate
 
-- Classify each repo fact/rule as local evidence, active guidance, explicit user rule, routing default, or skill workflow.
-- Use skill workflow for this run, never as target policy. Write the first three classes. Introduce routing defaults only for explicit initialize/reroute requests when necessary, low-risk, and reported.
+- Classify repo facts/rules as local evidence, active guidance, explicit user rules, routing defaults, or skill workflow.
+- Use workflow only for this run, never as target guidance. Write the first three classes. Allow only necessary low-risk guidance-placement defaults for explicit initialize/reroute requests; exclude verification/process rules and report additions.
 - Trace every drafted fact/rule to its class; remove unsupported content or report Needs Input. Never infer repo policy from convention.
 - Require local sources for project commands; note runs or report `not identified`.
 - Corroborate Git history; treat active instructions as evidence. Never change manifests/CI to fit docs.
