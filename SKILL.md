@@ -5,7 +5,7 @@ description: "Use for AGENTS.md and agent-facing repo documentation maintenance:
 
 # onboardkit
 
-Keep context grounded. Never add helper code, scripts, schemas, or target-repo skills.
+Stay grounded. Never add helper code, scripts, schemas, or target-repo skills.
 
 ## Workflow
 
@@ -36,8 +36,8 @@ Keep context grounded. Never add helper code, scripts, schemas, or target-repo s
 
 ## Maintenance
 
-Re-run after merges, releases, errors, or audits. If clean, change nothing; report a no-op. When unattended, propose deletion or promotion for review; prefer references over copies.
+Re-run after merges, releases, repeated mistakes, feedback, or audits. If clean, change nothing; report a no-op. When unattended, propose deletion or promotion for review; prefer references over copies.
 
 ## Report
 
-Report changes, merged/deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, and risks; separate command results from review findings.
+Report changes, merged/deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, and risks; separate command-backed and review-backed findings.
