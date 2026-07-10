@@ -34,11 +34,11 @@
     {
       "id": 4,
       "prompt": "Clean up docs when docs/old-handoff.md duplicates docs/architecture.md but contains one still-valid migration safety rule found nowhere else.",
-      "expected_output": "The durable safety rule is moved to docs/architecture.md before the stale handoff is removed or proposed for removal.",
+      "expected_output": "The durable safety rule is moved to docs/architecture.md, while the stale handoff remains and is proposed for deletion pending explicit approval.",
       "assertions": [
-        "The unique migration safety rule is preserved before deletion.",
+        "The unique migration safety rule is preserved in docs/architecture.md.",
         "The same rule is not copied into multiple canonical documents.",
-        "The report names docs/old-handoff.md, its merge or deletion, and docs/architecture.md as the destination."
+        "The report names docs/old-handoff.md as a deletion candidate, docs/architecture.md as the destination, and the required approval."
       ]
     },
     {
@@ -100,6 +100,46 @@
         "The verified link-check command and relevant documentation paths are included.",
         "Unsupported sections are omitted rather than emitted as empty headings or placeholders.",
         "No source, build, test, style, or PR policy is invented."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Audit a repository with no AGENTS.md where .codex/config.toml declares TEAM_GUIDE.md as a fallback instruction file, and services/payments/AGENTS.override.md contains active subtree safety rules.",
+      "expected_output": "The configured root fallback and nested override are inventoried with their scopes and preserved; a redundant root AGENTS.md is not created and active rules are not flattened.",
+      "assertions": [
+        "TEAM_GUIDE.md is recognized as the active root instruction file.",
+        "The payment override is preserved and reported as subtree-scoped.",
+        "No redundant root AGENTS.md is created."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Audit AGENTS.md and agent-facing docs in a repository where the agent onboarding section has a stale command, while docs/api.md and docs/user-guide.md contain unrelated outdated product content.",
+      "expected_output": "The evidenced agent onboarding guidance is refreshed, while unrelated API and user documentation remains unchanged except any necessary routing reference and is reported as outside scope.",
+      "assertions": [
+        "The stale agent-facing command is handled from repository evidence.",
+        "Unrelated API and user documentation content is not rewritten.",
+        "Out-of-scope documents are reported as skipped when relevant."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Clean up AGENTS.md and docs. docs/old-handoff.md is fully duplicated by a canonical document and appears safe to remove, but the request does not explicitly authorize file deletion.",
+      "expected_output": "No file is deleted. The stale handoff is proposed as a deletion candidate with its canonical destination and the missing deletion approval is reported.",
+      "assertions": [
+        "Generic cleanup is not treated as file-deletion approval.",
+        "docs/old-handoff.md remains unchanged.",
+        "The report names the deletion candidate, canonical destination, and required approval."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Delete docs/old-handoff.md after preserving any unique durable guidance. It duplicates docs/architecture.md except for one still-valid migration safety rule.",
+      "expected_output": "The unique rule is moved to docs/architecture.md and verified before the explicitly authorized handoff file is deleted; the report names both actions.",
+      "assertions": [
+        "The current request is recognized as explicit deletion approval for the named file.",
+        "The unique migration safety rule is preserved in the canonical destination before deletion.",
+        "The report distinguishes the content move from the file deletion."
       ]
     }
   ]
