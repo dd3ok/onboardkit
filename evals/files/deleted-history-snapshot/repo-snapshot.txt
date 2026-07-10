@@ -1,0 +1,22 @@
+$ git status --short --branch
+## main
+ D .codex/config.toml
+ D .gitignore
+ D README.md
+ D notes/example.md
+?? .agents/
+
+$ rg --files --hidden -g !.git/**
+.agents/skills/onboardkit/SKILL.md
+
+$ git show HEAD:README.md
+# Onboardkit Lab
+
+This is a documentation-only sandbox for testing repository guidance.
+
+Durable project notes live under `notes/`. No build, test, lint, or release command is defined.
+
+$ git show HEAD:notes/example.md
+# Example note
+
+Keep lab notes concise and factual.

@@ -39,10 +39,10 @@ Use stable shared skill paths or official runtime docs.
 - `SKILL.md` stays at or below 400 words and covers initialization, routing, cleanup, maintenance, and reporting.
 - Initialization discovers active overrides and fallbacks, creates root guidance only when none exists, preserves active files and rules, and changes only what evidence or routing requires.
 - Generated root `AGENTS.md` without nested instructions targets 200-400 words without filler and omits unsupported sections.
-- Facts use local evidence. Product/API docs stay unchanged except routing references. Git history needs corroboration from docs, config, CI, templates, or user confirmation.
+- Facts use current evidence or explicit user factual confirmation and retain their file/subtree/audience scope. Deleted content, Git history, examples, templates, and samples remain observations unless corroborated; only explicit policy or deliberate user rule-setting makes them rules.
 - Move durable guidance to its narrowest existing canonical destination before deletion. Delete only user-specified literal paths or file-matching globs; never broaden them or treat a directory alone as approval. Clean audits are no-ops.
-- Reports name changes, merged or deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, and risks; command-backed and review-backed findings stay separate.
-- Evaluation JSON/fixtures cover initialization/refresh, active overrides, scope/deletion, sparse/conflicting evidence, provenance leakage, routing-default transparency, cleanup/no-op, and trigger boundaries.
+- Reports name changes, merged or deleted docs and destinations, placement decisions, conflicts, checks, skips, Needs Input, and risks; command-backed and review-backed findings stay separate.
+- Evaluation JSON/fixtures cover initialization/refresh, active overrides, scoped/deleted evidence, user authority, sparse/conflicting evidence, provenance leakage, placement-decision transparency, cleanup/no-op, and trigger boundaries.
 - Fresh releases compare isolated fixture runs against baseline, search stale helper guidance, validate syntax/format, review the diff, and report commands/residual risk.
 
 ## Security Rules

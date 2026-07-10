@@ -9,38 +9,40 @@ Never add helpers/scripts/schemas or target-repo skills.
 
 ## Workflow
 
-1. Inventory repo instructions, README overview/agent sections, agent docs, new files, fallbacks, manifests, locks, CI/config, and scopes; never edit global instructions; skip vendored/generated trees.
-2. Create root `AGENTS.md` only if no nonempty root override, `AGENTS.md`, or configured fallback is active; otherwise preserve guidance and make only evidenced/routing changes.
-3. With no nested instructions, target 200-400 words; use less for sparse evidence, more only for verified constraints.
-4. Classify candidates through the Evidence Gate, route, and draft; omit empty/unsupported sections.
-5. Preserve durable content in its narrowest canonical destination before merge/approved deletion; verify with repo commands, searches, and diff.
+1. Inventory instructions, README/docs, fallbacks, manifests/locks/CI/config, and scopes; leave global instructions; exclude installed/injected invoked-skill copies and vendored/generated trees.
+2. Create root `AGENTS.md` only without active root instruction/fallback; otherwise preserve active guidance.
+3. Without nested instructions, target 200-400 words; shorten with sparse evidence; omit unsupported sections.
+4. Run proposed target sentences through the Evidence Gate.
+5. Preserve durable content in narrowest current destination before approved deletion; verify searches, commands, diff.
 
 ## Scope
 
-Leave unrelated product/API docs unchanged except explicit edits/routing references.
+Leave unrelated docs unchanged except explicit edits/routing.
 
-Delete only when user says delete/remove and specifies each literal path or file-matching glob. Never broaden it or treat a directory as approval; otherwise retain candidates and request approval.
+Delete only with delete/remove and literal paths or file-matching globs. Never broaden them; directories are insufficient. Otherwise retain candidates and request approval.
 
 ## Evidence Gate
 
-- Classify repo facts/rules as local evidence, active guidance, explicit user rules, routing defaults, or skill workflow.
-- Use workflow only for this run, never as target guidance. Write the first three classes. Allow only necessary low-risk guidance-placement defaults for explicit initialize/reroute requests; exclude verification/process rules and report additions.
-- Trace every drafted fact/rule to its class; remove unsupported content or report Needs Input. Never infer repo policy from convention.
-- Require local sources for project commands; note runs or report `not identified`.
-- Corroborate Git history; treat active instructions as evidence. Never change manifests/CI to fit docs.
-- Protect secrets. Ask when unresolved safety/correctness or destructive scope blocks safe progress; otherwise continue and report Needs Input.
+- Ledger every target sentence with source class (evidence, active guidance, user fact, user rule, or workflow/placement), fact/rule modality, and file/subtree/audience scope.
+- Write facts declaratively. Imperatives require explicit imperative/policy sources and retain source scope.
+- Examples/templates/samples are observations, never policy/routing destinations unless current policy/user corroborates. User claims remain observations; explicit factual confirmation creates a user fact, deliberate rule-setting a user rule.
+- Keep workflow/placement in run/report; initialize/reroute permits structure, not policy. Without sources, exclude generic routing, verification, future-state, scope, or command-discovery rules.
+- Missing/deleted worktree content and Git history are observations until current files/users corroborate. Preserve deletions; report uncertainty as Needs Input.
+- Require current sources for project commands; note runs or report `not identified`. Never change manifests/CI to fit docs.
+- Reject ledger failures. With no publishable sentences, create nothing and report Needs Input.
+- Protect secrets. Ask only when safety/correctness or destructive scope blocks progress; otherwise continue and report Needs Input.
 
 ## Routing
 
-- Keep root `AGENTS.md` to stable broad rules: shared invariants, repeated mistakes/feedback, verified failures. Exclude handoffs, session notes, plans, one-offs.
+- Keep root `AGENTS.md` to broad rules; exclude handoffs, notes, plans, one-offs.
 - Preserve overrides/nested rules; delete/flatten only when user discards/relocates them.
-- Route durable narrow/historical/domain material to its canonical doc.
-- Keep fitting README onboarding/install in place and current. Create `docs/README.md` only for needed mapping, never an empty stub.
+- Route durable narrow/domain material to an existing fitting doc without broadening its scope.
+- Keep fitting README onboarding/install in place. Create `docs/README.md` only when multiple current durable docs need mapping; list existing destinations, never only itself or `AGENTS.md`.
 
 ## Maintenance
 
-Re-run after merges, releases, feedback, mistakes, or audits; make clean audits no-ops; retain unapproved deletion candidates and reference, never copy.
+Re-run after merges/releases/feedback/mistakes/audits; make clean audits no-ops; retain unapproved deletion candidates and reference, never copy.
 
 ## Report
 
-Report sources/runs, changes, introduced defaults, merged/deleted docs/destinations, routing, conflicts, checks, skips, Needs Input, and risks; distinguish command from review evidence.
+Report sources/runs, changes, placement decisions, merged/deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, risks; separate command from review evidence.
