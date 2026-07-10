@@ -14,7 +14,7 @@
     {
       "id": 2,
       "prompt": "Audit a repository where README says to run npm test, package.json has no test script, and CI runs pnpm vitest.",
-      "expected_output": "The conflict is reported with source pointers and Needs Input; manifests and CI are not edited merely to make the documentation agree.",
+      "expected_output": "The conflict is reported with source references and Needs Input; manifests and CI are not edited merely to make the documentation agree.",
       "assertions": [
         "The README, manifest, and CI conflict is named explicitly.",
         "The output does not choose a command without evidence or user resolution.",
