@@ -1,0 +1,50 @@
+[
+  {
+    "query": "Set up a lightweight AGENTS.md and sensible docs structure for this repository.",
+    "should_trigger": true
+  },
+  {
+    "query": "Audit our agent instructions for stale commands and duplicated documentation.",
+    "should_trigger": true
+  },
+  {
+    "query": "This AGENTS.md has grown to five pages. Keep the important rules and route the rest.",
+    "should_trigger": true
+  },
+  {
+    "query": "Clean up stale handoffs and overlapping repo docs without losing durable guidance.",
+    "should_trigger": true
+  },
+  {
+    "query": "Do the monthly maintenance pass on AGENTS.md, README, and docs.",
+    "should_trigger": true
+  },
+  {
+    "query": "README and CI disagree about how tests run; fix the agent-facing guidance without guessing.",
+    "should_trigger": true
+  },
+  {
+    "query": "Write API documentation for the new payments endpoint.",
+    "should_trigger": false
+  },
+  {
+    "query": "Update the README screenshots and feature description for the new dashboard.",
+    "should_trigger": false
+  },
+  {
+    "query": "Review this pull request for bugs and missing tests.",
+    "should_trigger": false
+  },
+  {
+    "query": "Generate release notes from the commits since v1.4.0.",
+    "should_trigger": false
+  },
+  {
+    "query": "Draft an architecture decision record for switching databases.",
+    "should_trigger": false
+  },
+  {
+    "query": "Fix broken links in our public product documentation.",
+    "should_trigger": false
+  }
+]
