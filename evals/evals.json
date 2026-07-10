@@ -145,11 +145,11 @@
     {
       "id": 15,
       "prompt": "Delete stale docs in docs/ after preserving anything useful. The directory contains multiple possible candidates but no file names or file pattern are specified.",
-      "expected_output": "No file is deleted; candidates and canonical destinations are reported with Needs Input requesting named files or an exact file pattern because a directory alone is insufficient approval.",
+      "expected_output": "No file is deleted; candidates and canonical destinations are reported with Needs Input requesting literal file paths or a file-matching glob because a directory alone is insufficient approval.",
       "assertions": [
         "The directory name docs/ is not treated as approval to delete all stale files beneath it.",
         "Potential candidates and durable guidance are reviewed without destructive action.",
-        "The report requests named files or an exact file pattern as Needs Input."
+        "The report requests literal file paths or a file-matching glob as Needs Input."
       ]
     },
     {
@@ -160,6 +160,16 @@
         "The existing README onboarding section is updated in place from npm test to pnpm test.",
         "The command is not relocated into AGENTS.md without a demonstrated routing need.",
         "Package metadata, lockfile, and CI remain unchanged."
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "Initialize guidance in a repository with no root instruction file. .codex/config.toml lists TEAM_GUIDE.md as a fallback, but TEAM_GUIDE.md does not exist or is empty.",
+      "expected_output": "A root AGENTS.md is created because a configured fallback name without an existing nonempty file is inactive; the fallback state is reported.",
+      "assertions": [
+        "Configuration alone is not treated as an active fallback file.",
+        "An existing nonempty fallback file is required to suppress root AGENTS.md creation.",
+        "No missing or empty TEAM_GUIDE.md content is invented."
       ]
     }
   ]

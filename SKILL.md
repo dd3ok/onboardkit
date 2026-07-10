@@ -1,49 +1,47 @@
 ---
 name: onboardkit
-description: "Use for AGENTS.md and agent-facing repo documentation maintenance: initialization, cleanup, or routing when guidance is missing, bloated, stale, duplicate, or conflicting. Do not use for unrelated product, API, or feature docs."
+description: "Maintain AGENTS.md and agent-facing repo docs: initialize, clean up, or route missing, bloated, stale, duplicate, or conflicting guidance. Not for unrelated product/API/feature docs."
 ---
 
 # onboardkit
 
-Ground guidance locally. Never add helper code, scripts, schemas, or target-repo skills.
+Use repo evidence. Never add helper code, scripts, schemas, or target-repo skills.
 
 ## Workflow
 
-1. Inventory repo `AGENTS.md`, `AGENTS.override.md`, configured fallbacks, README, and agent-facing docs, including new files; never edit global instructions; skip vendored/generated trees.
-2. Inspect manifests, lockfiles, CI, config, and nested scopes.
-3. Create root `AGENTS.md` only when no root instruction or active fallback exists; otherwise preserve active guidance and change only what evidence or routing requires.
-4. Without nested instructions, target 200-400 words; write less with sparse evidence and exceed only for verified constraints.
-5. Use evidenced purpose, structure, commands, conventions, safety/checks, routing, and examples; omit empty or unsupported sections.
-6. Before authorized merge/removal, preserve durable guidance in its narrowest canonical place; never promote narrow details.
-7. Route below; verify with repo commands, searches, and diff review.
+1. Inventory repo instructions, README overview/agent sections, agent docs, new files, and active runtime fallbacks; never edit global instructions; skip vendored/generated trees.
+2. Inspect manifests, locks, CI, config, and nested scopes.
+3. Create root `AGENTS.md` only when no existing nonempty root override, `AGENTS.md`, or configured fallback is active; otherwise preserve guidance and make only evidenced/routing changes.
+4. Without nested instructions, target 200-400 words; less with sparse evidence, more only for verified constraints.
+5. Include evidenced purpose, structure, commands, conventions, checks, and routing; omit empty/unsupported sections.
+6. Before merges or approved deletion, preserve durable content in its narrowest canonical destination.
+7. Verify with repo commands, searches, and diff.
 
 ## Scope
 
-Unless the user explicitly names them, leave unrelated product/API docs unchanged except for routing references.
+Leave unrelated product/API docs unchanged except explicit edits or routing references.
 
-Delete only when the request says delete/remove and names every file or an exact file pattern; a directory alone is insufficient. Otherwise keep candidates and report required approval.
+Delete only when the user says delete/remove and gives each literal path or file-matching glob. Never broaden it or treat directories as approval; otherwise retain candidates and request approval.
 
 ## Evidence
 
-- Ground facts locally; cite sources/runs. Record commands or `not identified`.
-- Never invent tools, owners, release steps, migrations, generated-file rules, or approvals.
-- Treat Git history as observation, not policy; promote corroborated conventions from docs, config, CI, templates, or user confirmation.
-- Protect secrets; ask about safety/correctness gaps or destructive work outside named approval; report remaining gaps as Needs Input.
-- Treat active instructions as evidence; missing corroboration alone does not invalidate them. Replace them only with stronger local evidence; otherwise report conflicting sources and Needs Input. Never alter manifests or CI to align docs.
+- For project commands, cite source/run or report `not identified`.
+- Never invent tools, owners, release/migration steps, generated rules, or approvals.
+- Git history is observation; require corroboration from docs, config, CI, templates, or the user.
+- Protect secrets. Ask only when unresolved safety/correctness gaps or destructive scope block safe progress; otherwise continue and report Needs Input.
+- Active instructions are evidence; replace only with stronger local evidence and report conflicts as Needs Input. Never change manifests/CI to fit docs.
 
 ## Routing
 
-- Root `AGENTS.md` keeps stable, broadly needed facts and rules.
-- Preserve active overrides and nested rules; delete or flatten only when the user discards or relocates them.
-- Move durable long, narrow, historical, or domain-specific material to `docs/`.
-- Keep README onboarding and installation current; retain fitting content unless routing requires relocation.
-- Create `docs/README.md` only when docs need a map; never create empty stubs.
-- Promote only shared invariants, repeated mistakes or feedback, and verified failures; exclude handoffs, session notes, plans, and one-offs.
+- Keep stable, broadly needed root `AGENTS.md` rules: shared invariants, repeated mistakes/feedback, and verified failures. Exclude handoffs, session notes, plans, and one-offs.
+- Preserve active overrides/nested rules; delete or flatten only when the user discards or relocates them.
+- Route durable long/narrow/historical/domain material to its narrowest canonical doc.
+- Keep fitting README onboarding/install content current and in place. Create `docs/README.md` only for a needed map, never an empty stub.
 
 ## Maintenance
 
-Re-run after merges, releases, repeated mistakes, feedback, or audits. If clean, change nothing; report a no-op. Without explicit file-deletion approval, propose candidates for review; prefer references over copies.
+Re-run after merges, releases, feedback, repeated mistakes, or audits. Clean audits are no-ops. Retain unapproved deletion candidates; reference rather than copy.
 
 ## Report
 
-Report changes, merged/deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, and risks; separate command-backed and review-backed findings.
+Report changes, merged/deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, and risks; distinguish command from review evidence.

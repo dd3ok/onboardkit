@@ -36,11 +36,11 @@ Use stable shared skill paths or official runtime docs.
 ## Definition of Done
 
 - No user-facing helper artifacts; `SKILL.md`, README, AGENTS, and UI metadata share the instruction-only boundary.
-- `SKILL.md` stays at or below 400 words unless safety or correctness requires more; it covers initialization, routing, cleanup, maintenance, and reporting.
+- `SKILL.md` stays at or below 400 words and covers initialization, routing, cleanup, maintenance, and reporting.
 - Initialization discovers active overrides and fallbacks, creates root guidance only when none exists, preserves active files and rules, and changes only what evidence or routing requires.
 - Generated root `AGENTS.md` without nested instructions targets 200-400 words without filler and omits unsupported sections.
 - Facts use local evidence. Product/API docs stay unchanged except routing references. Git history needs corroboration from docs, config, CI, templates, or user confirmation.
-- Durable guidance moves to its narrowest existing canonical destination before deletion. Delete only named files or exact file patterns; directories alone are insufficient; clean audits are no-ops.
+- Move durable guidance to its narrowest existing canonical destination before deletion. Delete only user-specified literal paths or file-matching globs; never broaden them or treat a directory alone as approval. Clean audits are no-ops.
 - Reports name changes, merged or deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, and risks; command-backed and review-backed findings stay separate.
 - Evaluation files are valid JSON and cover create/refresh behavior, active overrides, scope exclusions, deletion approval, sparse evidence, conflicts, routing, cleanup, no-op behavior, and trigger boundaries.
 - Fresh release checks compare isolated current and baseline runs, search for stale helper guidance, validate syntax/format, and review the diff; the final report lists commands and residual risk.

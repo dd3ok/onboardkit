@@ -1,6 +1,6 @@
 # onboardkit
 
-onboardkit is a lightweight, Codex-tested Agent Skill for maintaining `AGENTS.md` and agent-facing repo docs. Other Agent Skills runtimes are compatibility targets, not verified support.
+onboardkit is a lightweight Agent Skill designed primarily for Codex to maintain `AGENTS.md` and agent-facing repo docs. Other Agent Skills runtimes are format-compatibility targets, not verified support.
 
 It helps an agent decide:
 
@@ -25,6 +25,8 @@ git clone https://github.com/dd3ok/onboardkit.git ~/.agents/skills/onboardkit
 
 For other runtimes, use that runtime's current official user-level skills directory.
 
+Claude Code can use the Agent Skills format but does not automatically discover `AGENTS.md`; target repositories need `CLAUDE.md` routing, such as `@AGENTS.md`, for those instructions to apply.
+
 Update an existing checkout with:
 
 ```bash
@@ -37,7 +39,7 @@ Then ask your coding agent in a target repository:
 Use onboardkit to clean up this repo's AGENTS.md and docs.
 ```
 
-Implicit invocation is enabled. Invoke `$onboardkit` explicitly for cleanup; cleanup, audit, and maintenance authorize deletion only when the request names every file or an exact file pattern. A directory alone is insufficient.
+Implicit invocation is enabled. Invoke `$onboardkit` explicitly for cleanup. Deletion is authorized only when the request says delete/remove and supplies each literal file path or a file-matching glob; the agent must not broaden it, and a directory path alone is insufficient.
 
 Common prompts:
 
@@ -67,13 +69,7 @@ LICENSE                    license
 
 Keep the skill instruction-only unless a future requirement clearly needs deterministic tooling.
 
-Use the [AGENTS.md](AGENTS.md) Definition of Done as the canonical maintainer checklist. At minimum:
-
-- `SKILL.md` has only `name` and `description` in frontmatter.
-- No helper files or package metadata were reintroduced, and README, AGENTS, and `agents/openai.yaml` still match the skill boundary.
-- `SKILL.md` stays concise and at or below 400 words unless a verified safety or correctness need requires more.
-- Active instruction discovery, agent-facing scope, and explicit deletion approval remain covered.
-- Eval JSON files are declarative cases, not an automated model runner; fresh release validation compares isolated current and baseline runs.
+Use the [AGENTS.md](AGENTS.md) Definition of Done as the canonical maintainer checklist. Eval JSON files remain declarative cases, not an automated model runner; fresh release validation compares isolated current and baseline runs.
 
 ## References
 
