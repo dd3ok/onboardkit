@@ -1,0 +1,66 @@
+{
+  "skill_name": "onboardkit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Initialize AGENTS.md and docs routing for a small repository whose tracked files contain no manifest, CI workflow, or documented build, test, or lint command.",
+      "expected_output": "A small root AGENTS.md grounded in the repository, with commands marked as not identified instead of invented, plus a report of evidence and any material Needs Input.",
+      "assertions": [
+        "No package manager, runtime, build, test, or lint command is invented.",
+        "The root AGENTS.md records that project commands were not identified.",
+        "The report distinguishes observed evidence from unresolved input."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Audit a repository where README says to run npm test, package.json has no test script, and CI runs pnpm vitest.",
+      "expected_output": "The conflict is reported with source references and Needs Input; manifests and CI are not edited merely to make the documentation agree.",
+      "assertions": [
+        "The README, manifest, and CI conflict is named explicitly.",
+        "The output does not choose a command without evidence or user resolution.",
+        "The output does not modify package.json or CI merely to align documentation."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Audit a monorepo with a root AGENTS.md and packages/payments/AGENTS.md containing active payment-specific safety rules that do not appear elsewhere. A proposed cleanup would flatten the nested file into root and delete it.",
+      "expected_output": "The nested file remains in place or its active rules are proposed for relocation; it is not flattened or deleted without a user decision.",
+      "assertions": [
+        "Unique subtree rules are preserved.",
+        "The output explains the scope of the nested AGENTS.md.",
+        "Deletion or flattening is deferred for user review."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Clean up docs when docs/old-handoff.md duplicates docs/architecture.md but contains one still-valid migration safety rule found nowhere else.",
+      "expected_output": "The durable safety rule is moved to docs/architecture.md before the stale handoff is removed or proposed for removal.",
+      "assertions": [
+        "The unique migration safety rule is preserved before deletion.",
+        "The same rule is not copied into multiple canonical documents.",
+        "The report names docs/old-handoff.md, its merge or deletion, and docs/architecture.md as the destination."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Run a maintenance audit. After inventorying tracked files, inspecting relevant manifests and CI, searching for duplicate guidance, and reviewing the diff, you find that AGENTS.md and docs are concise, current, non-duplicated, and consistent.",
+      "expected_output": "No files change. The report states that the audit was a no-op and lists the checks performed.",
+      "assertions": [
+        "No synthetic edit is made to create activity.",
+        "The result is reported as a no-op.",
+        "The report lists checks actually performed."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Route a growing docs directory containing durable architecture, deployment, completed task plans, and a five-page AGENTS.md. There is no docs index today.",
+      "expected_output": "Stable operational rules stay in a compact AGENTS.md, durable detail moves to docs, completed task artifacts are proposed for removal after preserving useful guidance, and docs/README.md is created only if it improves navigation.",
+      "assertions": [
+        "Root AGENTS.md retains only broadly applicable operational guidance.",
+        "Durable narrow detail is routed rather than copied.",
+        "Completed task artifacts are proposed for removal and are not promoted into permanent agent context.",
+        "A docs index is created only when the remaining docs need a map."
+      ]
+    }
+  ]
+}

@@ -17,7 +17,7 @@ There is no project helper command or package test command.
 Useful checks:
 
 ```bash
-rg --files
+git ls-files
 git diff --check
 git status --short --branch
 ```
@@ -27,6 +27,8 @@ git status --short --branch
 ```text
 SKILL.md                   skill entrypoint
 agents/openai.yaml         Codex UI metadata
+evals/evals.json           behavior evaluation cases
+evals/eval_queries.json    trigger boundary cases
 README.md                  user-facing overview
 AGENTS.md                  repository maintenance guidance
 LICENSE                    license
@@ -50,11 +52,12 @@ Keep install instructions conservative. Prefer stable shared skill locations or 
 
 - Helper artifacts are not present.
 - `SKILL.md`, README, and AGENTS agree on the instruction-only product boundary.
-- `SKILL.md` stays at or below 400 words unless a verified scenario needs more detail.
+- `SKILL.md` targets 340-360 words and stays at or below 400 unless a verified scenario needs more detail.
 - `SKILL.md` covers initialization, docs routing, cleanup, maintenance, and report shape.
 - `SKILL.md` tells agents to fill from evidence, use universal safe defaults, avoid guessing repo-specific facts, ask when unsafe, and report Needs Input.
-- `SKILL.md` preserves durable guidance before deletion, keeps one canonical destination per fact, requires a no-op when no actionable issue exists, stages unattended deletion or promotion for review, and separates command-backed from review-backed reporting.
-- Fresh scenario or real-repo checks cover missing commands, README/CI conflicts, docs routing, and nested AGENTS.md handling.
+- `SKILL.md` preserves durable guidance before deletion, keeps one canonical destination per fact, requires a no-op when no actionable issue exists, proposes unattended deletion or promotion for review, and separates command-backed from review-backed reporting.
+- Evaluation files are valid JSON and cover missing commands, README/CI conflicts, docs routing, nested AGENTS.md handling, no-op behavior, and positive and negative trigger boundaries.
+- Fresh skill checks use the canonical eval cases or a documented real-repo equivalent.
 - Targeted searches show no stale helper/scaffolder instructions except historical deleted-file diffs.
 - The final report names commands run and any residual risk.
 
