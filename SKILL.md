@@ -38,4 +38,4 @@ Re-run after merges, releases, repeated mistakes, feedback, or audits. If no act
 
 ## Report
 
-List changes, merged or deleted docs and destinations, routing, command results, review findings, conflicts, checks run, skips, Needs Input, risks.
+List changes, merged/deleted docs and destinations, routing, conflicts, checks, skips, Needs Input, and risks. Distinguish command results from review findings.
