@@ -17,13 +17,18 @@ There is no helper command, npm package, scaffolder, runner, dashboard, or task 
 
 ## Install
 
-Install this repository as a user-level skill in a directory your agent supports. For Codex-compatible setups, use the cross-runtime skills directory:
+Install the runtime files as a user-level skill in a directory your agent supports. For Codex, use a sparse checkout in its user-level skills directory:
 
 ```bash
-git clone https://github.com/dd3ok/onboardkit.git ~/.agents/skills/onboardkit
+git clone --filter=blob:none --no-checkout https://github.com/dd3ok/onboardkit.git ~/.agents/skills/onboardkit
+git -C ~/.agents/skills/onboardkit sparse-checkout init --no-cone
+git -C ~/.agents/skills/onboardkit sparse-checkout set --no-cone /SKILL.md /agents/ /references/ /LICENSE
+git -C ~/.agents/skills/onboardkit checkout
 ```
 
-For other runtimes, use that runtime's current official user-level skills directory.
+This keeps repository-only docs, CI, and eval fixtures out of the runtime working tree. Full-repository installs remain compatible as a fallback when sparse checkout is unavailable. Clone normally outside the skills directory for source development or repository validation.
+
+For other runtimes, use that runtime's current official user-level skills directory with the same sparse-checkout file set when Git installation is appropriate.
 
 Claude Code can use the Agent Skills format but does not automatically discover `AGENTS.md`; target repositories need `CLAUDE.md` routing, such as `@AGENTS.md`, for those instructions to apply.
 
