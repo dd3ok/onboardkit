@@ -86,7 +86,7 @@ jobs:
           assert "Preserve deletions" not in skill_text, "ambiguous deleted-content wording returned"
           assert "no minimum or fixed sections" in skill_text, "fixed scaffold sizing returned"
           assert "Treat scaffolds" in skill_text and "candidates, not policy regardless of wording" in skill_text, "scaffold evidence gate missing"
-          assert "Keep summaries, descriptive facts/paths, missing commands, uncertainty, and conflicts in the report, never as instructions" in skill_text, "target/report output contract missing"
+          assert "Keep summaries, descriptive facts/paths, workflow-only setup steps, missing commands, uncertainty, and conflicts in the report, never as instructions" in skill_text, "target/report output contract missing"
           assert "Never enrich rules from descriptive docs" in skill_text, "descriptive-path merge boundary missing"
           assert "README says notes live under `notes/`; omit that fact from `AGENTS.md`" in skill_text, "notes-path negative example missing"
           assert "Commands must agree across current sources" in skill_text, "conflicting-command gate missing"

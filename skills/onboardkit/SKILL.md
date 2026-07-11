@@ -13,7 +13,7 @@ Leave unrelated docs unchanged.
 
 Target guidance: supported commands, recurring conventions, scoped safety rules, or proven routing only.
 
-Keep summaries, descriptive facts/paths, missing commands, uncertainty, and conflicts in the report, never as instructions. Never enrich rules from descriptive docs. Example: README says notes live under `notes/`; omit that fact from `AGENTS.md`.
+Keep summaries, descriptive facts/paths, workflow-only setup steps, missing commands, uncertainty, and conflicts in the report, never as instructions. Never enrich rules from descriptive docs. Example: README says notes live under `notes/`; omit that fact from `AGENTS.md`.
 
 Treat scaffolds, examples/templates/samples, history, deleted content, and descriptive docs as candidates, not policy regardless of wording. Imperatives need current policy or an explicit user rule. Never restore deleted content.
 
@@ -26,7 +26,7 @@ Without a target or passing candidate, create nothing. On refresh, remove failin
    - **Evidence:** Require current policy or an explicit user rule; preserve modality/scope. Commands must agree across current sources.
    - **Value:** Keep stable, non-obvious guidance that prevents repeated mistakes, feedback, or wasted exploration. Safety may qualify independently; place narrow rules near their scope.
 3. Create root `AGENTS.md` only when no active root source exists and at least one candidate passes both gates.
-4. Use no minimum or fixed sections. Prefer bullet points and keep the total under 200 words.
+4. Use no minimum or fixed sections; prefer bullets and stay under 200 words.
 5. Preserve fallback/override/nested scopes. Flatten or delete only with user-directed path-level removal or relocation.
 6. Route detail to a fitting doc; keep README human-first. Before approved deletion, move durable guidance to its narrowest destination.
 7. Delete only user-named literal paths or file-matching globs. Never broaden approval; directories are insufficient.
