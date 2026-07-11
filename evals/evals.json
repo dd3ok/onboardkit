@@ -175,7 +175,7 @@
     {
       "id": 18,
       "prompt": "Use onboardkit to initialize lightweight AGENTS.md and docs routing for this repository.",
-      "expected_output": "A small root AGENTS.md retains the evidenced local purpose, notes path, and absence of project commands without turning ignored files or onboardkit workflow into repository policy; it adds no workflow-derived verification/process rules and reports any necessary guidance-placement default as introduced.",
+      "expected_output": "A small root AGENTS.md retains the evidenced local purpose, notes path, and absence of project commands without turning ignored files or onboardkit workflow into repository policy; it adds no workflow-derived verification/process rules and reports placement decisions separately.",
       "files": [
         "evals/files/claim-gate-base/.gitignore",
         "evals/files/claim-gate-base/.codex/config.toml",
@@ -183,9 +183,13 @@
         "evals/files/claim-gate-base/notes/example.md"
       ],
       "assertions": [
-        "Every repository-specific fact or rule is traceable to fixture evidence, active guidance, an explicit user rule, or a reported routing default.",
+        "Every repository-specific fact or rule is traceable to fixture evidence, active guidance, or an explicit user rule.",
         "The local repository is not described as public or customer-facing, and ignored skill files are not described as generated content.",
-        "Every reported routing default concerns guidance placement only, and no skill-workflow rule is written as target guidance.",
+        "Placement decisions appear only in the report, and no workflow/placement rule is written as target guidance.",
+        "The example note's request to keep notes concise and factual is not treated as repository policy, broadened beyond that file, or used as a canonical routing destination.",
+        "Descriptive facts, file locations, and example content are not recast as repository-wide imperatives.",
+        "No future-state documentation, indexing, nested-scope, or command-discovery policy is introduced.",
+        "No docs/README.md is created because the fixture has no collection of current durable docs that needs a discovery map.",
         "The evidenced purpose, notes path, and lack of project commands are retained.",
         "Only the requested guidance artifacts change."
       ]
@@ -193,7 +197,7 @@
     {
       "id": 19,
       "prompt": "Set up concise repository guidance and docs routing for this small documentation project.",
-      "expected_output": "A small root AGENTS.md may describe the documented public customer audience while retaining the notes path and lack of commands; it does not infer generated-file policy, adds no workflow-derived verification/process rules, and reports any necessary guidance-placement default as introduced.",
+      "expected_output": "A small root AGENTS.md may describe the documented public customer audience while retaining the notes path and lack of commands; it does not infer generated-file policy, adds no workflow-derived verification/process rules, and reports placement decisions separately.",
       "files": [
         "evals/files/claim-gate-public/.gitignore",
         "evals/files/claim-gate-public/.codex/config.toml",
@@ -203,8 +207,8 @@
       "assertions": [
         "The public customer audience is included only because the README establishes it.",
         "Ignored skill files are not described as generated content or a generated-file policy.",
-        "Every reported routing default concerns guidance placement only, and no skill-workflow rule is written as target guidance.",
-        "Every repository-specific fact or rule has an allowed source or is reported as a new routing default.",
+        "Placement decisions appear only in the report, and no workflow/placement rule is written as target guidance.",
+        "Every repository-specific fact or rule has an allowed current source.",
         "The evidenced notes path and lack of project commands are retained.",
         "Only the requested guidance artifacts change."
       ]
@@ -212,7 +216,7 @@
     {
       "id": 20,
       "prompt": "Initialize a lightweight AGENTS.md for this documentation repository while preserving its existing file rules.",
-      "expected_output": "A small root AGENTS.md preserves the evidenced do-not-edit rule only for site/generated/, retains the local purpose and lack of commands, does not broaden ignored/generated policy or infer a public audience, adds no workflow-derived verification/process rules, and reports any necessary guidance-placement default.",
+      "expected_output": "A small root AGENTS.md preserves the evidenced do-not-edit rule only for site/generated/, retains the local purpose and lack of commands, does not broaden ignored/generated policy or infer a public audience, adds no workflow-derived verification/process rules, and reports placement decisions separately.",
       "files": [
         "evals/files/claim-gate-generated/.gitignore",
         "evals/files/claim-gate-generated/.codex/config.toml",
@@ -225,9 +229,76 @@
         "The do-not-edit rule is preserved for site/generated/ from docs/generated-files.md.",
         "The rule is not broadened to all ignored or generated-looking files.",
         "The local repository is not described as public or customer-facing.",
-        "Every reported routing default concerns guidance placement only, and no skill-workflow rule is written as target guidance.",
-        "Every repository-specific fact or rule has an allowed source or is reported as a new routing default.",
+        "Placement decisions appear only in the report, and no workflow/placement rule is written as target guidance.",
+        "Every repository-specific fact or rule has an allowed current source.",
         "The generated fixture file and unrelated evidence files remain unchanged."
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "Use onboardkit to initialize lightweight repository guidance for the target repository represented by the attached command transcript.",
+      "expected_output": "The transcript is interpreted as showing deleted tracked files and history-only content rather than current evidence. No guidance is proposed from that content, and the material evidence gap is reported as Needs Input.",
+      "files": [
+        "evals/files/deleted-history-snapshot/repo-snapshot.txt"
+      ],
+      "assertions": [
+        "The transcript's D entries are identified as deletions rather than current evidence.",
+        "History-only purpose, audience, paths, commands, and rules are not written into AGENTS.md.",
+        "No placeholder AGENTS.md content is proposed when every candidate sentence lacks publishable current evidence.",
+        "No docs/README.md or other discovery map is created without multiple current durable documentation destinations.",
+        "No skill workflow, future-state documentation rule, or hypothetical command-discovery policy is written as repository guidance.",
+        "The report identifies the material evidence gap as Needs Input instead of claiming that current evidence establishes the old repository policy."
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "Initialize lightweight repository guidance. Establish this new repository-wide rule: durable project notes must be concise and factual. A teammate thinks releases may have used npm publish, but I cannot confirm it.",
+      "expected_output": "The explicit user-established note rule is written at repository scope, while the unconfirmed release-command observation is not promoted into guidance; current fixture facts remain scoped and placement decisions stay in the report.",
+      "files": [
+        "evals/files/claim-gate-base/.gitignore",
+        "evals/files/claim-gate-base/.codex/config.toml",
+        "evals/files/claim-gate-base/README.md",
+        "evals/files/claim-gate-base/notes/example.md"
+      ],
+      "assertions": [
+        "The explicit repository-wide concise-and-factual notes rule is written as a user rule.",
+        "The tentative npm publish claim is reported as unconfirmed and is not written as a command or policy.",
+        "The example note is not used as the authority for the new repository-wide rule.",
+        "Current purpose, notes location, and lack of documented commands remain factual and correctly scoped.",
+        "Workflow/placement decisions are not written as repository policy."
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "Initialize lightweight repository guidance. I confirm as a current repository fact that this project is used only for internal training; I am not establishing a new policy. A teammate thinks notes require weekly review, but that claim is unconfirmed.",
+      "expected_output": "The explicit user-confirmed internal-training fact is written declaratively at repository scope, while the tentative weekly-review claim is not promoted into policy; fixture facts remain scoped and workflow stays out of target guidance.",
+      "files": [
+        "evals/files/claim-gate-base/.gitignore",
+        "evals/files/claim-gate-base/.codex/config.toml",
+        "evals/files/claim-gate-base/README.md",
+        "evals/files/claim-gate-base/notes/example.md"
+      ],
+      "assertions": [
+        "The internal-training statement is included as a declarative user-confirmed fact, not an imperative rule.",
+        "The unconfirmed weekly-review claim is not written as policy.",
+        "The user fact is distinguished from both current-file evidence and deliberate user rule-setting.",
+        "The example note is not used to corroborate the tentative weekly-review claim.",
+        "Workflow/placement decisions remain outside target guidance."
+      ]
+    },
+    {
+      "id": 24,
+      "prompt": "Apply onboardkit to the attached repository snapshot and report which agent skill files belong in the repository inventory.",
+      "expected_output": "The tracked project-owned release-helper skill remains in the repository inventory, while the ignored onboardkit installation copy used for this run is excluded from evidence; ignored status is not generalized into repository policy.",
+      "files": [
+        "evals/files/repo-skill-boundary/repo-snapshot.txt"
+      ],
+      "assertions": [
+        "The tracked release-helper skill is inventoried as current repository-owned guidance.",
+        "The ignored onboardkit copy is excluded specifically as the invoked installation copy.",
+        "The output does not exclude all files under .agents/skills or all ignored skills.",
+        "Ignored status is not described as generated content or promoted into repository policy.",
+        "The report distinguishes the retained repository skill from the excluded invoked copy."
       ]
     }
   ]

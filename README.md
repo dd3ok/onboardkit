@@ -17,21 +17,27 @@ There is no helper command, npm package, scaffolder, runner, dashboard, or task 
 
 ## Install
 
-Install this repository as a user-level skill in a directory your agent supports. For Codex-compatible setups, use the cross-runtime skills directory:
+For Codex, ask the built-in installer to copy only the canonical runtime directory:
 
-```bash
-git clone https://github.com/dd3ok/onboardkit.git ~/.agents/skills/onboardkit
+```text
+Use $skill-installer to install onboardkit from https://github.com/dd3ok/onboardkit/tree/main/skills/onboardkit
 ```
 
-For other runtimes, use that runtime's current official user-level skills directory.
+Restart Codex if the installed skill does not appear. This route excludes repository-only docs, CI, and eval fixtures from the installed skill.
+
+For other runtimes, copy only `skills/onboardkit/` into that runtime's current official user-level skills directory. Those runtimes remain format-compatibility targets, not verified support.
 
 Claude Code can use the Agent Skills format but does not automatically discover `AGENTS.md`; target repositories need `CLAUDE.md` routing, such as `@AGENTS.md`, for those instructions to apply.
 
-Update an existing checkout with:
+To update an installer-managed copy, remove its installed `onboardkit` directory and repeat the installer prompt.
+
+Existing full-repository installations remain compatible through the root `SKILL.md` entrypoint. Update those legacy checkouts with:
 
 ```bash
 git -C ~/.agents/skills/onboardkit pull --ff-only
 ```
+
+Do not use a full-repository checkout for new installations. Clone normally outside a skills directory for source development or repository validation.
 
 Then ask your coding agent in a target repository:
 
@@ -53,24 +59,25 @@ Use $onboardkit to do a monthly maintenance pass on agent-facing docs.
 ## Files
 
 ```text
-.github/workflows/validate.yml repository-only static validation
-SKILL.md                   skill instructions
-agents/openai.yaml         Codex UI metadata
-evals/evals.json           behavior evaluation cases
-evals/eval_queries.json    trigger boundary cases
-evals/files/               isolated behavior fixtures
-AGENTS.md                  maintenance guidance for this repo
-README.md                  user-facing summary
-LICENSE                    license
-.gitignore                 local-file exclusions
-.gitattributes             Git text normalization
+.github/workflows/validate.yml  repository-only static validation
+skills/onboardkit/              canonical runtime skill
+SKILL.md                        legacy compatibility entrypoint
+agents/openai.yaml              legacy UI metadata
+evals/evals.json                behavior evaluation cases
+evals/eval_queries.json         trigger boundary cases
+evals/files/                    isolated behavior fixtures
+AGENTS.md                       maintenance guidance for this repo
+README.md                       user-facing summary
+LICENSE                         source license
+.gitignore                      local-file exclusions
+.gitattributes                  Git text normalization
 ```
 
 ## Maintenance
 
 Keep the skill instruction-only unless a future requirement clearly needs deterministic tooling.
 
-Use the [AGENTS.md](AGENTS.md) Definition of Done as the canonical maintainer checklist. Eval JSON and fixtures remain declarative, not a model runner; fresh release validation copies fixtures into isolated workspaces and compares current with baseline.
+Use the [AGENTS.md](AGENTS.md) Definition of Done as the canonical maintainer checklist. Keep runtime instructions and metadata under `skills/onboardkit/`; root skill files exist only for legacy full-checkout compatibility. Eval JSON and fixtures remain declarative, not a model runner; fresh release validation copies fixtures into isolated workspaces and compares current with baseline.
 
 ## References
 
