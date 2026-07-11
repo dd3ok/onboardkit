@@ -1,6 +1,6 @@
 ---
 name: onboardkit
-description: "Maintain AGENTS.md and agent-facing repo docs: initialize, clean up, or route missing, bloated, stale, duplicate, or conflicting guidance. Not for unrelated product/API/feature docs."
+description: "Maintain AGENTS.md and agent-facing repo docs: initialize, audit, clean, or route missing, generated, stale, duplicate, or conflicting guidance."
 ---
 
 # onboardkit compatibility entrypoint

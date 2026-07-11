@@ -76,11 +76,20 @@ jobs:
           assert "--no-cone" not in readme, "deprecated non-cone install guidance returned"
           assert not re.search(r"git(?:\s+-C\s+\S+)?\s+sparse-checkout", readme), "direct git sparse-checkout guidance returned"
           assert not re.search(r"git clone[^\n]*(?:\.agents|\.codex)/skills", readme), "full repository skill install returned"
+          assert "Compared with Codex `/init`" in readme, "Codex init comparison missing"
+          assert "or no file" in readme, "actionable no-op behavior missing from README"
 
-          assert "the invoked onboardkit copy if ignored or external" in skill_text, "invoked-copy exclusion lost"
+          assert "ignored/external invoked copy" in skill_text, "invoked-copy exclusion lost"
           assert "ignored/external skill copies" not in skill_text, "repo-owned skills may be over-excluded"
           assert "Do not restore deleted content" in skill_text, "deleted-content policy is ambiguous"
           assert "Preserve deletions" not in skill_text, "ambiguous deleted-content wording returned"
+          assert "no minimum or fixed sections" in skill_text, "fixed scaffold sizing returned"
+          assert "Generated/scaffolded guidance" in skill_text and "observations regardless of wording" in skill_text, "scaffold evidence gate missing"
+          assert "Do not copy discoverable README/tree, tool/version, framework, or runner facts" in skill_text, "discoverable-fact value gate missing"
+          assert "run project commands only with existing dependencies and read-only behavior" in skill_text, "read-only verification boundary missing"
+          assert "If nothing passes both gates, create nothing" in skill_text, "actionable no-op gate missing"
+          assert "report the evidence gap, commands `not identified`" in skill_text, "missing-command reporting drifted"
+          assert "200-400" not in skill_text, "Codex init word target leaked into runtime policy"
 
           eval_doc = json.loads(Path("evals/evals.json").read_text(encoding="utf-8"))
           cases = eval_doc["evals"]
@@ -90,6 +99,7 @@ jobs:
           assert len(case_ids) == len(set(case_ids)), "eval IDs must be unique"
           assert len({case["prompt"] for case in cases}) == len(cases), "eval prompts must be unique"
           assert all(case["prompt"] and case["expected_output"] and all(case["assertions"]) for case in cases), "incomplete eval case"
+          assert {25, 26, 27} <= set(case_ids), "scaffold/value-gate evals missing"
 
           fixture_refs = []
           for case in cases:
