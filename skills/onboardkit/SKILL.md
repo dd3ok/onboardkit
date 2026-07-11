@@ -33,7 +33,7 @@ Without a target or passing candidate, create nothing. On refresh, remove failin
 
 ## Verification
 
-Documentation maintenance is read-only. Unless the user explicitly requests a named command, do not run package managers or install/build/test/lint/format/generate/migrate/release/repository scripts; even then, never run a command described as generating or mutating files.
+Verification is read-only. Unless the user explicitly requests a named command, do not run package managers or install/build/test/lint/format/generate/migrate/release/repository scripts; even then, never run a command described as generating or mutating files.
 
 Inspect manifests and CI; use searches, parsers, edited-doc format checks, `git diff --check`, and status. Report skipped commands. Never create then clean verification artifacts.
 
