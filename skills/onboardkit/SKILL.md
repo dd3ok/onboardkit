@@ -10,8 +10,8 @@ Never add helpers, scripts, schemas, or target-repo skills. Verification is read
 ## Workflow
 
 1. Inventory active instructions/overrides/fallbacks, docs, manifests/locks/CI/config; exclude globals, ignored/external invoked copy, and vendored/generated trees.
-2. Preserve only passing guidance. Create root `AGENTS.md` only without an active root source and with a passing candidate.
-3. Use no minimum or fixed sections. Prefer bullets under 200 words; report missing commands only.
+2. Preserve only passing guidance. Create root `AGENTS.md` only when no active root source exists and at least one durable candidate passes evidence and value gates.
+3. Use no minimum or fixed sections. Prefer bullet points, keeping the total under 200 words; report missing commands only.
 4. Before approved deletion, move durable detail to its narrowest destination; verify searches, commands, diff.
 
 ## Scope
