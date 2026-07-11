@@ -1,37 +1,63 @@
 # onboardkit
 
-onboardkit is a lightweight Agent Skill designed primarily for Codex to maintain `AGENTS.md` and agent-facing repo docs. Other Agent Skills runtimes are format-compatibility targets, not verified support.
+onboardkit is a lightweight Agent Skill, designed primarily for Codex, that keeps `AGENTS.md` and agent-facing repository docs minimal, current, and correctly scoped. Other Agent Skills runtimes are format-compatibility targets, not verified support.
 
-It helps an agent decide:
+It does not assume every repository needs `AGENTS.md`. It creates one only when current evidence supports durable, non-obvious guidance that should affect recurring agent work; otherwise it reports a no-op or Needs Input.
 
-- how to initialize a small `AGENTS.md`
-- how to respect active overrides, fallback instructions, and nested scopes
-- how to fill discovered facts while avoiding invented repo-specific guidance
-- when to ask the user or report Needs Input instead of guessing
-- what belongs in always-on `AGENTS.md`
-- when to create `docs/README.md` and deeper docs
-- what stale, duplicate, generated, or low-signal docs should be removed
-- how README and agent-facing docs should stay aligned
+There is no helper command, package, scaffolder, runner, dashboard, or task ledger.
 
-There is no helper command, npm package, scaffolder, runner, dashboard, or task ledger in this repository.
+## Quickstart
 
-## Install
+1. Ask Codex's built-in installer to copy only the canonical runtime:
 
-For Codex, ask the built-in installer to copy only the canonical runtime directory:
+   ```text
+   Use $skill-installer to install onboardkit from https://github.com/dd3ok/onboardkit/tree/main/skills/onboardkit
+   ```
+
+2. Restart Codex if the skill does not appear.
+3. In the target repository, start with an audit or initialization:
+
+   ```text
+   Use $onboardkit to initialize only durable, actionable AGENTS.md guidance and docs routing for this repo.
+   ```
+
+onboardkit inventories active overrides, configured fallbacks, nested scopes, current docs, manifests, CI, and configuration. It may create a few bullets, update existing guidance, or create nothing.
+
+## What it maintains
+
+- recurring commands, verification, routing, conventions, and safety rules
+- active overrides, fallbacks, and subtree-specific guidance
+- README onboarding and usage without copying it into always-on agent context
+- stale, duplicate, generated, or conflicting guidance
+- detailed docs routed to their narrowest current canonical destination
+
+Facts must have current evidence. Imperatives need an explicit policy or user rule. Generated scaffolds, examples, Git history, deleted content, and unconfirmed claims are candidates or observations, not authority.
+
+## Compared with Codex `/init`
+
+Codex [`/init`](https://learn.chatgpt.com/docs/reference/slash-commands) creates a quick starter `AGENTS.md` scaffold for the current project. OpenAI recommends reviewing that draft and adapting it to the team's actual workflow.
+
+onboardkit adds evidence and recurring-value gates, discovers active fallback and nested guidance, maintains existing files, routes detail, and may produce a smaller file—or no file. It does not run `/init` first or copy its fixed outline.
+
+## Safety and compatibility
+
+Deletion is authorized only when the request says delete/remove and supplies each literal file path or a file-matching glob. A directory alone is insufficient, and the agent must not broaden the request.
+
+For other runtimes, install only `skills/onboardkit/` in that runtime's current official skills location. Claude Code supports Agent Skills but reads `CLAUDE.md`, not `AGENTS.md`; use a small `CLAUDE.md` router such as `@AGENTS.md` when shared guidance should apply. Other runtimes remain unverified.
+
+Common prompts:
 
 ```text
-Use $skill-installer to install onboardkit from https://github.com/dd3ok/onboardkit/tree/main/skills/onboardkit
+Use $onboardkit to refresh this existing AGENTS.md without replacing valid guidance.
+Use $onboardkit to audit agent-facing docs for stale or duplicate guidance without deleting files.
+Use $onboardkit to trim this generated AGENTS.md to recurring actionable rules.
 ```
 
-Restart Codex if the installed skill does not appear. This route excludes repository-only docs, CI, and eval fixtures from the installed skill.
+## Updating
 
-For other runtimes, copy only `skills/onboardkit/` into that runtime's current official user-level skills directory. Those runtimes remain format-compatibility targets, not verified support.
+For an installer-managed copy, remove its installed `onboardkit` directory and repeat the installer prompt.
 
-Claude Code can use the Agent Skills format but does not automatically discover `AGENTS.md`; target repositories need `CLAUDE.md` routing, such as `@AGENTS.md`, for those instructions to apply.
-
-To update an installer-managed copy, remove its installed `onboardkit` directory and repeat the installer prompt.
-
-Existing full-repository installations remain compatible through the root `SKILL.md` entrypoint. Update those legacy checkouts with:
+Existing full-repository installations remain compatible through the root `SKILL.md`. Update a legacy checkout with:
 
 ```bash
 git -C ~/.agents/skills/onboardkit pull --ff-only
@@ -39,53 +65,19 @@ git -C ~/.agents/skills/onboardkit pull --ff-only
 
 Do not use a full-repository checkout for new installations. Clone normally outside a skills directory for source development or repository validation.
 
-Then ask your coding agent in a target repository:
-
-```text
-Use onboardkit to clean up this repo's AGENTS.md and docs.
-```
-
-Implicit invocation is enabled. Invoke `$onboardkit` explicitly for cleanup. Deletion is authorized only when the request says delete/remove and supplies each literal file path or a file-matching glob; the agent must not broaden it, and a directory path alone is insufficient.
-
-Common prompts:
-
-```text
-Use $onboardkit to initialize lightweight AGENTS.md and docs routing for this repo.
-Use $onboardkit to refresh this existing AGENTS.md, preserving it and changing only what evidence or routing requires.
-Use $onboardkit to audit AGENTS.md and agent-facing docs for stale or duplicate guidance without deleting files.
-Use $onboardkit to do a monthly maintenance pass on agent-facing docs.
-```
-
-## Files
-
-```text
-.github/workflows/validate.yml  repository-only static validation
-skills/onboardkit/              canonical runtime skill
-SKILL.md                        legacy compatibility entrypoint
-agents/openai.yaml              legacy UI metadata
-evals/evals.json                behavior evaluation cases
-evals/eval_queries.json         trigger boundary cases
-evals/files/                    isolated behavior fixtures
-AGENTS.md                       maintenance guidance for this repo
-README.md                       user-facing summary
-LICENSE                         source license
-.gitignore                      local-file exclusions
-.gitattributes                  Git text normalization
-```
-
 ## Maintenance
 
-Keep the skill instruction-only unless a future requirement clearly needs deterministic tooling.
+The canonical runtime is `skills/onboardkit/`; root skill files are legacy compatibility shims. Repository CI and declarative eval fixtures stay outside the installed skill. See [AGENTS.md](AGENTS.md) for the maintainer checklist.
 
-Use the [AGENTS.md](AGENTS.md) Definition of Done as the canonical maintainer checklist. Keep runtime instructions and metadata under `skills/onboardkit/`; root skill files exist only for legacy full-checkout compatibility. Eval JSON and fixtures remain declarative, not a model runner; fresh release validation copies fixtures into isolated workspaces and compares current with baseline.
+## Help
+
+Report problems or behavior gaps in [GitHub Issues](https://github.com/dd3ok/onboardkit/issues).
 
 ## References
 
-- [OpenAI Codex skills](https://learn.chatgpt.com/docs/build-skills)
 - [OpenAI AGENTS.md guidance](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
 - [OpenAI Codex best practices](https://learn.chatgpt.com/guides/best-practices)
 - [Claude Code memory guidance](https://code.claude.com/docs/en/memory)
-- [Claude Code skills](https://code.claude.com/docs/en/skills)
 - [GitHub Copilot repository instructions](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions)
 - [Agent Skills specification](https://agentskills.io/specification)
 - [Agent Skills evaluation guide](https://agentskills.io/skill-creation/evaluating-skills)

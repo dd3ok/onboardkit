@@ -4,10 +4,11 @@
     {
       "id": 1,
       "prompt": "Initialize AGENTS.md and docs routing for a small repository whose tracked files contain no manifest, CI workflow, or documented build, test, or lint command.",
-      "expected_output": "A small root AGENTS.md grounded in the repository, with commands marked as not identified instead of invented, plus a report of evidence and any material Needs Input.",
+      "expected_output": "No AGENTS.md is created because the repository exposes no durable actionable guidance. The report states that commands were not identified and names any material Needs Input.",
       "assertions": [
         "No package manager, runtime, build, test, or lint command is invented.",
-        "The root AGENTS.md records that project commands were not identified.",
+        "No empty or placeholder AGENTS.md is created merely because root guidance is absent.",
+        "Commands not identified appears in the report rather than a generated instruction file.",
         "The report distinguishes observed evidence from unresolved input."
       ]
     },
@@ -75,10 +76,11 @@
     {
       "id": 8,
       "prompt": "Initialize a repository with no nested scope whose README identifies its purpose but whose tracked files contain no manifest, CI, commands, coding conventions, or test framework.",
-      "expected_output": "A grounded root AGENTS.md may stay below 200 words rather than adding filler; absent commands are marked not identified and unresolved material is reported as Needs Input.",
+      "expected_output": "No AGENTS.md is created because a README purpose alone is not recurring actionable agent guidance; the existing README stays canonical and missing commands are reported.",
       "assertions": [
         "The output does not invent commands, conventions, or a test framework.",
-        "The output may be shorter than 200 words because evidence is sparse.",
+        "No AGENTS.md is created solely to repeat the README purpose.",
+        "Missing commands are reported, not written as an instruction.",
         "The report distinguishes the evidenced purpose from Needs Input."
       ]
     },
@@ -165,17 +167,17 @@
     {
       "id": 17,
       "prompt": "Initialize guidance in a repository with no root instruction file. .codex/config.toml lists TEAM_GUIDE.md as a fallback, but TEAM_GUIDE.md does not exist or is empty.",
-      "expected_output": "A root AGENTS.md is created because a configured fallback name without an existing nonempty file is inactive; the fallback state is reported.",
+      "expected_output": "The missing or empty fallback is reported as inactive, but no AGENTS.md is created because the prompt provides no durable actionable guidance candidate.",
       "assertions": [
         "Configuration alone is not treated as an active fallback file.",
-        "An existing nonempty fallback file is required to suppress root AGENTS.md creation.",
+        "Root-source absence alone is not sufficient reason to create AGENTS.md.",
         "No missing or empty TEAM_GUIDE.md content is invented."
       ]
     },
     {
       "id": 18,
       "prompt": "Use onboardkit to initialize lightweight AGENTS.md and docs routing for this repository.",
-      "expected_output": "A small root AGENTS.md retains the evidenced local purpose, notes path, and absence of project commands without turning ignored files or onboardkit workflow into repository policy; it adds no workflow-derived verification/process rules and reports placement decisions separately.",
+      "expected_output": "No AGENTS.md is created: the README purpose and notes path remain human-facing evidence, the example is not policy, and missing commands plus the no-op placement decision are reported.",
       "files": [
         "evals/files/claim-gate-base/.gitignore",
         "evals/files/claim-gate-base/.codex/config.toml",
@@ -185,19 +187,20 @@
       "assertions": [
         "Every repository-specific fact or rule is traceable to fixture evidence, active guidance, or an explicit user rule.",
         "The local repository is not described as public or customer-facing, and ignored skill files are not described as generated content.",
+        "No AGENTS.md is created solely from descriptive README facts or absent commands.",
         "Placement decisions appear only in the report, and no workflow/placement rule is written as target guidance.",
         "The example note's request to keep notes concise and factual is not treated as repository policy, broadened beyond that file, or used as a canonical routing destination.",
         "Descriptive facts, file locations, and example content are not recast as repository-wide imperatives.",
         "No future-state documentation, indexing, nested-scope, or command-discovery policy is introduced.",
         "No docs/README.md is created because the fixture has no collection of current durable docs that needs a discovery map.",
-        "The evidenced purpose, notes path, and lack of project commands are retained.",
-        "Only the requested guidance artifacts change."
+        "The evidenced purpose and notes path remain in README, while missing commands are reported.",
+        "The clean initialization is a no-op."
       ]
     },
     {
       "id": 19,
       "prompt": "Set up concise repository guidance and docs routing for this small documentation project.",
-      "expected_output": "A small root AGENTS.md may describe the documented public customer audience while retaining the notes path and lack of commands; it does not infer generated-file policy, adds no workflow-derived verification/process rules, and reports placement decisions separately.",
+      "expected_output": "No AGENTS.md is created: the public customer audience and notes path remain in README, missing commands are reported, and no generated-file policy is inferred.",
       "files": [
         "evals/files/claim-gate-public/.gitignore",
         "evals/files/claim-gate-public/.codex/config.toml",
@@ -205,18 +208,18 @@
         "evals/files/claim-gate-public/notes/example.md"
       ],
       "assertions": [
-        "The public customer audience is included only because the README establishes it.",
+        "The public customer audience remains in README and is not copied into always-on agent guidance.",
         "Ignored skill files are not described as generated content or a generated-file policy.",
         "Placement decisions appear only in the report, and no workflow/placement rule is written as target guidance.",
         "Every repository-specific fact or rule has an allowed current source.",
-        "The evidenced notes path and lack of project commands are retained.",
-        "Only the requested guidance artifacts change."
+        "The evidenced notes path remains in README and missing commands are reported.",
+        "The clean initialization is a no-op."
       ]
     },
     {
       "id": 20,
       "prompt": "Initialize a lightweight AGENTS.md for this documentation repository while preserving its existing file rules.",
-      "expected_output": "A small root AGENTS.md preserves the evidenced do-not-edit rule only for site/generated/, retains the local purpose and lack of commands, does not broaden ignored/generated policy or infer a public audience, adds no workflow-derived verification/process rules, and reports placement decisions separately.",
+      "expected_output": "A micro AGENTS.md preserves only the actionable generated-output guardrail for site/generated/ and points to its canonical policy; README facts and missing commands are not copied into it, and the undocumented source-edit alternative is reported as Needs Input.",
       "files": [
         "evals/files/claim-gate-generated/.gitignore",
         "evals/files/claim-gate-generated/.codex/config.toml",
@@ -227,6 +230,7 @@
       ],
       "assertions": [
         "The do-not-edit rule is preserved for site/generated/ from docs/generated-files.md.",
+        "The rule points to docs/generated-files.md; because no source-edit location or build command is documented, the report requests that information instead of inventing an alternative.",
         "The rule is not broadened to all ignored or generated-looking files.",
         "The local repository is not described as public or customer-facing.",
         "Placement decisions appear only in the report, and no workflow/placement rule is written as target guidance.",
@@ -253,7 +257,7 @@
     {
       "id": 22,
       "prompt": "Initialize lightweight repository guidance. Establish this new repository-wide rule: durable project notes must be concise and factual. A teammate thinks releases may have used npm publish, but I cannot confirm it.",
-      "expected_output": "The explicit user-established note rule is written at repository scope, while the unconfirmed release-command observation is not promoted into guidance; current fixture facts remain scoped and placement decisions stay in the report.",
+      "expected_output": "A micro AGENTS.md contains only the explicit repository-wide note rule. The unconfirmed release command and descriptive README facts are excluded from always-on guidance and reported separately.",
       "files": [
         "evals/files/claim-gate-base/.gitignore",
         "evals/files/claim-gate-base/.codex/config.toml",
@@ -264,14 +268,14 @@
         "The explicit repository-wide concise-and-factual notes rule is written as a user rule.",
         "The tentative npm publish claim is reported as unconfirmed and is not written as a command or policy.",
         "The example note is not used as the authority for the new repository-wide rule.",
-        "Current purpose, notes location, and lack of documented commands remain factual and correctly scoped.",
+        "Current purpose and notes location remain in README; missing commands are reported rather than copied.",
         "Workflow/placement decisions are not written as repository policy."
       ]
     },
     {
       "id": 23,
       "prompt": "Initialize lightweight repository guidance. I confirm as a current repository fact that this project is used only for internal training; I am not establishing a new policy. A teammate thinks notes require weekly review, but that claim is unconfirmed.",
-      "expected_output": "The explicit user-confirmed internal-training fact is written declaratively at repository scope, while the tentative weekly-review claim is not promoted into policy; fixture facts remain scoped and workflow stays out of target guidance.",
+      "expected_output": "No AGENTS.md is created from the user-confirmed internal-training fact alone because it does not change recurring agent behavior. The fact and unconfirmed weekly-review claim are distinguished in the report.",
       "files": [
         "evals/files/claim-gate-base/.gitignore",
         "evals/files/claim-gate-base/.codex/config.toml",
@@ -279,11 +283,12 @@
         "evals/files/claim-gate-base/notes/example.md"
       ],
       "assertions": [
-        "The internal-training statement is included as a declarative user-confirmed fact, not an imperative rule.",
+        "The internal-training statement is recognized as a user-confirmed fact but not copied into AGENTS.md.",
         "The unconfirmed weekly-review claim is not written as policy.",
         "The user fact is distinguished from both current-file evidence and deliberate user rule-setting.",
         "The example note is not used to corroborate the tentative weekly-review claim.",
-        "Workflow/placement decisions remain outside target guidance."
+        "Workflow/placement decisions remain outside target guidance.",
+        "The absence of an actionable candidate results in no generated file."
       ]
     },
     {
@@ -299,6 +304,41 @@
         "The output does not exclude all files under .agents/skills or all ignored skills.",
         "Ignored status is not described as generated content or promoted into repository policy.",
         "The report distinguishes the retained repository skill from the excluded invoked copy."
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "Refresh an AGENTS.md produced by a generic init scaffold. README already explains the project and layout; package metadata makes the framework obvious; 'follow existing style' is vague; Conventional Commit prefixes appear only in Git history; package metadata and CI both confirm pnpm test.",
+      "expected_output": "The scaffold is reduced to the corroborated recurring test command and any genuinely actionable routing. README summaries, obvious framework facts, vague style advice, and history-only commit conventions are removed or left in their canonical sources.",
+      "assertions": [
+        "Generated or scaffolded wording is treated as a candidate rather than authority.",
+        "The pnpm test command is retained because current command sources agree.",
+        "Verification does not install dependencies or create configuration or artifacts.",
+        "README overview and obvious framework facts are not duplicated in AGENTS.md.",
+        "Vague style advice and history-only Conventional Commit guidance are not retained.",
+        "The report names what was removed and why."
+      ]
+    },
+    {
+      "id": 26,
+      "prompt": "Initialize guidance for a repository whose current migration policy and package script agree: migration files under db/migrations/ are generated by pnpm db:migrate and must not be edited by hand.",
+      "expected_output": "A micro AGENTS.md records the scoped migration guardrail together with the supported pnpm db:migrate alternative, without adding unrelated sections.",
+      "assertions": [
+        "The migration prohibition retains its db/migrations/ scope.",
+        "The prohibition is paired with pnpm db:migrate as the supported action.",
+        "No project overview, generic style, PR, or placeholder command section is added.",
+        "The generated guidance stays well below the soft word ceiling."
+      ]
+    },
+    {
+      "id": 27,
+      "prompt": "Audit a repository after Codex /init was run in a subdirectory. The repository already has an active root TEAM_GUIDE.md fallback and a nested AGENTS.override.md with unique safety rules.",
+      "expected_output": "The init-style duplicate is not treated as canonical. Active fallback and override scopes are preserved, conflicts are reported, and no instruction source is flattened or replaced merely to standardize filenames.",
+      "assertions": [
+        "The active TEAM_GUIDE.md fallback remains the root source.",
+        "The nested override and its unique safety rules remain scoped.",
+        "The generated subdirectory scaffold is reviewed as a duplicate candidate rather than authority.",
+        "No source is deleted without explicit path-level approval."
       ]
     }
   ]

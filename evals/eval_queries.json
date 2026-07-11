@@ -28,6 +28,10 @@
     "should_trigger": true
   },
   {
+    "query": "Codex init created a generic AGENTS.md; trim it to durable actionable guidance.",
+    "should_trigger": true
+  },
+  {
     "query": "Write API documentation for the new payments endpoint.",
     "should_trigger": false
   },
@@ -53,6 +57,10 @@
   },
   {
     "query": "Clean up outdated API reference pages and rewrite the public user guide.",
+    "should_trigger": false
+  },
+  {
+    "query": "Run the built-in Codex /init command in this repository.",
     "should_trigger": false
   }
 ]
