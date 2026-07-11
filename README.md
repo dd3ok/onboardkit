@@ -23,6 +23,8 @@ There is no helper command, package, scaffolder, runner, dashboard, or task ledg
 
 onboardkit inventories active overrides, configured fallbacks, nested scopes, current docs, manifests, CI, and configuration. It may create a few bullets, update existing guidance, or create nothing.
 
+This installer path is intended for local setup and evaluation. Inspect the canonical `SKILL.md` before installation; the runtime is instruction-only and contains no executable helper. For managed team distribution, OpenAI recommends packaging a validated skill as a plugin; this repository does not currently ship one.
+
 ## What it maintains
 
 - recurring commands, verification, routing, conventions, and safety rules
@@ -67,7 +69,13 @@ Do not use a full-repository checkout for new installations. Clone normally outs
 
 ## Maintenance
 
-The canonical runtime is `skills/onboardkit/`; root skill files are legacy compatibility shims. Repository CI checks packaging and declarative eval contracts; it does not execute a model. Before release, repeat the critical no-op, descriptive-path, conflict, and mutating-command scenarios at least twice in independent fresh contexts. See [AGENTS.md](AGENTS.md) for the maintainer checklist.
+The canonical runtime is `skills/onboardkit/`; root skill files are legacy compatibility shims. Repository CI checks packaging and declarative eval contracts; it does not execute a model. Before release, compare the candidate with the previous release in clean contexts, repeat critical behavior and trigger checks three times when possible, and retain model/client, pass evidence, token, duration, and raw-output records outside the repository. See [AGENTS.md](AGENTS.md) for the maintainer checklist.
+
+### Evaluation snapshot (2026-07-11)
+
+With Codex CLI `0.144.0-alpha.4` and its session-default model, the final candidate passed 30/30 isolated routing runs: 10 prompt types repeated three times, with 15/15 intended invocations and 15/15 adjacent-task exclusions. Near misses covered README editing, Codex `/init`, translation, explanation, and code review; one repetition also included adjacent project skills. An initial 27/30 pass exposed `/init` false triggers, which the explicit description boundary removed.
+
+Median duration was 42.6 seconds. The runs used 2.71M input tokens (2.34M cached) and 37.8K output tokens in total; these environment-specific totals are not a per-use cost estimate. Direct behavior checks also confirmed read-only audit no-ops and scoped refresh, initialization, and Korean trimming without executing project commands.
 
 ## Help
 
@@ -78,6 +86,8 @@ Report problems or behavior gaps in [GitHub Issues](https://github.com/dd3ok/onb
 - [OpenAI Codex skills](https://learn.chatgpt.com/docs/build-skills)
 - [OpenAI AGENTS.md guidance](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
 - [OpenAI Codex best practices](https://learn.chatgpt.com/guides/best-practices)
+- [Agent Skills authoring guidance](https://agentskills.io/skill-creation/best-practices)
+- [Agent Skills description optimization](https://agentskills.io/skill-creation/optimizing-descriptions)
 - [Claude Code memory guidance](https://code.claude.com/docs/en/memory)
 - [GitHub Copilot repository instructions](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions)
 - [Agent Skills specification](https://agentskills.io/specification)

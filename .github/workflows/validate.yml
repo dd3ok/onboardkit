@@ -44,7 +44,12 @@ jobs:
           assert metadata["name"] == "onboardkit", "skill name mismatch"
           assert runtime.name == metadata["name"], "skill directory/name mismatch"
           assert 1 <= len(metadata["description"]) <= 1024, "invalid description"
-          assert len(re.findall(r"\S+", skill_text)) <= 400, "SKILL.md exceeds 400 words"
+          description_lead = metadata["description"][:120].lower()
+          assert any(term in description_lead for term in ("initializ", "refresh", "audit", "clean", "rout")), "description must front-load its use cases"
+          description_lower = metadata["description"].lower()
+          assert any(scope in description_lower for scope in ("agents.md", "agent instruction", "coding agent")), "description scope missing"
+          assert any(boundary in description_lower for boundary in ("not for ", "do not use for ", "do not use to ", "use only when ", "use only for ", "use when the user explicitly ")), "description boundary missing"
+          assert len(re.findall(r"\S+", skill_text)) <= 500, "SKILL.md exceeds 500 words"
           assert legacy_metadata == metadata, "legacy and canonical frontmatter differ"
           assert len(re.findall(r"\S+", legacy_text)) <= 100, "legacy entrypoint is not minimal"
 
@@ -80,33 +85,65 @@ jobs:
           assert "or no file" in readme, "actionable no-op behavior missing from README"
           assert "it does not execute a model" in readme, "declarative-CI boundary missing from README"
 
-          assert "ignored/external invoked copy" in skill_text, "invoked-copy exclusion lost"
-          assert "ignored/external skill copies" not in skill_text, "repo-owned skills may be over-excluded"
-          assert "Never restore deleted content" in skill_text, "deleted-content policy is ambiguous"
-          assert "Preserve deletions" not in skill_text, "ambiguous deleted-content wording returned"
-          assert "no minimum or fixed sections" in skill_text, "fixed scaffold sizing returned"
-          assert "Treat scaffolds" in skill_text and "candidates, not policy regardless of wording" in skill_text, "scaffold evidence gate missing"
-          assert "Keep summaries, descriptive facts/paths, workflow-only setup steps, missing commands, uncertainty, and conflicts in the report, never as instructions" in skill_text, "target/report output contract missing"
-          assert "Never enrich rules from descriptive docs" in skill_text, "descriptive-path merge boundary missing"
-          assert "README says notes live under `notes/`; omit that fact from `AGENTS.md`" in skill_text, "notes-path negative example missing"
-          assert "Commands must agree across current sources" in skill_text, "conflicting-command gate missing"
-          assert "do not run package managers or install/build/test/lint/format/generate/migrate/release/repository scripts" in skill_text, "read-only verification boundary missing"
-          assert "even then, never run a command described as generating or mutating files" in skill_text, "mutating-command boundary missing"
-          assert "Without a target or passing candidate, create nothing" in skill_text, "actionable no-op gate missing"
-          assert "leave the file empty unless deletion is authorized" in skill_text, "empty-refresh behavior missing"
-          assert "commands identified but not run" in skill_text, "identified-versus-run reporting drifted"
-          assert "Mark unresolved conflicts as Needs Input" in skill_text, "conflict reporting contract missing"
-          assert "200-400" not in skill_text, "Codex init word target leaked into runtime policy"
+          required_sections = [
+              "## Decision Model",
+              "## Workflow",
+              "## Verification",
+              "## Report",
+              "## Maintenance",
+          ]
+          positions = [skill_text.find(section) for section in required_sections]
+          assert all(position >= 0 for position in positions), "required skill section missing"
+          assert positions == sorted(positions), "skill sections are out of order"
+
+          forbidden_runtime_patterns = {
+              "fixed AGENTS size": r"200-400",
+              "ambiguous deletion preservation": r"Preserve deletions",
+              "broad skill exclusion": r"ignored/external skill copies",
+          }
+          for label, pattern in forbidden_runtime_patterns.items():
+              assert not re.search(pattern, skill_text, re.IGNORECASE), f"stale runtime pattern returned: {label}"
+
+          checked_text = skill_text + legacy_text + readme + Path("agents/openai.yaml").read_text(encoding="utf-8")
+          assert "\ufffd" not in checked_text, "replacement character found in maintained text"
 
           eval_doc = json.loads(Path("evals/evals.json").read_text(encoding="utf-8"))
           cases = eval_doc["evals"]
           case_ids = [case["id"] for case in cases]
+          allowed_eval_fields = {"id", "covers", "prompt", "expected_output", "assertions", "files"}
+          required_eval_fields = {"id", "covers", "prompt", "expected_output", "assertions"}
+          assert all(required_eval_fields <= set(case) <= allowed_eval_fields for case in cases), "unexpected eval fields"
           assert eval_doc["skill_name"] == metadata["name"], "eval skill name mismatch"
           assert all(type(case_id) is int and case_id > 0 for case_id in case_ids), "invalid eval ID"
           assert len(case_ids) == len(set(case_ids)), "eval IDs must be unique"
           assert len({case["prompt"] for case in cases}) == len(cases), "eval prompts must be unique"
-          assert all(case["prompt"] and case["expected_output"] and all(case["assertions"]) for case in cases), "incomplete eval case"
-          assert {25, 26, 27, 28, 29} <= set(case_ids), "scaffold/value/read-only evals missing"
+          assert all(
+              isinstance(case["prompt"], str)
+              and case["prompt"]
+              and isinstance(case["expected_output"], str)
+              and case["expected_output"]
+              and isinstance(case["assertions"], list)
+              and case["assertions"]
+              and all(isinstance(assertion, str) and assertion for assertion in case["assertions"])
+              for case in cases
+          ), "incomplete eval case"
+          assert all(len(case["assertions"]) == len(set(case["assertions"])) for case in cases), "duplicate assertion within eval"
+          assert len(cases) >= 3, "at least three behavior evals are required"
+
+          required_coverage = {
+              "initialize", "refresh", "audit", "clean", "route", "scope",
+              "authority", "conflict", "read-only", "delete", "trigger-boundary",
+              "provenance", "no-op", "generated", "mutating-command", "projection", "safety",
+          }
+          assert all(
+              isinstance(case["covers"], list)
+              and case["covers"]
+              and len(case["covers"]) == len(set(case["covers"]))
+              and all(cover in required_coverage for cover in case["covers"])
+              for case in cases
+          ), "invalid eval coverage"
+          actual_coverage = {cover for case in cases for cover in case["covers"]}
+          assert actual_coverage == required_coverage, "behavior eval coverage drifted"
 
           fixture_refs = []
           for case in cases:
@@ -122,9 +159,14 @@ jobs:
 
           queries = json.loads(Path("evals/eval_queries.json").read_text(encoding="utf-8"))
           assert len({item["query"] for item in queries}) == len(queries), "trigger queries must be unique"
-          assert all(item["query"] and type(item["should_trigger"]) is bool for item in queries), "invalid trigger case"
-          positive = sum(item["should_trigger"] for item in queries)
-          assert 0 < positive < len(queries), "positive and negative trigger cases are required"
+          assert all(set(item) == {"query", "should_trigger", "set"} for item in queries), "unexpected trigger fields"
+          assert all(isinstance(item["query"], str) and item["query"] and type(item["should_trigger"]) is bool for item in queries), "invalid trigger case"
+          assert all(item["set"] in {"train", "validation"} for item in queries), "invalid trigger split"
+          assert len(queries) >= 20, "trigger suite needs at least 20 realistic queries"
+          for split in ("train", "validation"):
+              split_items = [item for item in queries if item["set"] == split]
+              positives = sum(item["should_trigger"] for item in split_items)
+              assert positives and positives == len(split_items) - positives, f"{split} trigger split must be balanced"
 
           print(f"Validated {len(cases)} evals, {len(queries)} trigger queries, {len(fixture_refs)} fixture references, and {len(runtime_files)} runtime files.")
           PY

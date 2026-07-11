@@ -1,46 +1,41 @@
 ---
 name: onboardkit
-description: "Maintain AGENTS.md and agent-facing repo docs: initialize, audit, clean, or route missing, generated, stale, duplicate, or conflicting guidance."
+description: "Use only for requested initialization, refresh, audit, trimming, reconciliation, or routing of AGENTS.md and durable coding-agent guidance using current repository evidence. Do not use for Codex /init, other built-in commands, or translation-only edits."
 ---
 
 # onboardkit
 
-Never add helpers, scripts, schemas, or target-repo skills.
+Never add target-repo helpers, scripts, schemas, or skills. Leave unrelated docs unchanged.
 
-Leave unrelated docs unchanged.
+## Decision Model
 
-## Output Contract
+1. **Mode:** Audit, report, and explanation requests are read-only. Edit only on explicit initialize, refresh, clean, route, or path/glob deletion requests.
+2. **Evidence:** Require current, undisputed evidence for facts and current policy or deliberate user rules for imperatives. Preserve modality, audience, and scope; factual confirmation establishes only its scoped fact.
+3. **Authority:** Scaffolds, examples, history, deletions, and descriptive docs are candidates, not policy; they cannot corroborate each other into rules/routing. Never restore deleted content.
+4. **Value:** Keep stable, non-obvious guidance preventing recurring mistakes or waste. Safety qualifies independently. Setup/install requires current non-workflow policy; routing requires policy or repeated navigation evidence, not paths/descriptions alone.
+5. **Placement:** Keep content in its fitting canonical file or narrowest existing audience/scope destination. Create root `AGENTS.md` only for repo-wide guidance lacking an active root or fitting destination.
+6. **Projection:** Write only passing commands, recurring conventions, scoped safety, or proven routing. Keep descriptive facts/paths, evidence/rationale/provenance, rejections, uncertainty, missing commands, and conflicts report-only; never merge/generalize them into rules.
 
-Target guidance: supported commands, recurring conventions, scoped safety rules, or proven routing only.
-
-Keep summaries, descriptive facts/paths, workflow-only setup steps, missing commands, uncertainty, and conflicts in the report, never as instructions. Never enrich rules from descriptive docs. Example: README says notes live under `notes/`; omit that fact from `AGENTS.md`.
-
-Treat scaffolds, examples/templates/samples, history, deleted content, and descriptive docs as candidates, not policy regardless of wording. Imperatives need current policy or an explicit user rule. Never restore deleted content.
-
-Without a target or passing candidate, create nothing. On refresh, remove failing sentences; leave the file empty unless deletion is authorized.
+Treat refresh, trimming, and reconciliation alike: remove failures and add passing scoped replacements. Command replacements exclude the target and require agreement across all other applicable current sources. Honor explicit user replacements; otherwise preserve canonical content, report Needs Input, and remove only failing generated/scaffold sentences.
 
 ## Workflow
 
-1. Inventory active instructions/overrides/fallbacks, docs, manifests/locks/CI/config; exclude globals, the ignored/external invoked copy, and vendored/generated trees.
-2. Evaluate every target sentence:
-   - **Evidence:** Require current policy or an explicit user rule; preserve modality/scope. Commands must agree across current sources.
-   - **Value:** Keep stable, non-obvious guidance that prevents repeated mistakes, feedback, or wasted exploration. Safety may qualify independently; place narrow rules near their scope.
-3. Create root `AGENTS.md` only when no active root source exists and at least one candidate passes both gates.
-4. Use no minimum or fixed sections; prefer bullets and stay under 200 words.
-5. Preserve fallback/override/nested scopes. Flatten or delete only with user-directed path-level removal or relocation.
-6. Route detail to a fitting doc; keep README human-first. Before approved deletion, move durable guidance to its narrowest destination.
-7. Delete only user-named literal paths or file-matching globs. Never broaden approval; directories are insufficient.
+1. Inventory active instructions/overrides/fallbacks, nested scopes, docs, manifests/locks/CI/configuration. Exclude globals, the ignored/external invoked copy, and vendored/generated trees.
+2. Apply the decision model sentence by sentence. Do not relocate fitting content merely to standardize surfaces.
+3. Give generated root guidance no fixed sections or minimum length; prefer bullets and normally stay under 200 words. On refresh, retain a scaffold emptied by cleanup unless deletion is authorized. On initialization, create nothing unless guidance passes.
+4. Preserve fallback, override, and nested scopes. Flatten or delete only with user-directed path-level removal or relocation.
+5. Before deletion, move durable guidance to its destination. Delete only user-named literal paths or file-matching globs; never broaden approval or treat directories as approval.
 
 ## Verification
 
-Verification is read-only. Unless the user explicitly requests a named command, do not run package managers or install/build/test/lint/format/generate/migrate/release/repository scripts; even then, never run a command described as generating or mutating files.
+Keep verification read-only. Do not run package managers or project scripts (install, build, test, lint, format, generate, migrate, release) unless the user names them; never run a command documented as mutating files.
 
-Inspect manifests and CI; use searches, parsers, edited-doc format checks, `git diff --check`, and status. Report skipped commands. Never create then clean verification artifacts.
-
-## Maintenance
-
-Re-run after merges, releases, repeated feedback/mistakes, or audits; clean audits are no-ops. Keep unapproved deletion candidates and report destinations.
+Use searches, parsers, format checks, `git diff --check`, and status. Never create verification artifacts.
 
 ## Report
 
-Report sources, guidance changes, routing, conflicts, commands identified but not run, checks, skips, Needs Input, and risks. Mark unresolved conflicts as Needs Input. Separate command evidence from review evidence. Protect secrets.
+Report sources, changes, routing, conflicts, unrun commands, checks, skips, Needs Input, and risks. Separate command-backed from review-backed findings and protect secrets.
+
+## Maintenance
+
+Re-run after merges/releases/repeated mistakes/audits. Clean audits are no-ops; keep unapproved deletion candidates and report destinations.

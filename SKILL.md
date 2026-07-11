@@ -1,6 +1,6 @@
 ---
 name: onboardkit
-description: "Maintain AGENTS.md and agent-facing repo docs: initialize, audit, clean, or route missing, generated, stale, duplicate, or conflicting guidance."
+description: "Use only for requested initialization, refresh, audit, trimming, reconciliation, or routing of AGENTS.md and durable coding-agent guidance using current repository evidence. Do not use for Codex /init, other built-in commands, or translation-only edits."
 ---
 
 # onboardkit compatibility entrypoint
