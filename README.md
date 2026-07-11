@@ -67,7 +67,7 @@ Do not use a full-repository checkout for new installations. Clone normally outs
 
 ## Maintenance
 
-The canonical runtime is `skills/onboardkit/`; root skill files are legacy compatibility shims. Repository CI and declarative eval fixtures stay outside the installed skill. See [AGENTS.md](AGENTS.md) for the maintainer checklist.
+The canonical runtime is `skills/onboardkit/`; root skill files are legacy compatibility shims. Repository CI checks packaging and declarative eval contracts; it does not execute a model. Before release, repeat the critical no-op, descriptive-path, conflicting-command, and mutating-command cases in independent fresh sessions. See [AGENTS.md](AGENTS.md) for the maintainer checklist.
 
 ## Help
 
@@ -75,6 +75,7 @@ Report problems or behavior gaps in [GitHub Issues](https://github.com/dd3ok/onb
 
 ## References
 
+- [OpenAI Codex skills](https://learn.chatgpt.com/docs/build-skills)
 - [OpenAI AGENTS.md guidance](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
 - [OpenAI Codex best practices](https://learn.chatgpt.com/guides/best-practices)
 - [Claude Code memory guidance](https://code.claude.com/docs/en/memory)
