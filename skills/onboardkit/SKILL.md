@@ -13,7 +13,7 @@ Leave unrelated docs unchanged.
 
 Target guidance: supported commands, recurring conventions, scoped safety rules, or proven routing only.
 
-Keep summaries, descriptive facts/paths, missing commands, uncertainty, and conflicts in the report, never instructions. Never enrich rules from descriptive docs. Example: README says notes live under `notes/`; omit that fact from `AGENTS.md`.
+Keep summaries, descriptive facts/paths, missing commands, uncertainty, and conflicts in the report, never as instructions. Never enrich rules from descriptive docs. Example: README says notes live under `notes/`; omit that fact from `AGENTS.md`.
 
 Treat scaffolds, examples/templates/samples, history, deleted content, and descriptive docs as candidates, not policy regardless of wording. Imperatives need current policy or an explicit user rule. Never restore deleted content.
 
@@ -33,7 +33,7 @@ Without a target or passing candidate, create nothing. On refresh, remove failin
 
 ## Verification
 
-Documentation maintenance is read-only. Unless the user explicitly requests a named command, do not run package managers or install/build/test/lint/format/generate/migrate/release/repository scripts. Never run a command described as generating or mutating files.
+Documentation maintenance is read-only. Unless the user explicitly requests a named command, do not run package managers or install/build/test/lint/format/generate/migrate/release/repository scripts; even then, never run a command described as generating or mutating files.
 
 Inspect manifests and CI; use searches, parsers, edited-doc format checks, `git diff --check`, and status. Report skipped commands. Never create then clean verification artifacts.
 

@@ -67,7 +67,7 @@ Do not use a full-repository checkout for new installations. Clone normally outs
 
 ## Maintenance
 
-The canonical runtime is `skills/onboardkit/`; root skill files are legacy compatibility shims. Repository CI checks packaging and declarative eval contracts; it does not execute a model. Before release, repeat the critical no-op, descriptive-path, conflicting-command, and mutating-command cases in independent fresh sessions. See [AGENTS.md](AGENTS.md) for the maintainer checklist.
+The canonical runtime is `skills/onboardkit/`; root skill files are legacy compatibility shims. Repository CI checks packaging and declarative eval contracts; it does not execute a model. Before release, repeat the critical no-op, descriptive-path, conflict, and mutating-command scenarios at least twice in independent fresh contexts. See [AGENTS.md](AGENTS.md) for the maintainer checklist.
 
 ## Help
 
