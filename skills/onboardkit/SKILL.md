@@ -38,6 +38,7 @@ Use searches, parsers, format checks, `git diff --check`, and status. Never crea
 
 - Name sources, changes, routing, conflicts, checks, skips, and risks.
 - Report unsupported, missing, and identified-but-unrun commands.
+- Describe rejected, scaffolded, or example content by its provenance; never call it a rule or policy.
 - Name retained cleanup candidates, their fitting destinations, and the path-level approval required for deletion.
 - If a preserved prohibition has no evidenced supported alternative, label it `Nonblocking safety gap` and name the missing alternative.
 Apply the Blocking rule before labeling a gap Needs Input or requesting user input.
