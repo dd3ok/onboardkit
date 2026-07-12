@@ -40,7 +40,7 @@ Use searches, parsers, format checks, `git diff --check`, and status. Never crea
 - Report unsupported, missing, and identified-but-unrun commands.
 - Name retained cleanup candidates, their fitting destinations, and the path-level approval required for deletion.
 - If a preserved prohibition has no evidenced supported alternative, name that nonblocking safety gap.
-Apply the Blocking rule before labeling a gap or requesting user input.
+Apply the Blocking rule before labeling a gap Needs Input or requesting user input.
 Separate command-backed from review-backed findings and protect secrets.
 
 ## Maintenance
