@@ -1,6 +1,6 @@
 ---
 name: onboardkit
-description: "Use only to initialize repository guidance (not run Codex /init), refresh, audit, trim, reconcile, clean, or route active AGENTS.md or coding-agent instructions from local evidence. Never use for translation or grammar-only edits, PR or code review, release notes or summaries, ADRs or proposals, explanations, or other adjacent deliverables, even if they mention AGENTS.md."
+description: "Use only to initialize, refresh, audit, trim, reconcile, clean, or route active AGENTS.md or coding-agent instructions from local evidence. Never use to run the built-in Codex /init command or for translation or grammar-only edits, PR or code review, release notes or summaries, ADRs or proposals, explanations, or other adjacent deliverables, even if they mention AGENTS.md."
 ---
 
 # onboardkit
