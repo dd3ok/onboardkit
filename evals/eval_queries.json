@@ -60,17 +60,17 @@
     "set": "train"
   },
   {
-    "query": "Review this pull request for bugs and missing tests.",
+    "query": "Review the AGENTS.md changes in this pull request for correctness and missing tests, but do not rewrite or reorganize repository guidance.",
     "should_trigger": false,
     "set": "train"
   },
   {
-    "query": "Generate release notes from the commits since v1.4.0.",
+    "query": "Summarize the AGENTS.md and docs changes since v1.4.0 for release notes without modifying repository instructions.",
     "should_trigger": false,
     "set": "train"
   },
   {
-    "query": "Draft an architecture decision record for switching databases.",
+    "query": "Draft an architecture decision record proposing how future coding-agent guidance should be organized; do not inspect or change current instruction files.",
     "should_trigger": false,
     "set": "train"
   },

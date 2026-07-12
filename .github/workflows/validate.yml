@@ -24,20 +24,55 @@ jobs:
           import re
           from pathlib import Path
 
-          def parse_skill(path):
+          def parse_repo_skill(path):
               text = path.read_text(encoding="utf-8")
               parts = text.split("---", 2)
               assert len(parts) == 3 and not parts[0].strip(), f"invalid frontmatter delimiters: {path}"
               metadata = {}
               for line in parts[1].splitlines():
                   if line.strip():
-                      key, value = line.split(":", 1)
-                      metadata[key.strip()] = value.strip().strip('"')
+                      key, raw = line.split(":", 1)
+                      key, raw = key.strip(), raw.strip()
+                      assert key not in metadata, f"duplicate frontmatter key: {path}"
+                      if key == "description":
+                          assert raw.startswith('"') and raw.endswith('"'), f"description must be a quoted YAML string: {path}"
+                          value = json.loads(raw)
+                      else:
+                          assert '"' not in raw and "'" not in raw, f"unexpected quoted frontmatter value: {path}"
+                          value = raw
+                      metadata[key] = value
               return text, metadata, parts[2].strip()
 
+          def parse_repo_openai_yaml(path):
+              text = path.read_text(encoding="utf-8")
+              assert "\t" not in text, f"tabs are not allowed in {path}"
+              data = {}
+              section = None
+              for line in text.splitlines():
+                  if not line.strip():
+                      continue
+                  if not line.startswith(" "):
+                      assert re.fullmatch(r"[a-z_]+:", line), f"invalid top-level YAML line: {line}"
+                      section = line[:-1]
+                      assert section not in data, f"duplicate YAML section: {section}"
+                      data[section] = {}
+                      continue
+                  assert section is not None, f"YAML value without section: {line}"
+                  match = re.fullmatch(r"  ([a-z_]+): (.+)", line)
+                  assert match, f"invalid YAML field: {line}"
+                  key, raw = match.groups()
+                  assert key not in data[section], f"duplicate YAML key: {section}.{key}"
+                  if raw in {"true", "false"}:
+                      value = raw == "true"
+                  else:
+                      assert raw.startswith('"') and raw.endswith('"'), f"YAML strings must be quoted: {section}.{key}"
+                      value = json.loads(raw)
+                  data[section][key] = value
+              return text, data
+
           runtime = Path("skills/onboardkit")
-          skill_text, metadata, _ = parse_skill(runtime / "SKILL.md")
-          legacy_text, legacy_metadata, legacy_body = parse_skill(Path("SKILL.md"))
+          skill_text, metadata, _ = parse_repo_skill(runtime / "SKILL.md")
+          legacy_text, legacy_metadata, legacy_body = parse_repo_skill(Path("SKILL.md"))
 
           assert set(metadata) == {"name", "description"}, "unexpected frontmatter fields"
           assert re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", metadata["name"]), "invalid skill name"
@@ -49,7 +84,8 @@ jobs:
           description_lower = metadata["description"].lower()
           assert any(scope in description_lower for scope in ("agents.md", "agent instruction", "coding agent")), "description scope missing"
           assert any(boundary in description_lower for boundary in ("not for ", "do not use for ", "do not use to ", "use only when ", "use only for ", "use when the user explicitly ")), "description boundary missing"
-          assert len(re.findall(r"\S+", skill_text)) <= 500, "SKILL.md exceeds 500 words"
+          assert len(skill_text.splitlines()) < 500, "SKILL.md must stay under the Agent Skills 500-line recommendation"
+          assert len(skill_text) < 20000, "SKILL.md exceeds the repository's 20,000-character token-budget backstop"
           assert legacy_metadata == metadata, "legacy and canonical frontmatter differ"
           assert len(re.findall(r"\S+", legacy_text)) <= 100, "legacy entrypoint is not minimal"
 
@@ -73,6 +109,19 @@ jobs:
               allowed_reference = len(parts) == 2 and parts[0] == "references" and Path(filename).suffix == ".md"
               assert filename in required_runtime_files or allowed_reference, f"unexpected runtime file: {filename}"
 
+          openai_text, openai_metadata = parse_repo_openai_yaml(runtime / "agents/openai.yaml")
+          assert set(openai_metadata) == {"interface", "policy"}, "unexpected repository openai.yaml section"
+          assert set(openai_metadata["interface"]) == {"display_name", "short_description", "default_prompt"}, "unexpected repository openai.yaml interface field"
+          assert set(openai_metadata["policy"]) == {"allow_implicit_invocation"}, "unexpected repository openai.yaml policy field"
+          interface = openai_metadata["interface"]
+          display_name = interface["display_name"]
+          short_description = interface["short_description"]
+          default_prompt = interface["default_prompt"]
+          assert display_name == display_name.strip() and 1 <= len(display_name) <= 64, "display_name must be a non-blank 1-64 character string"
+          assert short_description == short_description.strip() and 25 <= len(short_description) <= 64, "short_description must be a non-blank 25-64 character string"
+          assert default_prompt == default_prompt.strip() and f"${metadata['name']}" in default_prompt, "default_prompt must be non-blank and mention the skill"
+          assert len(default_prompt) <= 200 and default_prompt.endswith((".", "!", "?")), "default_prompt must be a short sentence"
+          assert openai_metadata["policy"]["allow_implicit_invocation"] is True, "this repository requires explicit implicit-invocation opt-in"
           assert Path("agents/openai.yaml").read_bytes() == (runtime / "agents/openai.yaml").read_bytes(), "legacy UI metadata drifted"
           assert Path("LICENSE").read_bytes() == (runtime / "LICENSE").read_bytes(), "runtime license drifted"
 
@@ -96,15 +145,28 @@ jobs:
           assert all(position >= 0 for position in positions), "required skill section missing"
           assert positions == sorted(positions), "skill sections are out of order"
 
+          decision_model = skill_text[positions[0]:positions[1]]
+          workflow = skill_text[positions[1]:positions[2]]
+          report_contract = skill_text[positions[3]:positions[4]]
+          mode_line = next(line for line in decision_model.splitlines() if "**Mode:**" in line)
+          authority_line = next(line for line in decision_model.splitlines() if "**Authority:**" in line)
+          value_line = next(line for line in decision_model.splitlines() if "**Value:**" in line)
+          assert all(term in mode_line.lower() for term in ("trim", "reconcile")), "public edit triggers must remain authorized"
+          assert all(term in authority_line.lower() for term in ("provenance", "passage", "generated")), "generated-source authority must cover provenance and passage labels"
+          assert all(term in value_line.lower() for term in ("supported alternative", "nonblocking safety gap", "never invent")), "safety-alternative contract drifted"
+          assert all(term in workflow for term in ("For Codex", "another runtime", "next run or session")), "post-edit discovery must stay runtime-scoped and next-run qualified"
+          assert all(term in report_contract for term in ("nonblocking gaps", "Needs Input")), "missing-information reporting contract drifted"
+
           forbidden_runtime_patterns = {
               "fixed AGENTS size": r"200-400",
               "ambiguous deletion preservation": r"Preserve deletions",
               "broad skill exclusion": r"ignored/external skill copies",
+              "descriptive-doc authority shortcut": r"descriptive docs are candidates",
           }
           for label, pattern in forbidden_runtime_patterns.items():
               assert not re.search(pattern, skill_text, re.IGNORECASE), f"stale runtime pattern returned: {label}"
 
-          checked_text = skill_text + legacy_text + readme + Path("agents/openai.yaml").read_text(encoding="utf-8")
+          checked_text = skill_text + legacy_text + readme + openai_text
           assert "\ufffd" not in checked_text, "replacement character found in maintained text"
 
           eval_doc = json.loads(Path("evals/evals.json").read_text(encoding="utf-8"))
@@ -128,7 +190,24 @@ jobs:
               for case in cases
           ), "incomplete eval case"
           assert all(len(case["assertions"]) == len(set(case["assertions"])) for case in cases), "duplicate assertion within eval"
+          subjective_assertion = re.compile(r"\b(?:good|appropriate|proper|reasonable|well below)\b", re.IGNORECASE)
+          assert all(not subjective_assertion.search(assertion) for case in cases for assertion in case["assertions"]), "subjective eval assertion returned"
           assert len(cases) >= 3, "at least three behavior evals are required"
+          cases_by_id = {case["id"]: case for case in cases}
+          fixed_behavior_smoke = {
+              1: {"initialize"},
+              29: {"audit", "read-only"},
+              31: {"delete", "route"},
+              33: {"refresh"},
+          }
+          assert all(required <= set(cases_by_id.get(case_id, {}).get("covers", [])) for case_id, required in fixed_behavior_smoke.items()), "fixed behavior smoke coverage drifted"
+          assert all({"route", "safety"} <= set(cases_by_id[case_id]["covers"]) for case_id in (20, 34)), "routing safety regression case lost its critical tags"
+          nonblocking_gap_cases = {1, 8, 17, 18, 20, 21}
+          assert all("nonblocking" in (cases_by_id[case_id]["expected_output"] + " " + " ".join(cases_by_id[case_id]["assertions"])).lower() for case_id in nonblocking_gap_cases), "nonblocking gap regression case lost its classification"
+          blocking_needs_input_cases = {2, 15, 28, 30}
+          assert all("Needs Input" in cases_by_id[case_id]["expected_output"] for case_id in blocking_needs_input_cases), "blocking case lost its Needs Input classification"
+          assert cases_by_id[34].get("files"), "post-edit fallback case requires a reproducible fixture"
+          assert Path("evals/files/neutral/README.md").is_file(), "neutral evaluation fixture missing"
 
           required_coverage = {
               "initialize", "refresh", "audit", "clean", "route", "scope",
@@ -167,6 +246,13 @@ jobs:
               split_items = [item for item in queries if item["set"] == split]
               positives = sum(item["should_trigger"] for item in split_items)
               assert positives and positives == len(split_items) - positives, f"{split} trigger split must be balanced"
+          fixed_trigger_smoke = {
+              1: ("train", True, "Set up a lightweight AGENTS.md and sensible docs structure for this repository."),
+              7: ("validation", True, "Audit our active AGENTS.override.md and fallback instructions without flattening their scopes."),
+              13: ("train", False, "Review the AGENTS.md changes in this pull request for correctness and missing tests, but do not rewrite or reorganize repository guidance."),
+              18: ("validation", False, "Run the built-in Codex /init command in this repository."),
+          }
+          assert all((queries[index - 1]["set"], queries[index - 1]["should_trigger"], queries[index - 1]["query"]) == expected for index, expected in fixed_trigger_smoke.items()), "fixed trigger smoke identity drifted"
 
-          print(f"Validated {len(cases)} evals, {len(queries)} trigger queries, {len(fixture_refs)} fixture references, and {len(runtime_files)} runtime files.")
+          print(f"Validated {len(cases)} evals, {len(queries)} trigger queries, {len(fixture_refs)} fixture references, a neutral fixture, and {len(runtime_files)} runtime files.")
           PY

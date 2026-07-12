@@ -5,12 +5,12 @@
       "id": 1,
       "covers": ["initialize", "no-op"],
       "prompt": "Initialize AGENTS.md and docs routing for a small repository whose tracked files contain no manifest, CI workflow, or documented build, test, or lint command.",
-      "expected_output": "No AGENTS.md is created because the repository exposes no durable actionable guidance. The report states that commands were not identified and names any material Needs Input.",
+      "expected_output": "No AGENTS.md is created because the repository exposes no durable actionable guidance. Undocumented commands are reported as a nonblocking gap, not Needs Input.",
       "assertions": [
         "No package manager, runtime, build, test, or lint command is invented.",
         "No empty or placeholder AGENTS.md is created merely because root guidance is absent.",
         "Commands not identified appears in the report rather than a generated instruction file.",
-        "The report distinguishes observed evidence from unresolved input."
+        "The evidence-gated no-op and undocumented commands are reported as nonblocking gaps, not Needs Input."
       ]
     },
     {
@@ -18,6 +18,11 @@
       "covers": ["audit", "conflict", "read-only"],
       "prompt": "Audit a repository where README says to run npm test, package.json has no test script, and CI runs pnpm vitest.",
       "expected_output": "The conflict is reported with source references and Needs Input; manifests and CI are not edited merely to make the documentation agree.",
+      "files": [
+        "evals/files/conflicting-commands/README.md",
+        "evals/files/conflicting-commands/package.json",
+        "evals/files/conflicting-commands/.github/workflows/ci.yml"
+      ],
       "assertions": [
         "The README, manifest, and CI conflict is named explicitly.",
         "The output does not choose a command without evidence or user resolution.",
@@ -89,7 +94,7 @@
         "The output does not invent commands, conventions, or a test framework.",
         "No AGENTS.md is created solely to repeat the README purpose.",
         "Missing commands are reported, not written as an instruction.",
-        "The report distinguishes the evidenced purpose from Needs Input."
+        "The evidenced purpose and undocumented commands are reported as nonblocking gaps, not Needs Input."
       ]
     },
     {
@@ -192,7 +197,8 @@
       "assertions": [
         "Configuration alone is not treated as an active fallback file.",
         "Root-source absence alone is not sufficient reason to create AGENTS.md.",
-        "No missing or empty TEAM_GUIDE.md content is invented."
+        "No missing or empty TEAM_GUIDE.md content is invented.",
+        "The inactive fallback and evidence-gated no-op are reported as nonblocking gaps, not Needs Input."
       ]
     },
     {
@@ -215,7 +221,7 @@
         "Descriptive facts, file locations, and example content are not recast as repository-wide imperatives.",
         "No future-state documentation, indexing, nested-scope, or command-discovery policy is introduced.",
         "No docs/README.md is created because the fixture has no collection of current durable docs that needs a discovery map.",
-        "The evidenced purpose and notes path remain in README, while missing commands are reported.",
+        "The evidenced purpose and notes path remain in README, while missing commands are reported as a nonblocking gap rather than Needs Input.",
         "The clean initialization is a no-op."
       ]
     },
@@ -241,9 +247,9 @@
     },
     {
       "id": 20,
-      "covers": ["initialize", "scope"],
+      "covers": ["initialize", "scope", "route", "safety"],
       "prompt": "Initialize a lightweight AGENTS.md for this documentation repository while preserving its existing file rules.",
-      "expected_output": "A micro AGENTS.md preserves only the actionable generated-output guardrail for site/generated/ and points to its canonical policy; README facts and missing commands are not copied into it, and the undocumented source-edit alternative is reported as Needs Input.",
+      "expected_output": "A micro AGENTS.md contains only a short pointer to the canonical site/generated/ safety policy; the policy detail remains in docs/generated-files.md, README facts and missing commands are not copied, and the missing supported edit or regeneration alternative is reported as a nonblocking safety gap.",
       "files": [
         "evals/files/claim-gate-generated/.gitignore",
         "evals/files/claim-gate-generated/.codex/config.toml",
@@ -253,8 +259,9 @@
         "evals/files/claim-gate-generated/site/generated/index.html"
       ],
       "assertions": [
-        "The do-not-edit rule is preserved for site/generated/ from docs/generated-files.md.",
-        "The rule points to docs/generated-files.md; because no source-edit location or build command is documented, the report requests that information instead of inventing an alternative.",
+        "The explicit do-not-edit imperative in docs/generated-files.md is treated as current policy only for site/generated/.",
+        "Root AGENTS.md contains only a short safety pointer to docs/generated-files.md because agents must see the rule before editing that output; the detailed policy is not copied.",
+        "Because the canonical prohibition documents no supported edit or regeneration path, the report names that nonblocking safety gap without inventing an alternative or requesting Needs Input.",
         "The README notes/ location is not copied into AGENTS.md or combined with the generated-output rule.",
         "The existence and descriptive location of notes/ do not prove a routing instruction.",
         "The descriptive README and example note cannot corroborate each other into repository policy.",
@@ -269,7 +276,7 @@
       "id": 21,
       "covers": ["initialize", "provenance"],
       "prompt": "Use onboardkit to initialize lightweight repository guidance for the target repository represented by the attached command transcript.",
-      "expected_output": "The transcript is interpreted as showing deleted tracked files and history-only content rather than current evidence. No guidance is proposed from that content, and the material evidence gap is reported as Needs Input.",
+      "expected_output": "The transcript is interpreted as showing deleted tracked files and history-only content rather than current evidence. No guidance is proposed from that content, and the evidence-gated no-op is reported as a nonblocking gap.",
       "files": [
         "evals/files/deleted-history-snapshot/repo-snapshot.txt"
       ],
@@ -279,7 +286,7 @@
         "No placeholder AGENTS.md content is proposed when every candidate sentence lacks publishable current evidence.",
         "No docs/README.md or other discovery map is created without multiple current durable documentation destinations.",
         "No skill workflow, future-state documentation rule, or hypothetical command-discovery policy is written as repository guidance.",
-        "The report identifies the material evidence gap as Needs Input instead of claiming that current evidence establishes the old repository policy."
+        "The report identifies a nonblocking current-evidence gap rather than requesting Needs Input or claiming that history establishes current policy."
       ]
     },
     {
@@ -365,7 +372,7 @@
         "No migration, package-manager, install, or other repository command is executed during documentation maintenance.",
         "Missing build, test, lint, or release commands are reported and never written into AGENTS.md.",
         "No project overview, generic style, PR, or placeholder command section is added.",
-        "The generated guidance stays well below the soft word ceiling."
+        "The generated guidance is at most 200 words."
       ]
     },
     {
@@ -456,6 +463,25 @@
         "The supported pnpm test guidance is written as the scoped replacement.",
         "The scaffold is not left empty when a replacement passes the decision model.",
         "No package-manager or project command is executed during verification."
+      ]
+    },
+    {
+      "id": 34,
+      "covers": ["refresh", "generated", "scope", "route", "safety"],
+      "prompt": "Refresh a generated root AGENTS.md whose only sentence is unsupported. The repository config lists TEAM_GUIDE.md as a fallback, and that non-empty file contains a current repo-wide safety rule but was shadowed by AGENTS.md.",
+      "expected_output": "The unsupported sentence is removed and the scaffold remains empty unless deletion is authorized. Under Codex discovery, the post-edit instruction chain is recomputed, TEAM_GUIDE.md is identified and reviewed as the root fallback expected to become active on the next run, and the transition and resulting scope are reported without copying its rule.",
+      "files": [
+        "evals/files/post-edit-fallback/.codex/config.toml",
+        "evals/files/post-edit-fallback/AGENTS.md",
+        "evals/files/post-edit-fallback/TEAM_GUIDE.md"
+      ],
+      "assertions": [
+        "The unsupported generated sentence is removed without inventing a replacement.",
+        "The empty AGENTS.md is retained unless deletion is explicitly authorized.",
+        "Post-edit Codex discovery skips the empty AGENTS.md and expects the configured non-empty TEAM_GUIDE.md fallback to become active on the next run or session.",
+        "The next-run fallback is reviewed at its actual root scope before the refresh is considered complete.",
+        "The report names the active-source transition from AGENTS.md to TEAM_GUIDE.md.",
+        "The fallback rule is not duplicated into the empty scaffold or generalized beyond its evidence."
       ]
     }
   ]

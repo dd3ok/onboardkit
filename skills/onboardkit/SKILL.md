@@ -9,22 +9,23 @@ Never add target-repo helpers, scripts, schemas, or skills. Leave unrelated docs
 
 ## Decision Model
 
-1. **Mode:** Audit, report, and explanation requests are read-only. Edit only on explicit initialize, refresh, clean, route, or path/glob deletion requests.
+1. **Mode:** Audit, report, and explanation requests are read-only. Edit only on explicit initialize, refresh, trim, reconcile, clean, route, or path/glob deletion requests.
 2. **Evidence:** Require current, undisputed evidence for facts and current policy or deliberate user rules for imperatives. Preserve modality, audience, and scope; factual confirmation establishes only its scoped fact.
-3. **Authority:** Scaffolds, examples, history, deletions, and descriptive docs are candidates, not policy; they cannot corroborate each other into rules/routing. Never restore deleted content.
-4. **Value:** Keep stable, non-obvious guidance preventing recurring mistakes or waste. Safety qualifies independently. Setup/install requires current non-workflow policy; routing requires policy or repeated navigation evidence, not paths/descriptions alone.
-5. **Placement:** Keep content in its fitting canonical file or narrowest existing audience/scope destination. Create root `AGENTS.md` only for repo-wide guidance lacking an active root or fitting destination.
+3. **Authority:** Known scaffolds, examples, generated content, history, deletions, and narrative or descriptive statements are candidates, not policy; candidates cannot corroborate each other. Treat an explicit imperative in a current maintained source as policy only for its stated audience and scope when neither its provenance nor its passage marks it as scaffolded, generated, example, historical, proposed, or superseded. Never restore deleted content.
+4. **Value:** Keep stable, non-obvious guidance that prevents recurring mistakes or waste; safety qualifies independently. When preserved safety guidance forbids an action, pair it with an evidenced supported alternative when available; otherwise explicitly report the missing alternative as a nonblocking safety gap and never invent one. Keep setup/install instructions only when a current source states them as policy, not merely as a workflow example. Add routing only when current policy or repeated navigation evidence shows that agents should consult the destination; a path or description alone is insufficient.
+5. **Placement:** Keep policy detail in its fitting canonical file or narrowest existing audience/scope destination. Create root `AGENTS.md` only for repo-wide guidance lacking an active root or fitting destination. A short root pointer to a fitting canonical safety policy is the only exception: add it only when agents must see the rule before they can reasonably discover that destination, and never copy the policy detail.
 6. **Projection:** Write only passing commands, recurring conventions, scoped safety, or proven routing. Keep descriptive facts/paths, evidence/rationale/provenance, rejections, uncertainty, missing commands, and conflicts report-only; never merge/generalize them into rules.
 
-Treat refresh, trimming, and reconciliation alike: remove failures and add passing scoped replacements. Command replacements exclude the target and require agreement across all other applicable current sources. Honor explicit user replacements; otherwise preserve canonical content, report Needs Input, and remove only failing generated/scaffold sentences.
+Treat refresh, trimming, and reconciliation alike. Test each sentence against the decision model; remove content that fails and add a replacement only when it independently passes at the same scope. When replacing a command, do not count the sentence being replaced as evidence. Honor an explicit user replacement; otherwise require every other applicable current source to agree. If they disagree, leave the active instruction unchanged, report Needs Input, and remove only unsupported generated or scaffolded sentences.
 
 ## Workflow
 
-1. Inventory active instructions/overrides/fallbacks, nested scopes, docs, manifests/locks/CI/configuration. Exclude globals, the ignored/external invoked copy, and vendored/generated trees.
+1. Inventory active instructions, overrides, fallbacks, nested scopes, docs, manifests, locks, CI, and configuration. Do not treat user-global instructions, the ignored or external copy of onboardkit currently being invoked, or vendored/generated trees as target-repository evidence. Do not exclude repository-owned skills merely because they are skills.
 2. Apply the decision model sentence by sentence. Do not relocate fitting content merely to standardize surfaces.
-3. Give generated root guidance no fixed sections or minimum length; prefer bullets and normally stay under 200 words. On refresh, retain a scaffold emptied by cleanup unless deletion is authorized. On initialization, create nothing unless guidance passes.
+3. Give generated root guidance no fixed sections or minimum length; prefer bullets and normally stay under 200 words. During refresh, trimming, or reconciliation, keep a scaffold that cleanup leaves empty unless deletion is authorized. During initialization, create no file unless some guidance passes.
 4. Preserve fallback, override, and nested scopes. Flatten or delete only with user-directed path-level removal or relocation.
-5. Before deletion, move durable guidance to its destination. Delete only user-named literal paths or file-matching globs; never broaden approval or treat directories as approval.
+5. After any edit, recompute the effective instruction chain for each affected directory for the current runtime. For Codex, use override, `AGENTS.md`, configured fallback order, and empty-file skipping; review conflicts and report source transitions expected on the next run or session. For another runtime, follow its documented discovery rules or report the gap instead of assuming Codex semantics.
+6. Before deletion, move durable guidance to its destination. Delete only user-named literal paths or file-matching globs; never broaden approval or treat directories as approval.
 
 ## Verification
 
@@ -34,8 +35,11 @@ Use searches, parsers, format checks, `git diff --check`, and status. Never crea
 
 ## Report
 
-Report sources, changes, routing, conflicts, unrun commands, checks, skips, Needs Input, and risks. Separate command-backed from review-backed findings and protect secrets.
+Report sources, changes, routing, conflicts, unrun commands, checks, skips, gaps, Needs Input, and risks.
+Use Needs Input for any unresolved conflict among applicable current policy or command evidence. Also use it when missing authority or choice blocks an explicitly requested non-no-op change.
+Treat evidence-gated no-ops, inactive fallbacks, rejected candidates, and undocumented unrelated commands as nonblocking gaps.
+Separate command-backed from review-backed findings and protect secrets.
 
 ## Maintenance
 
-Re-run after merges/releases/repeated mistakes/audits. Clean audits are no-ops; keep unapproved deletion candidates and report destinations.
+Re-run after merges, releases, repeated mistakes, or scheduled maintenance. Clean audits are no-ops; keep unapproved deletion candidates and report destinations.
