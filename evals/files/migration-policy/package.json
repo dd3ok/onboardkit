@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "db:migrate": "node -e \"require('fs').writeFileSync('db/migrations/new.sql', '-- migration')\""
+  },
+  "packageManager": "pnpm@10.0.0"
+}

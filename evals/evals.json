@@ -34,6 +34,10 @@
       "covers": ["audit", "scope", "route"],
       "prompt": "Audit a monorepo with a root AGENTS.md and packages/payments/AGENTS.md containing active payment-specific safety rules that do not appear elsewhere. A proposed cleanup would flatten the nested file into root and delete it.",
       "expected_output": "The nested file remains in place or its active rules are proposed for relocation; it is not flattened or deleted without a user decision.",
+      "files": [
+        "evals/files/nested-payment-scope/AGENTS.md",
+        "evals/files/nested-payment-scope/packages/payments/AGENTS.md"
+      ],
       "assertions": [
         "Unique subtree rules are preserved.",
         "The output explains the scope of the nested AGENTS.md.",
@@ -45,6 +49,10 @@
       "covers": ["clean", "route", "delete"],
       "prompt": "Clean up docs when docs/old-handoff.md duplicates docs/architecture.md but contains one still-valid migration safety rule found nowhere else.",
       "expected_output": "The durable safety rule is moved to docs/architecture.md, while the stale handoff remains and is proposed for deletion pending explicit approval.",
+      "files": [
+        "evals/files/handoff-unique-rule/docs/architecture.md",
+        "evals/files/handoff-unique-rule/docs/old-handoff.md"
+      ],
       "assertions": [
         "The unique migration safety rule is preserved in docs/architecture.md.",
         "The same rule is not copied into multiple canonical documents.",
@@ -56,6 +64,10 @@
       "covers": ["audit", "no-op", "read-only"],
       "prompt": "Run a maintenance audit. After inventorying tracked files, inspecting relevant manifests and CI, searching for duplicate guidance, and reviewing the diff, you find that AGENTS.md and docs are concise, current, non-duplicated, and consistent.",
       "expected_output": "No files change. The report states that the audit was a no-op and lists the checks performed.",
+      "files": [
+        "evals/files/clean-audit/AGENTS.md",
+        "evals/files/clean-audit/docs/architecture.md"
+      ],
       "assertions": [
         "No synthetic edit is made to create activity.",
         "The result is reported as a no-op.",
@@ -65,13 +77,20 @@
     {
       "id": 6,
       "covers": ["route", "scope"],
-      "prompt": "Route a growing docs directory containing durable architecture, deployment, completed task plans, and a five-page AGENTS.md. There is no docs index today.",
-      "expected_output": "Stable operational rules stay in a compact AGENTS.md, durable detail moves to docs, completed task artifacts are proposed for removal after preserving useful guidance, and docs/README.md is created only if it improves navigation.",
+      "prompt": "Route a growing docs directory containing durable architecture, deployment, completed task plans, and an overgrown AGENTS.md. There is no docs index today.",
+      "expected_output": "Stable operational rules stay in AGENTS.md, architecture and deployment detail remain in their canonical docs, the completed plan is proposed for removal without deletion, and docs/README.md is created as a map to the two durable docs.",
+      "files": [
+        "evals/files/docs-routing/AGENTS.md",
+        "evals/files/docs-routing/docs/architecture.md",
+        "evals/files/docs-routing/docs/deployment.md",
+        "evals/files/docs-routing/docs/plans/completed-rollout.md",
+        "evals/files/docs-routing/site/generated/index.html"
+      ],
       "assertions": [
-        "Root AGENTS.md retains only broadly applicable operational guidance.",
-        "Durable narrow detail is routed rather than copied.",
+        "Root AGENTS.md retains its verification and generated-file safety rules and contains no architecture or deployment detail.",
+        "Architecture detail remains in docs/architecture.md and deployment detail remains in docs/deployment.md rather than being copied into AGENTS.md.",
         "Completed task artifacts are proposed for removal and are not promoted into permanent agent context.",
-        "A docs index is created only when the remaining docs need a map."
+        "docs/README.md is created with links to docs/architecture.md and docs/deployment.md and does not present the completed plan as permanent guidance."
       ]
     },
     {
@@ -79,6 +98,12 @@
       "covers": ["refresh", "conflict"],
       "prompt": "Refresh a repository whose concise root AGENTS.md contains valid safety, routing, and verification guidance. package.json and CI now agree on pnpm test, while AGENTS.md still says npm test.",
       "expected_output": "The stale test command is updated from evidence while the valid existing guidance and structure are preserved; the file is not reinitialized or broadly rewritten.",
+      "files": [
+        "evals/files/root-command-refresh/AGENTS.md",
+        "evals/files/root-command-refresh/package.json",
+        "evals/files/root-command-refresh/.github/workflows/ci.yml",
+        "evals/files/root-command-refresh/docs/testing.md"
+      ],
       "assertions": [
         "Valid existing safety, routing, and verification guidance is preserved.",
         "Only the stale command and directly affected wording change.",
@@ -100,8 +125,13 @@
     {
       "id": 9,
       "covers": ["audit", "authority", "conflict"],
-      "prompt": "Audit commit guidance when recent Git history mostly uses Conventional Commit prefixes, but CONTRIBUTING.md requires ticket-prefixed subjects and CI enforces that documented rule.",
+      "prompt": "Audit commit guidance when git-log.txt records mostly Conventional Commit prefixes, but CONTRIBUTING.md requires ticket-prefixed subjects and CI enforces that documented rule.",
       "expected_output": "Git history is reported as observation rather than policy; the corroborated ticket-prefix rule remains canonical and Conventional Commits are not promoted into AGENTS.md.",
+      "files": [
+        "evals/files/commit-policy/CONTRIBUTING.md",
+        "evals/files/commit-policy/.github/workflows/commit.yml",
+        "evals/files/commit-policy/git-log.txt"
+      ],
       "assertions": [
         "Observed Git history is not treated as repository policy.",
         "The convention corroborated by CONTRIBUTING.md and CI is preserved.",
@@ -113,6 +143,11 @@
       "covers": ["initialize", "route"],
       "prompt": "Initialize guidance for a documentation-only repository with Markdown files and a verified CI link-check command, but no source modules, build step, test framework, coding-style policy, or PR template.",
       "expected_output": "AGENTS.md includes the verified link-check command while omitting unsupported routing, build, testing, coding-style, and PR sections instead of creating empty headings.",
+      "files": [
+        "evals/files/link-check/README.md",
+        "evals/files/link-check/.github/workflows/links.yml",
+        "evals/files/link-check/docs/index.md"
+      ],
       "assertions": [
         "The verified link-check command is included.",
         "Markdown file existence alone does not establish documentation routing.",
@@ -125,6 +160,11 @@
       "covers": ["audit", "scope"],
       "prompt": "Audit a repository with no AGENTS.md where .codex/config.toml declares TEAM_GUIDE.md as a fallback instruction file, and services/payments/AGENTS.override.md contains active subtree safety rules.",
       "expected_output": "The configured root fallback and nested override are inventoried with their scopes and preserved; a redundant root AGENTS.md is not created and active rules are not flattened.",
+      "files": [
+        "evals/files/active-fallback-override/.codex/config.toml",
+        "evals/files/active-fallback-override/TEAM_GUIDE.md",
+        "evals/files/active-fallback-override/services/payments/AGENTS.override.md"
+      ],
       "assertions": [
         "TEAM_GUIDE.md is recognized as the active root instruction file.",
         "The payment override and its active rules are preserved and reported as subtree-scoped.",
@@ -136,6 +176,14 @@
       "covers": ["audit", "read-only"],
       "prompt": "Audit AGENTS.md and agent-facing docs in a repository where the agent onboarding section has a stale command, while docs/api.md and docs/user-guide.md contain unrelated outdated product content.",
       "expected_output": "No files change. The stale command and any supported replacement are reported for a later explicit refresh, while unrelated API and user documentation is reported as outside scope.",
+      "files": [
+        "evals/files/read-only-stale-command/AGENTS.md",
+        "evals/files/read-only-stale-command/package.json",
+        "evals/files/read-only-stale-command/pnpm-lock.yaml",
+        "evals/files/read-only-stale-command/.github/workflows/ci.yml",
+        "evals/files/read-only-stale-command/docs/api.md",
+        "evals/files/read-only-stale-command/docs/user-guide.md"
+      ],
       "assertions": [
         "The audit remains read-only even if current evidence identifies a replacement command.",
         "The stale command, evidence, and proposed next action remain report-only.",
@@ -148,6 +196,10 @@
       "covers": ["clean", "delete"],
       "prompt": "Clean up AGENTS.md and docs. docs/old-handoff.md is fully duplicated by a canonical document, but the request grants no file-deletion approval.",
       "expected_output": "No file is deleted. The stale handoff remains, unchanged or as a routing pointer, while its canonical destination and the missing deletion approval are reported.",
+      "files": [
+        "evals/files/handoff-duplicate/docs/architecture.md",
+        "evals/files/handoff-duplicate/docs/old-handoff.md"
+      ],
       "assertions": [
         "Generic cleanup without a named deletion target and explicit deletion verb is not treated as approval.",
         "docs/old-handoff.md still exists and no unique guidance is lost.",
@@ -159,10 +211,14 @@
       "covers": ["clean", "delete", "route"],
       "prompt": "Delete docs/old-handoff.md after preserving any unique durable guidance. It duplicates docs/architecture.md except for one still-valid migration safety rule.",
       "expected_output": "The unique rule is moved to docs/architecture.md and verified before the explicitly authorized handoff file is deleted; the report names both actions.",
+      "files": [
+        "evals/files/handoff-unique-rule/docs/architecture.md",
+        "evals/files/handoff-unique-rule/docs/old-handoff.md"
+      ],
       "assertions": [
         "The current request is recognized as explicit deletion approval for the named file.",
         "The unique migration safety rule is preserved in docs/architecture.md before deletion.",
-        "No root AGENTS.md is created because the existing docs/architecture.md is the narrowest fitting canonical destination.",
+        "No root AGENTS.md is created; the migration rule is added to the existing docs/architecture.md.",
         "The report distinguishes the content move from the file deletion."
       ]
     },
@@ -171,9 +227,14 @@
       "covers": ["clean", "delete"],
       "prompt": "Delete stale docs in docs/ after preserving anything useful. The directory contains multiple possible candidates but no file names or file pattern are specified.",
       "expected_output": "No file is deleted; candidates and canonical destinations are reported with Needs Input requesting literal file paths or a file-matching glob because a directory alone is insufficient approval.",
+      "files": [
+        "evals/files/handoff-candidates/docs/architecture.md",
+        "evals/files/handoff-candidates/docs/old-handoff.md",
+        "evals/files/handoff-candidates/docs/old-plan.md"
+      ],
       "assertions": [
         "The directory name docs/ is not treated as approval to delete all stale files beneath it.",
-        "Potential candidates and durable guidance are reviewed without destructive action.",
+        "The report names docs/old-handoff.md and docs/old-plan.md as candidates and states that docs/architecture.md remains canonical.",
         "The report requests literal file paths or a file-matching glob as Needs Input."
       ]
     },
@@ -182,6 +243,12 @@
       "covers": ["refresh", "route"],
       "prompt": "Refresh agent-facing guidance when README has a suitable Agent onboarding section with a stale npm test command, while package metadata, lockfile, and CI corroborate pnpm test.",
       "expected_output": "README onboarding is corrected in place to pnpm test; fitting content is not moved into AGENTS.md without a routing need, and evidence files remain unchanged.",
+      "files": [
+        "evals/files/readme-command-refresh/README.md",
+        "evals/files/readme-command-refresh/package.json",
+        "evals/files/readme-command-refresh/pnpm-lock.yaml",
+        "evals/files/readme-command-refresh/.github/workflows/ci.yml"
+      ],
       "assertions": [
         "The existing README onboarding section is updated in place from npm test to pnpm test.",
         "The stale README command is not counted as a conflicting current command source once package metadata, lockfile, and CI agree.",
@@ -194,6 +261,9 @@
       "covers": ["initialize", "scope", "no-op"],
       "prompt": "Initialize guidance in a repository with no root instruction file. .codex/config.toml lists TEAM_GUIDE.md as a fallback, but TEAM_GUIDE.md does not exist or is empty.",
       "expected_output": "The missing or empty fallback is reported as inactive, but no AGENTS.md is created because the prompt provides no durable actionable guidance candidate.",
+      "files": [
+        "evals/files/missing-fallback/.codex/config.toml"
+      ],
       "assertions": [
         "Configuration alone is not treated as an active fallback file.",
         "Root-source absence alone is not sufficient reason to create AGENTS.md.",
@@ -260,7 +330,7 @@
       ],
       "assertions": [
         "The explicit do-not-edit imperative in docs/generated-files.md is treated as current policy only for site/generated/.",
-        "Root AGENTS.md contains only a short safety pointer to docs/generated-files.md because agents must see the rule before editing that output; the detailed policy is not copied.",
+        "Root AGENTS.md contains one routing bullet that names docs/generated-files.md and does not copy the detailed prohibition.",
         "Because the canonical prohibition documents no supported edit or regeneration path, the report names that nonblocking safety gap without inventing an alternative or requesting Needs Input.",
         "The README notes/ location is not copied into AGENTS.md or combined with the generated-output rule.",
         "The existence and descriptive location of notes/ do not prove a routing instruction.",
@@ -348,8 +418,16 @@
     {
       "id": 25,
       "covers": ["refresh", "authority", "generated", "projection"],
-      "prompt": "Refresh an AGENTS.md produced by a generic init scaffold. README already explains the project and layout; package metadata makes the framework obvious; 'follow existing style' is vague; Conventional Commit prefixes appear only in Git history; package metadata and CI both confirm pnpm test.",
+      "prompt": "Refresh an AGENTS.md produced by a generic init scaffold. README already explains the project and layout; package metadata makes the framework obvious; 'follow existing style' is vague; Conventional Commit prefixes appear only in git-log.txt; package metadata and CI both confirm pnpm test.",
       "expected_output": "The scaffold is reduced to the corroborated recurring test command. README summaries, obvious framework facts, CI installation detail, vague style advice, and history-only commit conventions are removed or left in their canonical sources.",
+      "files": [
+        "evals/files/generated-scaffold-refresh/AGENTS.md",
+        "evals/files/generated-scaffold-refresh/README.md",
+        "evals/files/generated-scaffold-refresh/package.json",
+        "evals/files/generated-scaffold-refresh/.github/workflows/ci.yml",
+        "evals/files/generated-scaffold-refresh/git-log.txt",
+        "evals/files/generated-scaffold-refresh/src/index.js"
+      ],
       "assertions": [
         "Generated or scaffolded wording is treated as a candidate rather than authority.",
         "The pnpm test command is retained because current command sources agree.",
@@ -366,6 +444,11 @@
       "covers": ["initialize", "authority", "scope"],
       "prompt": "Initialize guidance for a repository whose current migration policy and package script agree: migration files under db/migrations/ are generated by pnpm db:migrate and must not be edited by hand.",
       "expected_output": "A micro AGENTS.md records the scoped migration guardrail together with the supported pnpm db:migrate alternative. Missing unrelated commands stay in the report, and verification does not execute the mutating migration command.",
+      "files": [
+        "evals/files/migration-policy/docs/migrations.md",
+        "evals/files/migration-policy/package.json",
+        "evals/files/migration-policy/db/migrations/001.sql"
+      ],
       "assertions": [
         "The migration prohibition retains its db/migrations/ scope.",
         "The prohibition is paired with pnpm db:migrate as the supported action.",
@@ -380,6 +463,12 @@
       "covers": ["audit", "scope"],
       "prompt": "Audit a repository after Codex /init was run in a subdirectory. The repository already has an active root TEAM_GUIDE.md fallback and a nested AGENTS.override.md with unique safety rules.",
       "expected_output": "The init-style duplicate is not treated as canonical. Active fallback and override scopes are preserved, conflicts are reported, and no instruction source is flattened or replaced merely to standardize filenames.",
+      "files": [
+        "evals/files/init-subdir-duplicate/.codex/config.toml",
+        "evals/files/init-subdir-duplicate/TEAM_GUIDE.md",
+        "evals/files/init-subdir-duplicate/services/payments/AGENTS.md",
+        "evals/files/init-subdir-duplicate/services/payments/AGENTS.override.md"
+      ],
       "assertions": [
         "The active TEAM_GUIDE.md fallback remains the root source.",
         "The nested override and its unique safety rules remain scoped.",
@@ -392,6 +481,12 @@
       "covers": ["refresh", "conflict", "generated"],
       "prompt": "Refresh a generated AGENTS.md that says yarn test. package.json defines vitest run, README says npm test, CI says pnpm test, and no lockfile establishes a package manager.",
       "expected_output": "The unsupported yarn instruction is removed. No test command, script fact, source conflict, or command absence is written into AGENTS.md; with no surviving sentence, the existing file is left empty and the conflict plus Needs Input appear only in the report.",
+      "files": [
+        "evals/files/generated-command-conflict/AGENTS.md",
+        "evals/files/generated-command-conflict/README.md",
+        "evals/files/generated-command-conflict/package.json",
+        "evals/files/generated-command-conflict/.github/workflows/ci.yml"
+      ],
       "assertions": [
         "Conflicting npm, pnpm, and manifest evidence is reported rather than promoted into target guidance.",
         "The descriptive vitest run script is not written as an AGENTS.md fact.",
@@ -406,6 +501,11 @@
       "covers": ["audit", "read-only", "no-op", "mutating-command"],
       "prompt": "Audit agent-facing guidance and report checks. The repository documents pnpm generate as overwriting site/generated/, and dependencies are absent.",
       "expected_output": "The audit is a read-only no-op. It uses static evidence, does not edit README, run pnpm generate or any setup command, or create then clean artifacts, and reports the mutating command as identified but not run.",
+      "files": [
+        "evals/files/mutating-generate-audit/AGENTS.md",
+        "evals/files/mutating-generate-audit/README.md",
+        "evals/files/mutating-generate-audit/package.json"
+      ],
       "assertions": [
         "The audit/report request does not edit README or any repository guidance.",
         "A command documented as generating or overwriting files is never executed during documentation maintenance.",
@@ -420,6 +520,13 @@
       "covers": ["refresh", "conflict"],
       "prompt": "Refresh a README Agent onboarding command that says npm test. package metadata, lockfile, and CI support pnpm test, but current CONTRIBUTING guidance requires yarn test.",
       "expected_output": "README remains unchanged because the applicable current sources still disagree after excluding the refresh target. The npm, pnpm, and yarn conflict plus Needs Input stay in the report, and no AGENTS.md is created.",
+      "files": [
+        "evals/files/readme-command-conflict/README.md",
+        "evals/files/readme-command-conflict/CONTRIBUTING.md",
+        "evals/files/readme-command-conflict/package.json",
+        "evals/files/readme-command-conflict/pnpm-lock.yaml",
+        "evals/files/readme-command-conflict/.github/workflows/ci.yml"
+      ],
       "assertions": [
         "Excluding the edited README target does not permit choosing a command while another applicable current source disagrees.",
         "README is not rewritten from a partial consensus.",
@@ -433,9 +540,12 @@
       "covers": ["clean", "delete", "route", "authority", "safety"],
       "prompt": "Delete docs/old-handoff.md after preserving its explicitly confirmed current repository-wide rule: never force-push main. No active root instruction source or fitting canonical document exists.",
       "expected_output": "A minimal root AGENTS.md preserves the repo-wide safety rule before the explicitly authorized handoff is deleted because no fitting existing destination exists.",
+      "files": [
+        "evals/files/delete-safety-handoff/docs/old-handoff.md"
+      ],
       "assertions": [
         "The current user confirmation establishes the safety rule as policy.",
-        "Root AGENTS.md is created only because the rule is repo-wide and no active root or fitting existing destination exists.",
+        "A new root AGENTS.md contains the confirmed no-force-push rule before docs/old-handoff.md is deleted.",
         "The exact approved file is deleted after the rule is preserved.",
         "No unrelated document is repurposed as a destination."
       ]
@@ -445,10 +555,13 @@
       "covers": ["initialize", "route", "scope", "authority", "safety"],
       "prompt": "Initialize guidance for an explicitly confirmed repository-wide no-force-push rule. docs/database.md exists but serves database operators and is not a fitting destination for repository-wide agent safety.",
       "expected_output": "A minimal root AGENTS.md records the repo-wide rule. The narrower but audience-mismatched database document remains unchanged and does not suppress required root guidance.",
+      "files": [
+        "evals/files/repo-wide-safety/docs/database.md"
+      ],
       "assertions": [
         "Routing evaluates audience and scope rather than path depth alone.",
         "The database document is not modified with unrelated repository-wide guidance.",
-        "Root AGENTS.md is created because no fitting canonical destination exists.",
+        "A new root AGENTS.md contains only the confirmed no-force-push rule.",
         "The generated guidance contains only the confirmed safety rule."
       ]
     },
@@ -457,6 +570,13 @@
       "covers": ["refresh", "generated", "projection"],
       "prompt": "Trim a generated AGENTS.md containing unsupported project descriptions, vague style advice, npm test, and an overbroad read-all-docs rule. README and CONTRIBUTING both document pnpm test, and pnpm-lock.yaml confirms pnpm.",
       "expected_output": "The unsupported filler is removed and the passing pnpm test replacement is retained; the existing scaffold is not left empty while applicable current sources agree.",
+      "files": [
+        "evals/files/trim-generated-scaffold/AGENTS.md",
+        "evals/files/trim-generated-scaffold/README.md",
+        "evals/files/trim-generated-scaffold/CONTRIBUTING.md",
+        "evals/files/trim-generated-scaffold/pnpm-lock.yaml",
+        "evals/files/trim-generated-scaffold/package.json"
+      ],
       "assertions": [
         "Trimming uses the same evidence and replacement rules as refresh and reconciliation.",
         "The unsupported description, vague style advice, npm command, and read-all-docs rule are removed.",

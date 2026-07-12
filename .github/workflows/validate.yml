@@ -126,6 +126,7 @@ jobs:
           assert Path("LICENSE").read_bytes() == (runtime / "LICENSE").read_bytes(), "runtime license drifted"
 
           readme = Path("README.md").read_text(encoding="utf-8")
+          maintainer_contract = Path("AGENTS.md").read_text(encoding="utf-8")
           assert "$skill-installer" in readme and "tree/main/skills/onboardkit" in readme, "canonical installer path missing"
           assert "--no-cone" not in readme, "deprecated non-cone install guidance returned"
           assert not re.search(r"git(?:\s+-C\s+\S+)?\s+sparse-checkout", readme), "direct git sparse-checkout guidance returned"
@@ -151,11 +152,15 @@ jobs:
           mode_line = next(line for line in decision_model.splitlines() if "**Mode:**" in line)
           authority_line = next(line for line in decision_model.splitlines() if "**Authority:**" in line)
           value_line = next(line for line in decision_model.splitlines() if "**Value:**" in line)
-          assert all(term in mode_line.lower() for term in ("trim", "reconcile")), "public edit triggers must remain authorized"
+          blocking_line = next(line for line in decision_model.splitlines() if "**Blocking:**" in line)
+          replacement_line = next(line for line in decision_model.splitlines() if "**Replacement:**" in line)
+          assert all(term in mode_line.lower() for term in ("explicitly asks to change", "not required keywords", "trim", "reconcile")), "semantic edit-intent gate drifted"
           assert all(term in authority_line.lower() for term in ("provenance", "passage", "generated")), "generated-source authority must cover provenance and passage labels"
-          assert all(term in value_line.lower() for term in ("supported alternative", "nonblocking safety gap", "never invent")), "safety-alternative contract drifted"
-          assert all(term in workflow for term in ("For Codex", "another runtime", "next run or session")), "post-edit discovery must stay runtime-scoped and next-run qualified"
-          assert all(term in report_contract for term in ("nonblocking gaps", "Needs Input")), "missing-information reporting contract drifted"
+          assert all(term in value_line.lower() for term in ("completed task plans", "not permanent routing destinations", "supported alternative", "nonblocking safety gap", "never invent")), "value and safety-alternative contract drifted"
+          assert all(term in blocking_line for term in ("Needs Input only", "Evidence-gated no-ops", "never solicit information", "emit Needs Input")), "blocking classification drifted"
+          assert all(term in replacement_line for term in ("exclude the target sentence", "never creates a conflict", "every other applicable current source agrees", "those sources disagree")), "replacement consensus contract drifted"
+          assert all(term in workflow for term in ("After editing an instruction source", "discovered nested instruction boundary", "do not walk unrelated directories", "For Codex", "another runtime", "old source -> new source", "current session does not reload", "next run or session", "emptied scaffold")), "bounded post-edit discovery contract drifted"
+          assert all(term in report_contract for term in ("Blocking rule", "Needs Input")), "missing-information reporting contract drifted"
 
           forbidden_runtime_patterns = {
               "fixed AGENTS size": r"200-400",
@@ -190,8 +195,8 @@ jobs:
               for case in cases
           ), "incomplete eval case"
           assert all(len(case["assertions"]) == len(set(case["assertions"])) for case in cases), "duplicate assertion within eval"
-          subjective_assertion = re.compile(r"\b(?:good|appropriate|proper|reasonable|well below)\b", re.IGNORECASE)
-          assert all(not subjective_assertion.search(assertion) for case in cases for assertion in case["assertions"]), "subjective eval assertion returned"
+          known_vague_assertion = re.compile(r"\b(?:good|appropriate|proper|reasonable|well below|broadly applicable|durable narrow)\b|\bonly (?:if|when)\b|\bas needed\b|\bif it improves\b|\bfitting canonical\b|\bshort safety pointer\b", re.IGNORECASE)
+          assert all(not known_vague_assertion.search(assertion) for case in cases for assertion in case["assertions"]), "known vague eval assertion returned; static lint does not replace semantic review"
           assert len(cases) >= 3, "at least three behavior evals are required"
           cases_by_id = {case["id"]: case for case in cases}
           fixed_behavior_smoke = {
@@ -207,7 +212,13 @@ jobs:
           blocking_needs_input_cases = {2, 15, 28, 30}
           assert all("Needs Input" in cases_by_id[case_id]["expected_output"] for case_id in blocking_needs_input_cases), "blocking case lost its Needs Input classification"
           assert cases_by_id[34].get("files"), "post-edit fallback case requires a reproducible fixture"
-          assert Path("evals/files/neutral/README.md").is_file(), "neutral evaluation fixture missing"
+          stateful_tags = {"refresh", "clean", "delete", "route", "conflict", "generated", "safety"}
+          assert all(case.get("files") or ("no-op" in case["covers"] and not (stateful_tags & set(case["covers"]))) for case in cases), "stateful behavior case lacks a reproducible fixture"
+          neutral_path = Path("evals/files/neutral/README.md")
+          assert neutral_path.is_file(), "neutral evaluation fixture missing"
+          neutral_lower = neutral_path.read_text(encoding="utf-8").lower()
+          assert all(term not in neutral_lower for term in ("evaluation", "benchmark", "onboardkit", "agent skill", "expected output")), "neutral fixture leaks evaluation context"
+          assert all(term in maintainer_contract for term in ("project-trust state", "effective project configuration", "explicitly trust fixture repositories", "fresh target", "grade only each query's declared `should_trigger` label", "grade their declared assertions")), "reproducible cross-track evaluation contract drifted"
 
           required_coverage = {
               "initialize", "refresh", "audit", "clean", "route", "scope",

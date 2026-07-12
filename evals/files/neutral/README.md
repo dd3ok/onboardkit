@@ -1,3 +1,3 @@
-# Neutral evaluation repository
+# Field Notes
 
-This repository exists only to provide a stable, non-empty context for evaluation.
+This repository collects short field notes for the project team.
