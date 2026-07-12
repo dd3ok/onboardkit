@@ -57,7 +57,8 @@
       "assertions": [
         "The unique migration safety rule is preserved in docs/architecture.md.",
         "The same rule is not copied into multiple canonical documents.",
-        "The report names docs/old-handoff.md as a deletion candidate, docs/architecture.md as the destination, and the required approval."
+        "The report names docs/old-handoff.md as a deletion candidate, docs/architecture.md as the destination, and the required approval.",
+        "The unapproved docs/old-handoff.md file remains present after the cleanup."
       ]
     },
     {
@@ -321,7 +322,7 @@
     {
       "id": 20,
       "covers": ["initialize", "scope", "route", "safety"],
-      "prompt": "Initialize a lightweight AGENTS.md for this documentation repository while preserving its existing file rules.",
+      "prompt": "Initialize a lightweight AGENTS.md for this documentation repository while preserving its existing file rules. Agents encounter site/generated/ before they can reasonably discover the documentation map, so its scoped safety rule must be visible before they edit there.",
       "expected_output": "A micro AGENTS.md contains only a short pointer to the canonical site/generated/ safety policy; the policy detail remains in docs/generated-files.md, README facts and missing commands are not copied, and the missing supported edit or regeneration alternative is reported as a nonblocking safety gap.",
       "files": [
         "evals/files/claim-gate-generated/.gitignore",
@@ -544,7 +545,7 @@
       "id": 31,
       "covers": ["clean", "delete", "route", "authority", "safety"],
       "prompt": "Delete docs/old-handoff.md after preserving its explicitly confirmed current repository-wide rule: never force-push main. No active root instruction source or fitting canonical document exists.",
-      "expected_output": "A minimal root AGENTS.md preserves the repo-wide safety rule before the explicitly authorized handoff is deleted because no fitting existing destination exists.",
+      "expected_output": "A minimal root AGENTS.md preserves the repo-wide safety rule before the explicitly authorized handoff is deleted because no fitting existing destination exists. Because no supported alternative is evidenced, the report records a Nonblocking safety gap.",
       "files": [
         "evals/files/delete-safety-handoff/docs/old-handoff.md"
       ],
@@ -552,14 +553,15 @@
         "The current user confirmation establishes the safety rule as policy.",
         "A new root AGENTS.md contains the confirmed no-force-push rule before docs/old-handoff.md is deleted.",
         "The exact approved file is deleted after the rule is preserved.",
-        "No unrelated document is repurposed as a destination."
+        "No unrelated document is repurposed as a destination.",
+        "The report labels the missing supported alternative as a Nonblocking safety gap without inventing one or requesting Needs Input."
       ]
     },
     {
       "id": 32,
       "covers": ["initialize", "route", "scope", "authority", "safety"],
       "prompt": "Initialize guidance for an explicitly confirmed repository-wide no-force-push rule. docs/database.md exists but serves database operators and is not a fitting destination for repository-wide agent safety.",
-      "expected_output": "A minimal root AGENTS.md records the repo-wide rule. The narrower but audience-mismatched database document remains unchanged and does not suppress required root guidance.",
+      "expected_output": "A minimal root AGENTS.md records the repo-wide rule. The narrower but audience-mismatched database document remains unchanged and does not suppress required root guidance. Because no supported alternative is evidenced, the report records a Nonblocking safety gap.",
       "files": [
         "evals/files/repo-wide-safety/docs/database.md"
       ],
@@ -567,7 +569,7 @@
         "Routing evaluates audience and scope rather than path depth alone.",
         "The database document is not modified with unrelated repository-wide guidance.",
         "A new root AGENTS.md contains only the confirmed no-force-push rule.",
-        "The generated guidance contains only the confirmed safety rule."
+        "The report labels the missing supported alternative as a Nonblocking safety gap without inventing one or requesting Needs Input."
       ]
     },
     {
@@ -594,7 +596,7 @@
       "id": 34,
       "covers": ["refresh", "generated", "scope", "route", "safety"],
       "prompt": "Refresh a generated root AGENTS.md whose only sentence is unsupported. The repository config lists TEAM_GUIDE.md as a fallback, and that non-empty file contains a current repo-wide safety rule but was shadowed by AGENTS.md.",
-      "expected_output": "The unsupported sentence is removed and the scaffold remains empty unless deletion is authorized. Under Codex discovery, the post-edit instruction chain is recomputed, TEAM_GUIDE.md is identified and reviewed as the root fallback expected to become active on the next run, and the transition and resulting scope are reported without copying its rule.",
+      "expected_output": "The unsupported sentence is removed and the scaffold remains empty unless deletion is authorized. Under Codex discovery, the post-edit instruction chain is recomputed, TEAM_GUIDE.md is identified and reviewed as the root fallback expected to become active on the next run, and the transition and resulting scope are reported without copying its rule. Because no supported alternative to the fallback prohibition is evidenced, the report records a Nonblocking safety gap.",
       "files": [
         "evals/files/post-edit-fallback/.codex/config.toml",
         "evals/files/post-edit-fallback/AGENTS.md",
@@ -606,7 +608,8 @@
         "Post-edit Codex discovery skips the empty AGENTS.md and expects the configured non-empty TEAM_GUIDE.md fallback to become active on the next run or session.",
         "The next-run fallback is reviewed at its actual root scope before the refresh is considered complete.",
         "The report names the active-source transition from AGENTS.md to TEAM_GUIDE.md.",
-        "The fallback rule is not duplicated into the empty scaffold or generalized beyond its evidence."
+        "The fallback rule is not duplicated into the empty scaffold or generalized beyond its evidence.",
+        "The report labels the fallback prohibition's missing supported alternative as a Nonblocking safety gap without inventing one or requesting Needs Input."
       ]
     },
     {
@@ -621,6 +624,7 @@
       ],
       "assertions": [
         "The existing docs/index.md remains the documentation map and links to both durable documents.",
+        "The update preserves the existing title and Architecture entry, adds one Deployment link, and adds no unrelated content.",
         "No competing docs/README.md is created.",
         "No AGENTS.md is created.",
         "The existing architecture.md and deployment.md files remain unchanged."

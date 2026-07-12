@@ -216,11 +216,15 @@ jobs:
           read_only_audit_cases = {2, 3, 9, 11, 24, 27}
           assert all("The audit changes no repository files." in cases_by_id[case_id]["assertions"] for case_id in read_only_audit_cases), "audit case lost its all-files read-only assertion"
           assert "No command is selected or proposed while" in cases_by_id[2]["assertions"][1], "conflicting-command case permits an unsupported choice"
+          assert any("old-handoff.md file remains present" in assertion for assertion in cases_by_id[4]["assertions"]), "unapproved cleanup case permits deletion"
           assert any("remains present and empty" in assertion and "neither deleted nor filled" in assertion for assertion in cases_by_id[28]["assertions"]), "empty-scaffold case permits the opposite outcome"
+          assert "before they can reasonably discover" in cases_by_id[20]["prompt"], "root safety pointer case lacks early-discovery evidence"
           assert "No AGENTS.md is created." in cases_by_id[35]["assertions"], "existing-index case permits invented agent guidance"
           assert any("architecture.md and deployment.md files remain unchanged" in assertion for assertion in cases_by_id[35]["assertions"]), "existing-index case permits canonical-doc rewrites"
-          nonblocking_gap_cases = {1, 8, 17, 18, 20, 21}
+          assert any("adds one Deployment link" in assertion and "adds no unrelated content" in assertion for assertion in cases_by_id[35]["assertions"]), "existing-index case permits unrelated index rewrites"
+          nonblocking_gap_cases = {1, 8, 17, 18, 20, 21, 31, 32, 34}
           assert all("nonblocking" in (cases_by_id[case_id]["expected_output"] + " " + " ".join(cases_by_id[case_id]["assertions"])).lower() for case_id in nonblocking_gap_cases), "nonblocking gap regression case lost its classification"
+          assert all(any("Nonblocking safety gap" in assertion and "without inventing" in assertion and "requesting Needs Input" in assertion for assertion in cases_by_id[case_id]["assertions"]) for case_id in (31, 32, 34)), "preserved safety case permits a missing-alternative report omission"
           blocking_needs_input_cases = {2, 15, 28, 30}
           assert all("Needs Input" in cases_by_id[case_id]["expected_output"] for case_id in blocking_needs_input_cases), "blocking case lost its Needs Input classification"
           assert cases_by_id[34].get("files"), "post-edit fallback case requires a reproducible fixture"
