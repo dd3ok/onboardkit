@@ -322,7 +322,7 @@
     {
       "id": 20,
       "covers": ["initialize", "scope", "route", "safety"],
-      "prompt": "Initialize a lightweight AGENTS.md for this documentation repository while preserving its existing file rules. Agents encounter site/generated/ before they can reasonably discover the documentation map, so its scoped safety rule must be visible before they edit there.",
+      "prompt": "Initialize a lightweight AGENTS.md for this documentation repository while preserving its existing file rules. Agents encounter site/generated/ before they can reasonably discover docs/generated-files.md, so its scoped safety rule must be visible before they edit there.",
       "expected_output": "A micro AGENTS.md contains only a short pointer to the canonical site/generated/ safety policy; the policy detail remains in docs/generated-files.md, README facts and missing commands are not copied, and the missing supported edit or regeneration alternative is reported as a nonblocking safety gap.",
       "files": [
         "evals/files/claim-gate-generated/.gitignore",
@@ -337,6 +337,7 @@
         "Root AGENTS.md contains one routing bullet that names docs/generated-files.md and does not copy the detailed prohibition.",
         "Because the canonical prohibition documents no supported edit or regeneration path, the report names that nonblocking safety gap without inventing an alternative or requesting Needs Input.",
         "The README notes/ location is not copied into AGENTS.md or combined with the generated-output rule.",
+        "No documentation index or unrelated routing file is created.",
         "The existence and descriptive location of notes/ do not prove a routing instruction.",
         "The descriptive README and example note cannot corroborate each other into repository policy.",
         "The rule is not broadened to all ignored or generated-looking files.",
