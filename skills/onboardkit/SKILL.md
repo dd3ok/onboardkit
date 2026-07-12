@@ -10,7 +10,7 @@ Never add target-repo helpers, scripts, schemas, or skills. Leave unrelated docs
 ## Decision Model
 
 1. **Mode:** Audit, review, report, and explanation requests are read-only. Edit only when the user explicitly asks to change target guidance; initialize, refresh, fix, maintain, trim, reconcile, clean, route, and path/glob deletion are examples of edit intent, not required keywords. File deletion requires both explicit delete/remove intent and a user-named literal path or file-matching glob; general cleanup plus a path mention is not approval.
-2. **Evidence:** Require current, undisputed evidence for facts and current policy or deliberate user rules for imperatives. Preserve modality, audience, and scope; factual confirmation establishes only its scoped fact.
+2. **Evidence:** Require current, undisputed evidence for facts and current policy or deliberate user rules for imperatives. Edit intent authorizes the operation only; it does not supply an unstated fact, rule, destination, or route. Preserve modality, audience, and scope; factual confirmation establishes only its scoped fact.
 3. **Authority:** Known scaffolds, examples, generated content, history, deletions, and narrative or descriptive statements are candidates, not policy; candidates cannot corroborate each other. Treat an explicit imperative in a current maintained source as policy only for its stated audience and scope when neither its provenance nor its passage marks it as scaffolded, generated, example, historical, proposed, or superseded. Never restore deleted content.
 4. **Value:** Keep stable, non-obvious guidance that prevents recurring mistakes or waste; safety qualifies independently. Completed task plans and handoffs are cleanup candidates, not permanent routing destinations; preserve any still-durable guidance before proposing removal. Pair a safety prohibition with a supported alternative only when current evidence provides an actionable command or path; a process name or production description alone is insufficient. Otherwise report the missing alternative as a nonblocking safety gap and never invent one. Keep setup/install instructions only when a current source states them as policy, not merely as a workflow example. Add routing only when current policy or repeated navigation evidence shows that agents should consult the destination; a path or description alone is insufficient.
 5. **Placement:** Keep valid guidance where its current audience and scope fit, even if a narrower new file could host it. Keep policy detail in its fitting canonical destination. When durable docs need a navigation map, create or update `docs/README.md`; never use `AGENTS.md` merely as a docs index. Create root `AGENTS.md` only for repo-wide guidance lacking an active root or fitting destination. The only exception is a short root pointer to a fitting canonical safety policy that agents must see before they can reasonably discover it; name the affected scope and canonical destination without copying policy detail.
@@ -31,7 +31,7 @@ Never add target-repo helpers, scripts, schemas, or skills. Leave unrelated docs
 
 ## Verification
 
-Keep verification read-only. Run a package manager or project script (install, build, test, lint, format, generate, migrate, release) only when the user explicitly asks to execute that exact command. Merely mentioning a command as evidence or requesting documentation maintenance is not execution approval. Never run a command documented as mutating files.
+Keep verification read-only. Before any package-manager or project command (install, build, test, lint, format, generate, migrate, release), identify a direct user request to execute that exact command; otherwise do not run or probe it. A command mention, suspected failure, or documentation-maintenance request is not execution approval. Never run a command documented as mutating files.
 
 Use searches, parsers, format checks, `git diff --check`, and status. Never create verification artifacts.
 
@@ -41,7 +41,7 @@ Use searches, parsers, format checks, `git diff --check`, and status. Never crea
 - For a read-only request, keep each supported proposed change report-only and name the later explicit edit action needed to apply it.
 - Report unsupported, missing, and identified-but-unrun commands; label undocumented unrelated commands a `Nonblocking gap` unless they block the requested edit under the Blocking rule.
 - Describe rejected, scaffolded, or example content by its provenance; never call it a rule or policy.
-- Label each retained cleanup target `Deletion candidate`; name its fitting destination and the path-level approval required for deletion.
+- Label each retained cleanup target `Deletion candidate`; name its fitting destination and the path-level approval required for deletion. When current evidence establishes that destination as canonical, state that it remains canonical.
 - If a preserved prohibition has no evidenced supported alternative, label it `Nonblocking safety gap` and name the missing alternative.
 Apply the Blocking rule before labeling a gap Needs Input or requesting user input.
 Separate command-backed from review-backed findings and protect secrets.
