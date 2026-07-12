@@ -37,7 +37,7 @@ Use searches, parsers, format checks, `git diff --check`, and status. Never crea
 
 ## Report
 
-- Name sources, changes, routing, conflicts, checks, skips, and risks.
+- Name only observed sources and scopes, actual changes, routing, conflicts, checks, skips, and risks; never claim an absent item was preserved.
 - Report unsupported, missing, and identified-but-unrun commands; label undocumented unrelated commands a `Nonblocking gap` unless they block the requested edit under the Blocking rule.
 - Describe rejected, scaffolded, or example content by its provenance; never call it a rule or policy.
 - Label each retained cleanup target `Deletion candidate`; name its fitting destination and the path-level approval required for deletion.
