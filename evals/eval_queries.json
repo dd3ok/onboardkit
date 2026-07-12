@@ -87,15 +87,35 @@
   {
     "query": "Run the built-in Codex /init command in this repository.",
     "should_trigger": false,
-    "set": "validation"
+    "set": "train"
   },
   {
     "query": "Translate AGENTS.md to Korean and improve its grammar without changing any rules or routing.",
     "should_trigger": false,
-    "set": "validation"
+    "set": "train"
   },
   {
     "query": "Explain how Codex loads root and nested AGENTS.md files; do not inspect or change this repository.",
+    "should_trigger": false,
+    "set": "validation"
+  },
+  {
+    "query": "Refresh the active AGENTS.md after package metadata and CI changed the supported test command.",
+    "should_trigger": true,
+    "set": "train"
+  },
+  {
+    "query": "Route current root and nested agent instructions after splitting a monorepo package.",
+    "should_trigger": true,
+    "set": "train"
+  },
+  {
+    "query": "Create a generic AGENTS.md review checklist for future pull requests without inspecting or changing this repository.",
+    "should_trigger": false,
+    "set": "validation"
+  },
+  {
+    "query": "Write a comparison guide explaining AGENTS.md versus CLAUDE.md for our handbook; do not audit or modify current repository instructions.",
     "should_trigger": false,
     "set": "validation"
   }

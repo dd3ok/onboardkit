@@ -261,7 +261,7 @@ jobs:
               1: ("train", True, "Set up a lightweight AGENTS.md and sensible docs structure for this repository."),
               7: ("validation", True, "Audit our active AGENTS.override.md and fallback instructions without flattening their scopes."),
               13: ("train", False, "Review the AGENTS.md changes in this pull request for correctness and missing tests, but do not rewrite or reorganize repository guidance."),
-              18: ("validation", False, "Run the built-in Codex /init command in this repository."),
+              18: ("train", False, "Run the built-in Codex /init command in this repository."),
           }
           assert all((queries[index - 1]["set"], queries[index - 1]["should_trigger"], queries[index - 1]["query"]) == expected for index, expected in fixed_trigger_smoke.items()), "fixed trigger smoke identity drifted"
 
