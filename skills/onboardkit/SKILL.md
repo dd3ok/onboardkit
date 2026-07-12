@@ -22,7 +22,7 @@ Never add target-repo helpers, scripts, schemas, or skills. Leave unrelated docs
 
 1. Inventory active instructions, overrides, fallbacks, nested scopes, docs, manifests, locks, CI, and configuration. Do not treat user-global instructions, the ignored or external copy of onboardkit currently being invoked, or vendored/generated trees as target-repository evidence. Do not exclude repository-owned skills merely because they are skills.
 2. Apply the decision model sentence by sentence. Do not relocate fitting content merely to standardize surfaces.
-3. Give generated root guidance no fixed sections or minimum length; prefer bullets and normally stay under 200 words. During refresh, trimming, or reconciliation, keep a scaffold that cleanup leaves empty unless deletion is authorized. During initialization, create no file unless a current imperative or deliberate user rule passes every decision gate; descriptive facts, paths, examples, missing commands, and a configured but missing or empty fallback never suffice alone or together.
+3. Give generated root guidance no fixed sections or minimum length; prefer bullets and normally stay under 200 words. During refresh, trimming, or reconciliation, keep a scaffold that cleanup leaves empty unless deletion is authorized. During initialization, create no file unless a current imperative or deliberate user rule passes every decision gate; descriptive facts, paths, examples, missing commands, and a configured but missing or empty fallback never suffice alone or together. Never project this skill's brevity, routing, verification, or maintenance rules into target guidance.
 4. Preserve fallback, override, and nested scopes. Flatten or delete only with user-directed path-level removal or relocation.
 5. After editing an instruction source or discovery configuration, recompute the effective chain at that source directory and each discovered nested instruction boundary it governs; do not walk unrelated directories. For Codex, use override, `AGENTS.md`, configured fallback order, and empty-file skipping; review conflicts and report newly exposed sources only as transitions expected on the next run or session, never as active in the current session. For another runtime, follow its documented discovery rules or report the gap instead of assuming Codex semantics.
 6. If an edit changes which source discovery would select, name the `old source -> new source` transition and state that the current session does not reload it; activation is expected only on the next run or session. Do not describe an emptied scaffold itself as routing agents.
@@ -36,7 +36,10 @@ Use searches, parsers, format checks, `git diff --check`, and status. Never crea
 
 ## Report
 
-Report sources, changes, routing, conflicts, unsupported or missing commands, unrun commands, checks, skips, gaps, Needs Input, and risks. Name retained cleanup candidates, their fitting destinations, and the path-level approval still required for deletion. When preserving a prohibition with no evidenced supported alternative, explicitly name that nonblocking safety gap.
+- Name sources, changes, routing, conflicts, checks, skips, and risks.
+- Report unsupported, missing, and identified-but-unrun commands.
+- Name retained cleanup candidates, their fitting destinations, and the path-level approval required for deletion.
+- If a preserved prohibition has no evidenced supported alternative, name that nonblocking safety gap.
 Apply the Blocking rule before labeling a gap or requesting user input.
 Separate command-backed from review-backed findings and protect secrets.
 
