@@ -217,6 +217,8 @@ jobs:
           assert all("The audit changes no repository files." in cases_by_id[case_id]["assertions"] for case_id in read_only_audit_cases), "audit case lost its all-files read-only assertion"
           assert "No command is selected or proposed while" in cases_by_id[2]["assertions"][1], "conflicting-command case permits an unsupported choice"
           assert any("remains present and empty" in assertion and "neither deleted nor filled" in assertion for assertion in cases_by_id[28]["assertions"]), "empty-scaffold case permits the opposite outcome"
+          assert "No AGENTS.md is created." in cases_by_id[35]["assertions"], "existing-index case permits invented agent guidance"
+          assert any("architecture.md and deployment.md files remain unchanged" in assertion for assertion in cases_by_id[35]["assertions"]), "existing-index case permits canonical-doc rewrites"
           nonblocking_gap_cases = {1, 8, 17, 18, 20, 21}
           assert all("nonblocking" in (cases_by_id[case_id]["expected_output"] + " " + " ".join(cases_by_id[case_id]["assertions"])).lower() for case_id in nonblocking_gap_cases), "nonblocking gap regression case lost its classification"
           blocking_needs_input_cases = {2, 15, 28, 30}
@@ -229,6 +231,7 @@ jobs:
           neutral_lower = neutral_path.read_text(encoding="utf-8").lower()
           assert all(term not in neutral_lower for term in ("evaluation", "benchmark", "onboardkit", "agent skill", "expected output")), "neutral fixture leaks evaluation context"
           assert all(term in maintainer_contract for term in ("project-trust state", "effective project configuration", "explicitly trust fixture repositories", "fresh target", "grade only each query's declared `should_trigger` label", "grade their declared assertions")), "reproducible cross-track evaluation contract drifted"
+          assert all(term in maintainer_contract for term in ("explicitly authorizes deletion", "literal path", "file-matching glob")), "maintainer deletion authority drifted"
 
           required_coverage = {
               "initialize", "refresh", "audit", "clean", "route", "scope",

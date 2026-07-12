@@ -622,8 +622,8 @@
       "assertions": [
         "The existing docs/index.md remains the documentation map and links to both durable documents.",
         "No competing docs/README.md is created.",
-        "No AGENTS.md is created merely as a documentation index.",
-        "Architecture and deployment detail remains in the existing canonical documents."
+        "No AGENTS.md is created.",
+        "The existing architecture.md and deployment.md files remain unchanged."
       ]
     }
   ]

@@ -42,7 +42,7 @@ Initialization is a no-op unless at least one current imperative or deliberate u
 - For a read-only request, keep each supported proposed change report-only and name the later explicit edit action needed to apply it.
 - Report unsupported, missing, and identified-but-unrun commands; label undocumented unrelated commands a `Nonblocking gap` unless they block the requested edit under the Blocking rule.
 - Describe rejected, scaffolded, or example content by its provenance; never call it a rule or policy.
-- Label each retained cleanup target `Deletion candidate`; name its fitting destination and the path-level approval required for deletion. When current evidence establishes that destination as canonical, state that it remains canonical.
+- Label each retained cleanup target `Deletion candidate`; name any evidenced fitting destination or state that none is needed, plus the path-level approval required for deletion. When current evidence establishes a destination as canonical, state that it remains canonical.
 - If a preserved prohibition has no evidenced supported alternative, label it `Nonblocking safety gap` and name the missing alternative.
 Apply the Blocking rule before labeling a gap Needs Input or requesting user input.
 Separate command-backed from review-backed findings and protect secrets.
@@ -50,4 +50,4 @@ Do not finish until the report accounts for build, test, lint, and release comma
 
 ## Maintenance
 
-Re-run after merges, releases, repeated mistakes, or scheduled maintenance. Clean audits are no-ops; keep unapproved deletion candidates and report destinations.
+Re-run after merges, releases, repeated mistakes, or scheduled maintenance. Clean audits are no-ops; keep unapproved deletion candidates and report any evidenced destinations or that none is needed.

@@ -25,7 +25,7 @@ git status --short --branch
 
 Keep `AGENTS.md` to recurring actionable commands, routing, verification, conventions, and safety. Project summaries stay in README/docs unless they change agent behavior.
 
-Identify stale or duplicate docs as cleanup candidates. Merge only when the request authorizes it; delete only when it also names literal paths or file-matching globs.
+Identify stale or duplicate docs as cleanup candidates. Merge only when the request authorizes merging. Delete only when the request explicitly authorizes deletion and names each literal path or a file-matching glob.
 
 `skills/onboardkit/SKILL.md` updates preserve initialization, routing, cleanup, maintenance, and missing-information policy without helper code.
 
