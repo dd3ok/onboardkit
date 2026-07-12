@@ -83,7 +83,7 @@ jobs:
           assert any(term in description_lead for term in ("initializ", "refresh", "audit", "clean", "rout")), "description must front-load its use cases"
           description_lower = metadata["description"].lower()
           assert any(scope in description_lower for scope in ("agents.md", "agent instruction", "coding agent")), "description scope missing"
-          assert any(boundary in description_lower for boundary in ("not for ", "do not use for ", "do not use to ", "do not trigger for ", "use only when ", "use only for ", "use when the user explicitly ")), "description boundary missing"
+          assert any(boundary in description_lower for boundary in ("not for ", "do not use for ", "do not use to ", "do not trigger for ", "use only when ", "use only for ", "use only to ", "use when the user explicitly ")), "description boundary missing"
           assert len(skill_text.splitlines()) < 500, "SKILL.md must stay under the Agent Skills 500-line recommendation"
           assert len(skill_text) < 20000, "SKILL.md exceeds the repository's 20,000-character token-budget backstop"
           assert legacy_metadata == metadata, "legacy and canonical frontmatter differ"

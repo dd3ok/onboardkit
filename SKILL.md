@@ -1,6 +1,6 @@
 ---
 name: onboardkit
-description: "Initialize, refresh, audit, trim, reconcile, clean, or route the current repository's active AGENTS.md and coding-agent instructions from local evidence. Use only to maintain the active instruction files themselves. Do not trigger for adjacent deliverables, even when they mention AGENTS.md, including PR or code review, release notes or summaries, future ADRs or proposals, general explanations, Codex built-in commands, translation, or grammar-only edits."
+description: "Use only to initialize, refresh, audit, trim, reconcile, clean, or route the current repository's active AGENTS.md or coding-agent instructions from local evidence. Never use for adjacent deliverables, even if they mention AGENTS.md: PR or code review, release notes or summaries, ADRs or proposals, explanations, Codex /init or other built-in commands, translation, or grammar-only edits."
 ---
 
 # onboardkit compatibility entrypoint
