@@ -44,6 +44,7 @@ Use searches, parsers, format checks, `git diff --check`, and status. Never crea
 - If a preserved prohibition has no evidenced supported alternative, label it `Nonblocking safety gap` and name the missing alternative.
 Apply the Blocking rule before labeling a gap Needs Input or requesting user input.
 Separate command-backed from review-backed findings and protect secrets.
+Do not finish while any preserved prohibition lacks either an evidenced actionable alternative or its `Nonblocking safety gap` entry.
 
 ## Maintenance
 
