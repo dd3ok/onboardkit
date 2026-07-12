@@ -37,7 +37,7 @@ Use searches, parsers, format checks, `git diff --check`, and status. Never crea
 ## Report
 
 - Name sources, changes, routing, conflicts, checks, skips, and risks.
-- Report unsupported, missing, and identified-but-unrun commands.
+- Report unsupported, missing, and identified-but-unrun commands; label undocumented unrelated commands a `Nonblocking gap` unless they block the requested edit under the Blocking rule.
 - Describe rejected, scaffolded, or example content by its provenance; never call it a rule or policy.
 - Name retained cleanup candidates, their fitting destinations, and the path-level approval required for deletion.
 - If a preserved prohibition has no evidenced supported alternative, label it `Nonblocking safety gap` and name the missing alternative.
