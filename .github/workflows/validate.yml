@@ -168,10 +168,11 @@ jobs:
               "broad skill exclusion": r"ignored/external skill copies",
               "descriptive-doc authority shortcut": r"descriptive docs are candidates",
           }
-          for label, pattern in forbidden_runtime_patterns.items():
-              assert not re.search(pattern, skill_text, re.IGNORECASE), f"stale runtime pattern returned: {label}"
-
           checked_text = skill_text + legacy_text + readme + openai_text
+          maintained_text = checked_text + maintainer_contract
+          for label, pattern in forbidden_runtime_patterns.items():
+              assert not re.search(pattern, maintained_text, re.IGNORECASE), f"stale maintained pattern returned: {label}"
+
           assert "\ufffd" not in checked_text, "replacement character found in maintained text"
 
           eval_doc = json.loads(Path("evals/evals.json").read_text(encoding="utf-8"))
@@ -207,6 +208,15 @@ jobs:
           }
           assert all(required <= set(cases_by_id.get(case_id, {}).get("covers", [])) for case_id, required in fixed_behavior_smoke.items()), "fixed behavior smoke coverage drifted"
           assert all({"route", "safety"} <= set(cases_by_id[case_id]["covers"]) for case_id in (20, 34)), "routing safety regression case lost its critical tags"
+          critical_case_tags = {
+              3: "delete", 25: "mutating-command", 26: "mutating-command",
+              27: "delete", 28: "mutating-command", 33: "mutating-command",
+          }
+          assert all(tag in cases_by_id[case_id]["covers"] for case_id, tag in critical_case_tags.items()), "critical behavior case lost its repeat-routing tag"
+          read_only_audit_cases = {2, 3, 9, 11, 24, 27}
+          assert all("The audit changes no repository files." in cases_by_id[case_id]["assertions"] for case_id in read_only_audit_cases), "audit case lost its all-files read-only assertion"
+          assert "No command is selected or proposed while" in cases_by_id[2]["assertions"][1], "conflicting-command case permits an unsupported choice"
+          assert any("remains present and empty" in assertion and "neither deleted nor filled" in assertion for assertion in cases_by_id[28]["assertions"]), "empty-scaffold case permits the opposite outcome"
           nonblocking_gap_cases = {1, 8, 17, 18, 20, 21}
           assert all("nonblocking" in (cases_by_id[case_id]["expected_output"] + " " + " ".join(cases_by_id[case_id]["assertions"])).lower() for case_id in nonblocking_gap_cases), "nonblocking gap regression case lost its classification"
           blocking_needs_input_cases = {2, 15, 28, 30}
@@ -264,6 +274,7 @@ jobs:
               18: ("train", False, "Run the built-in Codex /init command in this repository."),
           }
           assert all((queries[index - 1]["set"], queries[index - 1]["should_trigger"], queries[index - 1]["query"]) == expected for index, expected in fixed_trigger_smoke.items()), "fixed trigger smoke identity drifted"
+          assert queries[3]["should_trigger"] and "agent-facing repository guidance" in queries[3]["query"].lower(), "docs-cleanup trigger boundary widened beyond agent guidance"
 
           print(f"Validated {len(cases)} evals, {len(queries)} trigger queries, {len(fixture_refs)} fixture references, a neutral fixture, and {len(runtime_files)} runtime files.")
           PY

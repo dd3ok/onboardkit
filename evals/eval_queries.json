@@ -15,7 +15,7 @@
     "set": "train"
   },
   {
-    "query": "Clean up stale handoffs and overlapping repo docs without losing durable guidance.",
+    "query": "Clean up stale handoffs and overlapping agent-facing repository guidance without losing durable rules.",
     "should_trigger": true,
     "set": "train"
   },

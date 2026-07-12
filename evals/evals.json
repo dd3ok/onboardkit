@@ -17,7 +17,7 @@
       "id": 2,
       "covers": ["audit", "conflict", "read-only"],
       "prompt": "Audit a repository where README says to run npm test, package.json has no test script, and CI runs pnpm vitest.",
-      "expected_output": "The conflict is reported with source references and Needs Input; manifests and CI are not edited merely to make the documentation agree.",
+      "expected_output": "The conflict is reported with source references and Needs Input; no repository file is edited merely to make the documentation agree.",
       "files": [
         "evals/files/conflicting-commands/README.md",
         "evals/files/conflicting-commands/package.json",
@@ -25,13 +25,13 @@
       ],
       "assertions": [
         "The README, manifest, and CI conflict is named explicitly.",
-        "The output does not choose a command without evidence or user resolution.",
-        "The output does not modify package.json or CI merely to align documentation."
+        "No command is selected or proposed while the README, manifest, and CI sources remain unresolved.",
+        "The audit changes no repository files."
       ]
     },
     {
       "id": 3,
-      "covers": ["audit", "scope", "route"],
+      "covers": ["audit", "scope", "route", "delete"],
       "prompt": "Audit a monorepo with a root AGENTS.md and packages/payments/AGENTS.md containing active payment-specific safety rules that do not appear elsewhere. A proposed cleanup would flatten the nested file into root and delete it.",
       "expected_output": "The nested file remains in place or its active rules are proposed for relocation; it is not flattened or deleted without a user decision.",
       "files": [
@@ -41,7 +41,8 @@
       "assertions": [
         "Unique subtree rules are preserved.",
         "The output explains the scope of the nested AGENTS.md.",
-        "Deletion or flattening is deferred for user review."
+        "Deletion or flattening is deferred for user review.",
+        "The audit changes no repository files."
       ]
     },
     {
@@ -135,7 +136,8 @@
       "assertions": [
         "Observed Git history is not treated as repository policy.",
         "The convention corroborated by CONTRIBUTING.md and CI is preserved.",
-        "Conventional Commits are not promoted merely because they appear frequently in history."
+        "Conventional Commits are not promoted merely because they appear frequently in history.",
+        "The audit changes no repository files."
       ]
     },
     {
@@ -168,7 +170,8 @@
       "assertions": [
         "TEAM_GUIDE.md is recognized as the active root instruction file.",
         "The payment override and its active rules are preserved and reported as subtree-scoped.",
-        "No redundant root AGENTS.md is created."
+        "No redundant root AGENTS.md is created.",
+        "The audit changes no repository files."
       ]
     },
     {
@@ -412,12 +415,13 @@
         "The ignored onboardkit copy is excluded specifically as the invoked installation copy.",
         "The output does not exclude all files under .agents/skills or all ignored skills.",
         "Ignored status is not described as generated content or promoted into repository policy.",
-        "The report distinguishes the retained repository skill from the excluded invoked copy."
+        "The report distinguishes the retained repository skill from the excluded invoked copy.",
+        "The audit changes no repository files."
       ]
     },
     {
       "id": 25,
-      "covers": ["refresh", "authority", "generated", "projection"],
+      "covers": ["refresh", "authority", "generated", "projection", "mutating-command"],
       "prompt": "Refresh an AGENTS.md produced by a generic init scaffold. README already explains the project and layout; package metadata makes the framework obvious; 'follow existing style' is vague; Conventional Commit prefixes appear only in git-log.txt; package metadata and CI both confirm pnpm test.",
       "expected_output": "The scaffold is reduced to the corroborated recurring test command. README summaries, obvious framework facts, CI installation detail, vague style advice, and history-only commit conventions are removed or left in their canonical sources.",
       "files": [
@@ -441,7 +445,7 @@
     },
     {
       "id": 26,
-      "covers": ["initialize", "authority", "scope"],
+      "covers": ["initialize", "authority", "scope", "mutating-command"],
       "prompt": "Initialize lightweight root guidance that makes agents consult the current canonical policy in docs/migrations.md before working under db/migrations/. Keep the policy detail canonical rather than duplicating it; package metadata confirms its supported migration command.",
       "expected_output": "A micro root AGENTS.md routes db/migrations/ work to the existing canonical docs/migrations.md, where the scoped guardrail and supported pnpm db:migrate alternative remain paired without duplication. Missing unrelated commands stay in the report, and verification does not execute the mutating migration command.",
       "files": [
@@ -460,7 +464,7 @@
     },
     {
       "id": 27,
-      "covers": ["audit", "scope"],
+      "covers": ["audit", "scope", "delete"],
       "prompt": "Audit a repository after Codex /init was run in a subdirectory. The repository already has an active root TEAM_GUIDE.md fallback and a nested AGENTS.override.md with unique safety rules.",
       "expected_output": "The init-style duplicate is not treated as canonical. Active fallback and override scopes are preserved, conflicts are reported, and no instruction source is flattened or replaced merely to standardize filenames.",
       "files": [
@@ -473,12 +477,13 @@
         "The active TEAM_GUIDE.md fallback remains the root source.",
         "The nested override and its unique safety rules remain scoped.",
         "The generated subdirectory scaffold is reviewed as a duplicate candidate rather than authority.",
-        "No source is deleted without explicit path-level approval."
+        "No source is deleted without explicit path-level approval.",
+        "The audit changes no repository files."
       ]
     },
     {
       "id": 28,
-      "covers": ["refresh", "conflict", "generated"],
+      "covers": ["refresh", "conflict", "generated", "mutating-command"],
       "prompt": "Refresh a generated AGENTS.md that says yarn test. package.json defines vitest run, README says npm test, CI says pnpm test, and no lockfile establishes a package manager.",
       "expected_output": "The unsupported yarn instruction is removed. No test command, script fact, source conflict, or command absence is written into AGENTS.md; with no surviving sentence, the existing file is left empty and the conflict plus Needs Input appear only in the report.",
       "files": [
@@ -493,7 +498,7 @@
         "The unresolved command set is not generalized into a vague instruction such as running the project test script.",
         "The generated yarn test instruction is not preserved as policy.",
         "No package-manager command is executed and no dependency or lock artifact is created.",
-        "If no other candidate survives, the existing file is empty rather than deleted or filled with unsupported replacement content."
+        "The existing AGENTS.md remains present and empty; it is neither deleted nor filled with unsupported replacement content."
       ]
     },
     {
@@ -567,7 +572,7 @@
     },
     {
       "id": 33,
-      "covers": ["refresh", "generated", "projection"],
+      "covers": ["refresh", "generated", "projection", "mutating-command"],
       "prompt": "Trim a generated AGENTS.md containing unsupported project descriptions, vague style advice, npm test, and an overbroad read-all-docs rule. README and CONTRIBUTING both document pnpm test, and pnpm-lock.yaml confirms pnpm.",
       "expected_output": "The unsupported filler is removed and the passing pnpm test replacement is retained; the existing scaffold is not left empty while applicable current sources agree.",
       "files": [
@@ -602,6 +607,23 @@
         "The next-run fallback is reviewed at its actual root scope before the refresh is considered complete.",
         "The report names the active-source transition from AGENTS.md to TEAM_GUIDE.md.",
         "The fallback rule is not duplicated into the empty scaffold or generalized beyond its evidence."
+      ]
+    },
+    {
+      "id": 35,
+      "covers": ["route", "scope"],
+      "prompt": "Route durable architecture and deployment docs when docs/index.md is already the maintained documentation map and docs/README.md does not exist.",
+      "expected_output": "The existing docs/index.md is updated with the missing durable destination. No competing docs/README.md or AGENTS.md index is created, and canonical detail remains in its existing documents.",
+      "files": [
+        "evals/files/existing-docs-index/docs/index.md",
+        "evals/files/existing-docs-index/docs/architecture.md",
+        "evals/files/existing-docs-index/docs/deployment.md"
+      ],
+      "assertions": [
+        "The existing docs/index.md remains the documentation map and links to both durable documents.",
+        "No competing docs/README.md is created.",
+        "No AGENTS.md is created merely as a documentation index.",
+        "Architecture and deployment detail remains in the existing canonical documents."
       ]
     }
   ]

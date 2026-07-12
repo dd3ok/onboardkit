@@ -23,7 +23,7 @@ There is no helper command, package, scaffolder, runner, dashboard, or task ledg
 
 onboardkit inventories active overrides, configured fallbacks, nested scopes, current docs, manifests, CI, and configuration. It may create a few bullets, update existing guidance, or create nothing.
 
-This installer path follows `main` and is intended for local setup and evaluation. For a reproducible install, replace `main` in the URL with a published release tag. Inspect the canonical `SKILL.md` before installation; the runtime is instruction-only and contains no executable helper. For managed team distribution, OpenAI recommends packaging a validated skill as a plugin; this repository does not currently ship one.
+This installer path follows `main` and is intended for local setup and evaluation. For a reproducible install, replace `main` in the URL with a published release tag. Inspect the canonical `SKILL.md` before installation; the runtime is instruction-only and contains no executable helper. For reusable workspace distribution, OpenAI recommends packaging the skill as a plugin; this repository does not currently ship one.
 
 ## What it maintains
 
@@ -49,7 +49,7 @@ Support levels are intentionally narrow:
 
 | Runtime | Status | Guidance |
 | --- | --- | --- |
-| Codex | Primary; historical behavior tests | Install the canonical runtime with `$skill-installer`; release claims use the change-routed protocol in `AGENTS.md`. |
+| Codex | Primary; behavior-tested | Install the canonical runtime with `$skill-installer`; release claims use the change-routed protocol in `AGENTS.md`. |
 | Claude Code | Format-compatible, unverified | Claude reads `CLAUDE.md`; use a small `@AGENTS.md` router when shared guidance should apply. |
 | Hermes | Agent Skills-compatible, unverified | For shared external skill directories, use filesystem permissions or `skills.write_approval: true` before allowing agent-managed updates. |
 | OpenClaw | Not vendor-optimized or verified | Its current guide recommends descriptions under 160 characters; the canonical description remains longer because it is Codex-optimized. |
@@ -83,11 +83,11 @@ The canonical runtime is `skills/onboardkit/`; root skill files are legacy compa
 
 Release evaluation is routed by the changed surface so documentation-only releases do not pay for model runs. See [AGENTS.md](AGENTS.md) for trigger, behavior, baseline, isolation, early-stop, and evidence rules.
 
-### Evaluation snapshot (2026-07-11)
+### Release evaluation (2026-07-12)
 
-This historical local observation predates the reproducible release protocol linked above: the exact model identifier and raw artifacts were not retained, so it is not a release baseline. With Codex CLI `0.144.0-alpha.4` and its session-default model, the candidate passed 30/30 isolated routing runs: 10 prompt types repeated three times, with 15/15 intended invocations and 15/15 adjacent-task exclusions. Near misses covered README editing, Codex `/init`, translation, explanation, and code review; one repetition also included adjacent project skills. An initial 27/30 pass exposed `/init` false triggers, which the explicit description boundary removed.
+Behavior-evaluated runtime commit `6e2d9b2` was compared with release `v0.1.0` (`c41f6c6`) using Codex CLI `0.144.0-alpha.4`, model `gpt-5.6-sol`, fresh isolated targets, separate `CODEX_HOME` directories, explicit project trust, and verified fixture manifests. The trigger track passed all 48 labeled query/context groups across 24 queries; early stopping produced 102 candidate runs. The baseline failed 15 groups. The unchanged final description reuses the passing trigger-description commit `b7ed008`, while runtime-commit invocation smoke passed 4/4.
 
-Median duration was 42.6 seconds. The runs used 2.71M input tokens (2.34M cached) and 37.8K output tokens in total; these environment-specific totals are not a per-use cost estimate. Direct behavior checks also confirmed read-only audit no-ops and scoped refresh, initialization, and Korean trimming without executing project commands.
+The behavior track passed all 34 candidate case gates and all 14 critical cases; 31 cases received three attempts per version. Cases 19 and 21 varied within the candidate at 2/3 passes, while all other candidate cases were stable; the baseline failed 26 case gates. The trigger track used 26.78M input tokens (21.30M cached) and 341.9K output tokens. Behavior execution plus grading used 18.55M input tokens (14.60M cached) and 336.1K output tokens. These release-evaluation totals include baseline comparison and repeated isolated runs; they are not per-use runtime costs.
 
 ## Help
 
