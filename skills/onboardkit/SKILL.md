@@ -27,7 +27,7 @@ Never add target-repo helpers, scripts, schemas, or skills. Leave unrelated docs
 5. Preserve fallback, override, and nested scopes. Flatten or delete only with user-directed path-level removal or relocation.
 6. After editing an instruction source or discovery configuration, recompute the effective chain at that source directory and each discovered nested instruction boundary it governs; do not walk unrelated directories. For Codex, use override, `AGENTS.md`, configured fallback order, and empty-file skipping; review conflicts and report newly exposed sources only as transitions expected on the next run or session, never as active in the current session. For another runtime, follow its documented discovery rules or report the gap instead of assuming Codex semantics.
 7. If an edit changes which source discovery would select, name the `old source -> new source` transition and state that the current session does not reload it; activation is expected only on the next run or session. Do not describe an emptied scaffold itself as routing agents.
-8. Before deletion, preserve durable guidance and verify it in its destination as a separate completed step; only then delete. Require both explicit deletion intent and user-named literal paths or file-matching globs; never broaden approval or treat directories as approval.
+8. Before deletion, preserve durable guidance and verify it in its destination as a separate completed step; only then delete. Require both explicit deletion intent and user-named literal paths or file-matching globs; never broaden approval or treat directories as approval. If deletion intent exists but no file target is authorized, report Needs Input requesting literal paths or a file-matching glob.
 
 ## Verification
 
