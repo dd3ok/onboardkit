@@ -1,0 +1,9 @@
+name: Links
+
+on: [push]
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - run: python -m linkcheck docs

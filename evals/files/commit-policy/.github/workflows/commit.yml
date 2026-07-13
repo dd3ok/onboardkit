@@ -1,0 +1,9 @@
+name: Commit policy
+
+on: [pull_request]
+
+jobs:
+  subject:
+    runs-on: ubuntu-latest
+    steps:
+      - run: test -n "${SUBJECT}" && echo "${SUBJECT}" | grep -Eq '^[A-Z]+-[0-9]+'
