@@ -37,6 +37,7 @@ Initialization is a no-op unless at least one current imperative or deliberate u
 
 ## Report
 
+- Before final, reconcile two complete ledgers: every observed build, test, lint, and release command with its source, evidence decision, and execution status; every preserved prohibition with its evidenced actionable alternative or `Nonblocking safety gap`.
 - Name only observed sources and scopes, actual changes, routing, conflicts, checks, skips, and risks; never claim an absent item was preserved.
 - For cleanup, name each removed guidance category and why it failed the decision model.
 - For a read-only request, keep each supported proposed change report-only and name the later explicit edit action needed to apply it.
@@ -47,7 +48,6 @@ Initialization is a no-op unless at least one current imperative or deliberate u
 - If a preserved prohibition has no evidenced supported alternative, label it `Nonblocking safety gap` and name the missing alternative.
 Apply the Blocking rule before labeling a gap Needs Input or requesting user input.
 Separate command-backed from review-backed findings and protect secrets.
-Do not finish until the report accounts for build, test, lint, and release commands and every preserved prohibition has either an evidenced actionable alternative or its `Nonblocking safety gap` entry.
 
 ## Maintenance
 
