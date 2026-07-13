@@ -83,11 +83,11 @@ The canonical runtime is `skills/onboardkit/`; root skill files are legacy compa
 
 Release evaluation is routed by the changed surface so documentation-only releases do not pay for model runs. See [AGENTS.md](AGENTS.md) for trigger, behavior, baseline, isolation, early-stop, and evidence rules.
 
-### Release evaluation (2026-07-12)
+### Release evaluation (2026-07-13)
 
-Behavior-evaluated runtime commit `6e2d9b2` was compared with release `v0.1.0` (`c41f6c6`) using Codex CLI `0.144.0-alpha.4`, model `gpt-5.6-sol`, fresh isolated targets, separate `CODEX_HOME` directories, explicit project trust, and verified fixture manifests. The trigger track passed all 48 labeled query/context groups across 24 queries; early stopping produced 102 candidate runs. The baseline failed 15 groups. The unchanged final description reuses the passing trigger-description commit `b7ed008`, while runtime-commit invocation smoke passed 4/4.
+Behavior-evaluated runtime commit `ab6c748` was compared with release `v0.1.0` (`c41f6c6`) using Codex CLI `0.144.0-alpha.4`, model `gpt-5.6-sol`, fresh isolated targets, separate `CODEX_HOME` directories, explicit project trust, and verified fixture manifests. The unchanged final description and trigger queries reuse the full trigger-surface run at `bb75f65`: all 48 labeled query/context groups across 24 queries passed in 105 candidate runs, while the baseline failed 14 groups in 104 runs. Runtime-commit behavior smoke and invocation smoke each passed 4/4.
 
-The behavior track passed all 34 candidate case gates and all 14 critical cases; 31 cases received three attempts per version. Cases 19 and 21 varied within the candidate at 2/3 passes, while all other candidate cases were stable; the baseline failed 26 case gates. The trigger track used 26.78M input tokens (21.30M cached) and 341.9K output tokens. Behavior execution plus grading used 18.55M input tokens (14.60M cached) and 336.1K output tokens. These release-evaluation totals include baseline comparison and repeated isolated runs; they are not per-use runtime costs.
+The behavior track passed all 36 candidate case gates and all 20 critical cases; 35 cases received three attempts per version. Candidate case 19 varied at 2/3 passes, while every other candidate case was stable; the baseline failed 31 case gates. The final track recorded 220 execution runs and 71 grading groups. The trigger track used 17.88M input tokens (14.32M cached) and 254.1K output tokens. Behavior execution, invocation smoke, and grading used 22.31M input tokens (17.09M cached) and 479.8K output tokens. These release-evaluation totals include baseline comparison and repeated isolated runs; they are not per-use runtime costs.
 
 ## Help
 
