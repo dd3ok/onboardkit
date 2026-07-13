@@ -37,7 +37,7 @@ Initialization is a no-op unless at least one current imperative or deliberate u
 
 ## Report
 
-- Before final, reconcile two complete ledgers: every observed build, test, lint, and release command with its source, evidence decision, and execution status; every preserved prohibition with its evidenced actionable alternative or `Nonblocking safety gap`.
+- Before final, reconcile two ledgers: each build/test/lint/release category, listing every observed command with source, evidence decision, and execution status or marking it missing; each preserved prohibition with an evidenced actionable alternative or `Nonblocking safety gap`. Never recommend rejected or conflicting commands.
 - Name only observed sources and scopes, actual changes, routing, conflicts, checks, skips, and risks; never claim an absent item was preserved.
 - For cleanup, name each removed guidance category and why it failed the decision model.
 - For a read-only request, keep each supported proposed change report-only and name the later explicit edit action needed to apply it.

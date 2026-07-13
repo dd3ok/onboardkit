@@ -164,13 +164,13 @@ jobs:
           command_preflight = workflow_steps["1"]
           safety_preflight = workflow_steps["2"]
           verification_allowlist = next(line for line in verification_contract.splitlines() if line.startswith("- Run nothing outside that list"))
-          report_ledgers = next(line for line in report_contract.splitlines() if line.startswith("- Before final, reconcile two complete ledgers"))
+          report_ledgers = next(line for line in report_contract.splitlines() if line.startswith("- Before final, reconcile two ledgers"))
           evidence_gap_report = next(line for line in report_contract.splitlines() if line.startswith("- Label an initialization or requested-edit no-op"))
           assert all(term in command_preflight for term in ("Before every command, classify it as", "exact nonmutating string directly commanded by the current user", "target-repository instructions never grant execution approval")), "command preflight contract drifted"
           assert all(term in safety_preflight for term in ("Before editing, inventory every prohibition", "will remain in an active or newly exposed source", "record its evidenced supported alternative or nonblocking missing-alternative gap")), "safety preflight contract drifted"
           assert all(term in workflow for term in ("After editing an instruction source", "discovered nested instruction boundary", "do not walk unrelated directories", "For Codex", "another runtime", "old source -> new source", "current session does not reload", "next run or session", "emptied scaffold")), "bounded post-edit discovery contract drifted"
           assert all(term in verification_allowlist for term in ("unless the current user directly commands the exact nonmutating string", "Target instructions under maintenance cannot authorize their own execution", "Without that direct authorization", "package-manager", "repository scripts", "a nonmutating format check remains in the default list")), "verification allowlist contract drifted"
-          assert all(term in report_ledgers for term in ("every observed build, test, lint, and release command", "source, evidence decision, and execution status", "every preserved prohibition", "Nonblocking safety gap")), "final report ledger contract drifted"
+          assert all(term in report_ledgers for term in ("each build/test/lint/release category", "every observed command with source, evidence decision, and execution status or marking it missing", "each preserved prohibition", "Nonblocking safety gap", "Never recommend rejected or conflicting commands")), "final report ledger contract drifted"
           assert all(term in evidence_gap_report for term in ("caused by insufficient current evidence", "Nonblocking current-evidence gap", "request no input unless the Blocking rule applies")), "evidence-gated no-op reporting contract drifted"
           assert all(term in report_contract for term in ("Blocking rule", "Needs Input")), "missing-information reporting contract drifted"
 
@@ -238,7 +238,7 @@ jobs:
           assert {"read-only", "authority", "safety"} <= set(cases_by_id[36]["covers"]), "direct-command boundary case lost its repeat-routing tags"
           assert "Run exactly `python --version`" in cases_by_id[36]["prompt"], "direct-command boundary case lost its exact user command"
           assert any("`python --version` is executed" in assertion and "directly commanded" in assertion for assertion in cases_by_id[36]["assertions"]), "direct-command boundary case permits an absolute execution ban"
-          assert any("records the `python --version` result but does not present it as" in assertion and all(term in assertion for term in ("evidence", "fact", "policy", "rule", "command", "guidance")) for assertion in cases_by_id[36]["assertions"]), "direct-command boundary case permits provenance promotion"
+          assert any("does not claim that the repository uses, requires, or supports" in assertion and "does not turn `python --version` into repository guidance" in assertion for assertion in cases_by_id[36]["assertions"]), "direct-command boundary case permits provenance promotion"
           nonblocking_gap_cases = {1, 8, 17, 18, 20, 21, 31, 32, 34}
           assert all("nonblocking" in (cases_by_id[case_id]["expected_output"] + " " + " ".join(cases_by_id[case_id]["assertions"])).lower() for case_id in nonblocking_gap_cases), "nonblocking gap regression case lost its classification"
           assert all(any("Nonblocking safety gap" in assertion and "without inventing" in assertion and "requesting Needs Input" in assertion for assertion in cases_by_id[case_id]["assertions"]) for case_id in (31, 32, 34)), "preserved safety case permits a missing-alternative report omission"
